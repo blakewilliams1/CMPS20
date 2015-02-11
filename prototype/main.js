@@ -1,71 +1,44 @@
-var stage;
-var soldier_count;
-var d = "none";
-var soldiers = [];
-var current_soldier;
 
+var game = new Game()
 window.onload = function init()
 {
-  // The pixi.js stage represents the root of
-  // our display tree. Can be rendered by one
-  // of the pixi.js renderers.
-  stage = new PIXI.Stage(0x66FF99,true);
-  
-  // Create a renderer instance.
-  // We choose Canvas and not webGL.
-  var view = document.getElementById("myCanvas")
-  var renderer = new PIXI.CanvasRenderer(1000, 600,view);
-  
+
   // Add the renderer view element to the
   // DOM
-  document.body.appendChild(renderer.view);
-  
+  document.body.appendChild(game.renderer.view);
   requestAnimFrame( animate );
-  
+
   init_game();
-  
+
   function animate() {
 	requestAnimFrame( animate );
 	update();
 	//render the stage
-	renderer.render(stage);
+	game.renderer.render(game.stage);
   }
 
   };
-  
+
   function update() {
-	//Player motion: Checking and execution
-	switch (d){
-    case "right":
-      current_soldier.position.x += 4;
-      break;
-
-    case "left":
-      current_soldier.position.x -= 4;
-      break;
-
-    case "up":
-      current_soldier.position.y -= 4;
-      break;
-
-    case "down":
-      current_soldier.position.y += 4;
-      break;
+	for(var i = 0; i < game.soldiers.length; i++){
+    game.soldiers[i].update(game.active.image);
   }
 
   }
-  
+
   function init_game() {
-	create_soldier(soldiers);
-	current_soldier = soldiers[0];
+	create_soldier();
+	game.active = game.soldiers[0];
   }
-  
+
   function create_soldier(soldiers) {
   //create a texture from an image path
   var texture = PIXI.Texture.fromImage("soldier.png");
   //create a new Sprite using the texture
   var new_soldier = new PIXI.Sprite(texture);
-  
+
+  var player = new Player(new_soldier);
+
   //center the sprite's anchor point and position
   new_soldier.anchor.x = .5;
   new_soldier.anchor.y = .5;
@@ -74,41 +47,43 @@ window.onload = function init()
   new_soldier.gridSize=4;
   new_soldier.setInteractive(true);
   new_soldier.mousedown = function (event) {
-	current_soldier = new_soldier;
+	game.active = player;
   }
-  current_soldier = new_soldier;
-  soldiers.push(new_soldier);
-  ++soldier_count;
-  
-  
-  stage.addChild(new_soldier);
+
+  player.image = new_soldier;
+  game.active_soldier = player;
+  game.soldiers.push(player);
+  ++game.soldier_count;
+
+
+   game.stage.addChild(new_soldier);
   }
-  
+
   window.onkeydown = function(event) {
   var key = String.fromCharCode(event.keyCode);
   switch (key){
     case 'W':
-      if(d != "down")
-         d = "up"
+      if(game.active.direction != "down")
+         game.active.direction = "up"
       break;
 
     case 'A':
-       if(d != "right")
-         d ="left"
+       if(game.active.direction!= "right")
+         game.active.direction ="left"
       break;
 
     case 'S':
-      if(d != "up")
-        d = "down"
+      if(game.active.direction != "up")
+        game.active.direction = "down"
       break;
 
     case 'D':
-        if(d != "left")
-          d = "right"
+        if(game.active.direction != "left")
+          game.active.direction = "right"
       break;
-	
+
 	case 'F':
-		create_soldier(soldiers);
+		create_soldier(game.soldiers);
 		break;
   }
 }
@@ -117,19 +92,19 @@ window.onload = function init()
   var key = String.fromCharCode(event.keyCode);
   switch (key){
     case 'W':
-      d = "none";
+      game.active.direction = "none";
       break;
 
     case 'A':
-      d = "none";
+      game.active.direction = "none";
       break;
 
     case 'S':
-      d = "none";
+      game.active.direction = "none";
       break;
 
     case 'D':
-      d = "none";
+      game.active.direction = "none";
       break;
   }
 }
