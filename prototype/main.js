@@ -51,7 +51,7 @@ window.onload = function init()
   }
 
   player.image = new_soldier;
-  game.active_soldier = player;
+  game.active = player;
   game.soldiers.push(player);
   ++game.soldier_count;
 
