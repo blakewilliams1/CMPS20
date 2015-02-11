@@ -63,22 +63,18 @@ window.onload = function init()
   var key = String.fromCharCode(event.keyCode);
   switch (key){
     case 'W':
-      if(game.active.direction != "down")
          game.active.direction = "up"
       break;
 
     case 'A':
-       if(game.active.direction!= "right")
          game.active.direction ="left"
       break;
 
     case 'S':
-      if(game.active.direction != "up")
         game.active.direction = "down"
       break;
 
     case 'D':
-        if(game.active.direction != "left")
           game.active.direction = "right"
       break;
 
