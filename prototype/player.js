@@ -1,41 +1,47 @@
 function Player(){
-  this.image;
+  this.sprite;
+  // NOTE:
+  // Instead of a 'hiding' field we are manipulating sprite.visible
+  // both to turn visibility of a solider on/off and to do AI checks, etc.
+  // visible is a Pixi.js field that every Sprite has
   this.direction = "none";
-  this.hiding=false;
   this.objectBehind;
-  this.update = function(image){
-	if(this.image != image) return;
+  this.update = function(sprite){
+	if(this.sprite != sprite) return;
 	  switch (this.direction){
 	    case "right":
-		this.image.position.x += 4;
+		this.sprite.position.x += 4;
 		break;
 
 		case "left":
-		this.image.position.x -= 4;
+		this.sprite.position.x -= 4;
 		break;
 
 		case "up":
-		this.image.position.y -= 4;
+		this.sprite.position.y -= 4;
 		break;
 
 		case "down":
-		this.image.position.y += 4;
+		this.sprite.position.y += 4;
 		break;
 	}
   }
-  this.hide = function(hidingObject){
-    if(!hidingObject.occupied){
-      this.hiding=true;
-	  this.objectBehind=hidingObject;
+  this.hide = function(hidingSpot){
+    if(!hidingSpot.occupied){
+	  //This soldier is now hiding.
+	  this.sprite.visible = false;
+	  //Show soldier in hiding spot.
+	  hidingSpot.setTexture(hidingSpot.hidingTexture);
+	  this.objectBehind=hidingSpot;
       //change 'game' to whatever we all the game instance
-      game.score+=hidingObject.points;
+      //game.score+=hidingSpot.points;
 	  //change sprite
-	  hidingObject.occupied=true;
+	  hidingSpot.occupied=true;
     }
   }
   this.unhide = function(){
-    if(this.hiding){
-	  this.hiding=false;
+    if(!this.visible){
+	  this.visible=true;
 	  game.score-=objectBehind.points;
 	  this.objectBehind=null;
 	  //change sprite

@@ -1,5 +1,6 @@
 
 var game = new Game()
+var trashCan;
 window.onload = function init()
 {
 
@@ -21,20 +22,25 @@ window.onload = function init()
 
   function update() {
 	for(var i = 0; i < game.soldiers.length; i++){
-    game.soldiers[i].update(game.active.image);
+    game.soldiers[i].update(game.active.sprite);
   }
 
   }
 
   function init_game() {
+	//Create the first soldier
 	create_soldier();
+	//The active soldier is the one soldier we just created
 	game.active = game.soldiers[0];
+	//Create one single hiding spot and add it to the world.
+	trashCan = HidingSpot(100,100);
+	game.stage.addChild(trashCan);
   }
 
   function create_soldier(soldiers) {
   //create a texture from an image path
   var texture = PIXI.Texture.fromImage("soldier.png");
-  //create a new Sprite using the texture
+  //create a new Sprite using the texture. A Sprite is an actual game object.
   var new_soldier = new PIXI.Sprite(texture);
 
   var player = new Player(new_soldier);
@@ -50,7 +56,7 @@ window.onload = function init()
 	game.active = player;
   }
 
-  player.image = new_soldier;
+  player.sprite = new_soldier;
   game.active = player;
   game.soldiers.push(player);
   ++game.soldier_count;
@@ -80,6 +86,9 @@ window.onload = function init()
 
 	case 'F':
 		create_soldier(game.soldiers);
+		break;
+	case 'E':
+	    game.active.hide(trashCan);
 		break;
   }
 }
