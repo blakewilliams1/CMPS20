@@ -32,12 +32,16 @@ window.onload = function init()
 	create_soldier();
 	//The active soldier is the one soldier we just created
 	game.active = game.soldiers[0];
-	//Create one single hiding spot and add it to the world.
-	trashCan = HidingSpot(100,100);
+	create_hiding_spot();
+  }
+  
+  function create_hiding_spot() {
+	var trashCan = HidingSpot(100,100);
 	game.stage.addChild(trashCan);
+	game.hiding_spots.push(trashCan);
   }
 
-  function create_soldier(soldiers) {
+  function create_soldier() {
   //create a texture from an image path
   var texture = PIXI.Texture.fromImage("soldier.png");
   //create a new Sprite using the texture. A Sprite is an actual game object.
@@ -88,7 +92,16 @@ window.onload = function init()
 		create_soldier(game.soldiers);
 		break;
 	case 'E':
-	    game.active.hide(trashCan);
+		for (var i = 0 ; i < game.hiding_spots.length ; i ++) {
+			console.log(typeof(game.active.sprite));
+			var xDistance = Math.abs(game.active.sprite.position.x - game.hiding_spots[i].position.x);
+			var yDistance = Math.abs(game.active.sprite.position.y - game.hiding_spots[i].position.y);
+			console.log(game.hiding_spots[i]);
+			console.log(xDistance + " " + yDistance);
+			if ( xDistance < 32 && yDistance < 32) {
+				game.active.hide(game.hiding_spots[i]);
+			}
+		}
 		break;
   }
 }

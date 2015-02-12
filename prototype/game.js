@@ -24,6 +24,7 @@ function Game(){
     this.soldiers = []
     this.soldier_count = 0;
     this.enemies = []
+	this.hiding_spots = [];
 	
     this.active;
  }
