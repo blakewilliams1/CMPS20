@@ -13,7 +13,9 @@ function HidingSpot(x,y){
   new_hiding_spot.mousedown=function(event){
     if(new_hiding_spot.occupied){
 	  //TODO: unhide doesn't work
-	  hiding_soldier.unhide();
+	  this.hiding_soldier.unhide();
+	  new_hiding_spot.occupied=false;
+	  this.setTexture(PIXI.Texture.fromImage("../Art Assets/png/trashcan.png"));
 	}
   }
   return new_hiding_spot;
