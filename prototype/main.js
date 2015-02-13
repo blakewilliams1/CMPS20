@@ -52,8 +52,8 @@ window.onload = function init()
   //center the sprite's anchor point and position
   new_soldier.anchor.x = .5;
   new_soldier.anchor.y = .5;
-  new_soldier.position.x = 200;
-  new_soldier.position.y = 200;
+  new_soldier.position.x = 900;
+  new_soldier.position.y = 550;
   new_soldier.gridSize=4;
   new_soldier.setInteractive(true);
   new_soldier.mousedown = function (event) {
@@ -93,8 +93,11 @@ window.onload = function init()
 		break;
 	case 'E':
 		for (var i = 0 ; i < game.hiding_spots.length ; i ++) {
+			console.log(typeof(game.active.sprite));
 			var xDistance = Math.abs(game.active.sprite.position.x - game.hiding_spots[i].position.x);
 			var yDistance = Math.abs(game.active.sprite.position.y - game.hiding_spots[i].position.y);
+			console.log(game.hiding_spots[i]);
+			console.log(xDistance + " " + yDistance);
 			if ( xDistance < 32 && yDistance < 32) {
 				game.active.hide(game.hiding_spots[i]);
 			}

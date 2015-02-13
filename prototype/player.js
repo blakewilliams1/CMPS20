@@ -7,10 +7,8 @@ function Player(){
   // It is true by default.
   this.direction = "none";
   this.objectBehind;
-  //This is the Player update function, only called on the active soldier
   this.update = function(sprite){
-	//If this soldier is hiding return and don't do movement.
-	if(this.objectBehind!=null) return;
+	if(this.sprite != sprite) return;
 	  switch (this.direction){
 	    case "right":
 		this.sprite.position.x += 4;
@@ -33,10 +31,8 @@ function Player(){
     if(!hidingSpot.occupied){
 	  //This soldier is now hiding.
 	  this.sprite.visible = false;
-	  //Change sprite
+	  //Show soldier in hiding spot.
 	  hidingSpot.setTexture(hidingSpot.hidingTexture);
-	  //Now this soldier object and the hiding_spot object
-	  //will store references to each other.
 	  this.objectBehind=hidingSpot;
 	  hidingSpot.hiding_soldier=this;
       //change 'game' to whatever we all the game instance
@@ -46,12 +42,11 @@ function Player(){
     }
   }
   this.unhide = function(){
-  console.log(this.objectBehind);
     if(!this.visible){
-	  this.sprite.visible=true;
-	  game.score-=this.objectBehind.points;
+	  this.visible=true;
+	  game.score-=objectBehind.points;
 	  //stop both sprites from referencing each other
-      this.objectBehind.hiding_soldier=null;
+      objectBehind.hiding_soldier=null;
 	  this.objectBehind=null;
 	  //change sprite
 	}
