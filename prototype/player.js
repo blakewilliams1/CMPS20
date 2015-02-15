@@ -1,4 +1,5 @@
 function Player(){
+	//this is a pull test
   this.sprite;
   // NOTE:
   // Instead of a 'hiding' field we are manipulating sprite.visible
