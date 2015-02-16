@@ -20,3 +20,14 @@ function HidingSpot(x,y){
   }
   return new_hiding_spot;
 }
+
+
+
+
+ function create_hiding_spot() {
+
+    var trashCan = HidingSpot(100,100);
+    game.stage.addChild(trashCan);
+    game.hiding_spots.push(trashCan);
+
+  }

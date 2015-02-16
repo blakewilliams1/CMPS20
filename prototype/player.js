@@ -58,3 +58,35 @@ function Player(){
 	}
   }
 }
+
+
+
+
+
+function create_soldier() {
+  //create a texture from an image path
+  var texture = PIXI.Texture.fromImage("soldier.png");
+  //create a new Sprite using the texture. A Sprite is an actual game object.
+  var new_soldier = new PIXI.Sprite(texture);
+
+  var player = new Player(new_soldier);
+
+  //center the sprite's anchor point and position
+  new_soldier.anchor.x = .5;
+  new_soldier.anchor.y = .5;
+  new_soldier.position.x = 200;
+  new_soldier.position.y = 200;
+  new_soldier.gridSize=4;
+  new_soldier.setInteractive(true);
+  new_soldier.mousedown = function (event) {
+  game.active = player;
+  }
+
+  player.sprite = new_soldier;
+  game.active = player;
+  game.soldiers.push(player);
+  ++game.soldier_count;
+
+
+   game.stage.addChild(new_soldier);
+  }
