@@ -47,6 +47,7 @@ window.onload = function init()
 	//The active soldier is the one soldier we just created
 	game.active = game.soldiers[0];
 	create_hiding_spot();
+	create_alarm(300,300);
   }
 
   window.onkeydown = function(event) {
