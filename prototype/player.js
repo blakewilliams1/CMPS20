@@ -12,9 +12,6 @@ function Player(){
   this.update = function(sprite){
 	//If this soldier is hiding return and don't do movement.
 	if(this.objectBehind!=null) return;
-	//If this soldier is colliding with a wall return and don't do movement
-	//CODE
-	
 	  switch (this.direction){
 	    case "right":
 		this.sprite.position.x += 4;
