@@ -48,6 +48,7 @@ window.onload = function init()
 	game.active = game.soldiers[0];
 	create_hiding_spot();
 	create_alarm(300,300);
+	create_wall(350,350);
   }
 
   window.onkeydown = function(event) {
