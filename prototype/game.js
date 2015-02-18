@@ -40,10 +40,8 @@ function Game(){
 
     this.soldiers = [];
     this.soldier_count = 0;
-    this.enemies = []
-	  this.hiding_spots = [];
-
-
+	this.hiding_spots = [];
+	this.walls = [];
     this.enemies = [];
     this.objects = [];
     this.grid = [];
@@ -52,10 +50,7 @@ function Game(){
     this.fps = 60;
 
     this.update = function() {
-
-      for(var i = 0; i < this.soldiers.length; i++){
-        game.soldiers[i].update(game.active.sprite);
-        }
+        game.active.update();
       for(var i = 0; i < game.enemies.length; i++){
             this.enemies[i].update()
           }
