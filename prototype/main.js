@@ -40,7 +40,9 @@ window.onload = function init()
 
   function init_game() {
 	//Create the first soldier
-  create_civilian();
+  for(var i = 0; i < 2; i++){
+    create_civilian();
+  }
 	create_soldier();
 	//The active soldier is the one soldier we just created
 	game.active = game.soldiers[0];

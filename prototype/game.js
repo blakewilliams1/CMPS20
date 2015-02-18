@@ -10,12 +10,21 @@
 
 var window_width = 1200;
 var window_height = 600;
+var angle = Math.PI/2;
 
 function Game(){
     // The pixi.js stage represents the root of
    // our display tree. Can be rendered by one
   // of the pixi.js renderers.
     this.stage = new PIXI.Stage(0xCCCCCC,true);
+
+  console.log("origin", [600,300]);
+  console.log("start point ", [600,100]);
+
+  var new_point = get_view_points([600,100],[600,300]);
+
+
+  console.log("new point ", new_point);
 
      // Create a renderer instance.
     // We choose Canvas and not webGL.
