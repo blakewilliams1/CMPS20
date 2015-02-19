@@ -18,7 +18,7 @@ function Civilian(){
   this.goal = {"x":Math.floor(Math.random() * window_width), "y":Math.floor(Math.random() * window_height)};
   this.vision_distance = 15;
   this.vision_angle = (Math.PI/2);
-  console.log("angle ",this.vision_angle);
+ // console.log("angle ",this.vision_angle);
   this.at_goal = false;
   this.search_grid = []
   this.spotted = false;
