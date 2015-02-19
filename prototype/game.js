@@ -57,7 +57,9 @@ function Game() {
 		//The active soldier is the one soldier we just created
 		this.active = game.soldiers[0];
 		create_hiding_spot();
-		create_alarm(300, 300);
+		//create_alarm(300, 300);
+		//var alarm = new Alarm(300,300);
+		//this.stage.addChild(alarm.sprite);
 		create_wall(350, 350);
 	};
 	this.hide_active_soldier=  function(){

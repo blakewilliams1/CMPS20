@@ -1,7 +1,7 @@
 function HidingSpot(x, y) {
-	var texture = PIXI.Texture.fromImage("trashcan.png");
+	var texture = PIXI.Texture.fromImage("../Art Assets/png/trashcan.png");
 	var new_hiding_spot = new PIXI.Sprite(texture);
-	new_hiding_spot.hidingTexture = PIXI.Texture.fromImage("trashcanSoldier.png");
+	new_hiding_spot.hidingTexture = PIXI.Texture.fromImage("../Art Assets/png/trashcanSoldier.png");
 	new_hiding_spot.setInteractive(true);
 	new_hiding_spot.position.x = x;
 	new_hiding_spot.position.y = y;
@@ -16,7 +16,7 @@ function HidingSpot(x, y) {
 			//TODO: unhide doesn't work
 			this.hiding_soldier.unhide();
 			new_hiding_spot.occupied = false;
-			this.setTexture(PIXI.Texture.fromImage("trashcan.png"));
+			this.setTexture(PIXI.Texture.fromImage("../Art Assets/png/trashcan.png"));
 		}
 	};
 	return new_hiding_spot;
