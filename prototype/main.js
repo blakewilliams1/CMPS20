@@ -63,7 +63,7 @@ window.onkeydown = function(event) {
 		break;
 
 	case 'F':
-		create_soldier();
+		game.create_soldier();
 		break;
 	case 'E':
 		game.hide_active_soldier();

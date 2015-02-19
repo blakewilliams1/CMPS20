@@ -40,7 +40,7 @@ function Game() {
 	this.enemies = [];
 	this.objects = [];
 	this.grid = [];
-	this.active;
+	this.active
 	this.fps = 60;
 	this.update = function() {
 		game.active.update();
@@ -48,38 +48,48 @@ function Game() {
 			this.enemies[i].update();
 		}
 	};
+	
+	this.create_soldier = function() {
+		var player = new Player();
+		//center the sprite's anchor point and position
+		/*player.mousedown = function(event) {
+			console.log("clicked"+ player);
+			this.active = player;
+		};*/
+		this.active = player;
+		this.soldiers.push(player);
+		this.stage.addChild(player);
+	}
+	this.hide_active_soldier = function() {
+		for (var i = 0; i < this.hiding_spots.length; i++) {
+			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
+			var yDistance = Math.abs(this.active.position.y - this.hiding_spots[i].position.y);
+			if (xDistance < 32 && yDistance < 32) {
+				this.active.hide(this.hiding_spots[i]);
+			}
+		}
+	};
 	this.init_game = function() {
 		//Create the first soldier
 		for (var i = 0; i < 2; i++) {
 			//   create_civilian();
 		}
-		create_soldier();
+		this.create_soldier();
 		//The active soldier is the one soldier we just created
-		this.active = game.soldiers[0];
+		this.active = this.soldiers[0];
 		create_hiding_spot();
 		//create_alarm(300, 300);
 		//var alarm = new Alarm(300,300);
 		//this.stage.addChild(alarm.sprite);
 		create_wall(350, 350);
 	};
-	this.hide_active_soldier=  function(){
-		for (var i = 0; i < this.hiding_spots.length; i++) {
-			var xDistance = Math.abs(this.active.sprite.position.x - this.hiding_spots[i].position.x);
-			var yDistance = Math.abs(this.active.sprite.position.y - this.hiding_spots[i].position.y);
-			if (xDistance < 32 && yDistance < 32) {
-				this.active.hide(this.hiding_spots[i]);
-			}
-		}
-	};
 }
 
-
-
 function Tile() {
-	this.x;
-	this.y;
-	this.width;
-	this.free;
+	this.x
+	this.y
+	this.width
+	this.free
 }
 
 function create_grid(game) {
