@@ -3,79 +3,94 @@
  * function
  */
 
+/*
+ * create an instance of the game
+ */
 
- /*
-  * create an instance of the game
-  */
+var angle = Math.PI / 2;
 
-var window_width = 1200;
-var window_height = 600;
-var angle = Math.PI/2;
+function Game() {
+	// The pixi.js stage represents the root of
+	// our display tree. Can be rendered by one
+	// of the pixi.js renderers.
+	this.stage = new PIXI.Stage(0xCCCCCC, true);
 
-function Game(){
-    // The pixi.js stage represents the root of
-   // our display tree. Can be rendered by one
-  // of the pixi.js renderers.
-    this.stage = new PIXI.Stage(0xCCCCCC,true);
+	console.log("origin", [600, 300]);
+	console.log("start point ", [600, 100]);
 
-  console.log("origin", [600,300]);
-  console.log("start point ", [600,100]);
+	var new_point = get_view_points([600, 100], [600, 300]);
 
-  var new_point = get_view_points([600,100],[600,300]);
+	//console.log("new point ", new_point);
+	// Create a renderer instance.
+	// We choose Canvas and not webGL.
+	this.view = document.getElementById("myCanvas");
+	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);
 
+	console.log(window_width);
+	console.log(window_height);
 
-  console.log("new point ", new_point);
+	/*
+	 * initilize the soliders and enemy arrays
+	 */
 
-     // Create a renderer instance.
-    // We choose Canvas and not webGL.
-    this.view = document.getElementById("myCanvas");
-    this.renderer = new PIXI.CanvasRenderer(window_width,window_height,this.view);
-
-    console.log(window_width);
-    console.log(window_height);
-
-    /*
-    * initilize the soliders and enemies array to zero
-    */
-
-    this.soldiers = [];
-    this.soldier_count = 0;
+	this.soldiers = [];
+	this.soldier_count = 0;
 	this.hiding_spots = [];
 	this.walls = [];
-    this.enemies = [];
-    this.objects = [];
-    this.grid = [];
-    this.active;
+	this.enemies = [];
+	this.objects = [];
+	this.grid = [];
+	this.active;
+	this.fps = 60;
+	this.update = function() {
+		game.active.update();
+		for (var i = 0; i < game.enemies.length; i++) {
+			this.enemies[i].update();
+		}
+	};
+	this.init_game = function() {
+		//Create the first soldier
+		for (var i = 0; i < 2; i++) {
+			//   create_civilian();
+		}
+		create_soldier();
+		//The active soldier is the one soldier we just created
+		this.active = game.soldiers[0];
+		create_hiding_spot();
+		create_alarm(300, 300);
+		create_wall(350, 350);
+	};
+	this.hide_active_soldier=  function(){
+		for (var i = 0; i < this.hiding_spots.length; i++) {
+			var xDistance = Math.abs(this.active.sprite.position.x - this.hiding_spots[i].position.x);
+			var yDistance = Math.abs(this.active.sprite.position.y - this.hiding_spots[i].position.y);
+			if (xDistance < 32 && yDistance < 32) {
+				this.active.hide(this.hiding_spots[i]);
+			}
+		}
+	};
+}
 
-    this.fps = 60;
-
-    this.update = function() {
-        game.active.update();
-      for(var i = 0; i < game.enemies.length; i++){
-            this.enemies[i].update()
-          }
-     };
- }
 
 
-function Tile(){
-   this.x;
-   this.y;
-   this.width;
-   this.free;
- }
+function Tile() {
+	this.x;
+	this.y;
+	this.width;
+	this.free;
+}
 
- function create_grid(game){
-   for(var i = 4; i < window_width; i += 8){
-      var list = [];
-      for(var j = 4; j < window_height; j += 8){
-        var tile = new Tile();
-        tile.x = i;
-        tile.y = j;
-        tile.width = 4;
-        tile.free = false;
-        list.push(tile);
-      }
-      game.grid.push(list);
-   }
- }
+function create_grid(game) {
+	for (var i = 4; i < window_width; i += 8) {
+		var list = [];
+		for (var j = 4; j < window_height; j += 8) {
+			var tile = new Tile();
+			tile.x = i;
+			tile.y = j;
+			tile.width = 4;
+			tile.free = false;
+			list.push(tile);
+		}
+		game.grid.push(list);
+	}
+}
