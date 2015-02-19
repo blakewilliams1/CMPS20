@@ -6,16 +6,12 @@
 
 
 
-function get_view_points(p,origin){
-   console.log("new angle", toRadians(45));
-   var x = origin[0] - p[0];
-   var y = origin[1] - p[1];
-
-   var p1x = p[0] * Math.cos(toRadians(45));
-   var p1y = p[1] * Math.sin(toRadians(45));
-
-
-   return [p1x,p1y];
+function rotate_point(pointX, pointY, originX, originY, angle) {
+  angle = angle * Math.PI / 180.0;
+  return {
+    x: Math.cos(angle) * (pointX-originX) - Math.sin(angle) * (pointY-originY) + originX,
+    y: Math.sin(angle) * (pointX-originX) + Math.cos(angle) * (pointY-originY) + originY
+  };
 }
 
 

@@ -3,22 +3,25 @@
  * function
  */
 
-/*
- * create an instance of the game
- */
 
-var angle = Math.PI / 2;
+ /*
+  * create an instance of the game
+  */
 
-function Game() {
-	// The pixi.js stage represents the root of
-	// our display tree. Can be rendered by one
-	// of the pixi.js renderers.
-	this.stage = new PIXI.Stage(0xCCCCCC, true);
+var window_width = 1200;
+var window_height = 600;
+var angle = Math.PI/2;
 
-	console.log("origin", [600, 300]);
-	console.log("start point ", [600, 100]);
+function Game(){
+    // The pixi.js stage represents the root of
+   // our display tree. Can be rendered by one
+  // of the pixi.js renderers.
+    this.stage = new PIXI.Stage(0xCCCCCC,true);
 
-	var new_point = get_view_points([600, 100], [600, 300]);
+  console.log("origin", [600,300]);
+  console.log("start point ", [600,500]);
+  var point = rotate_point(600, 100, 600, 300, 45)
+  console.log("new point ", point.x, point.y);
 
 	//console.log("new point ", new_point);
 	// Create a renderer instance.
@@ -48,7 +51,7 @@ function Game() {
 			this.enemies[i].update();
 		}
 	};
-	
+
 	this.create_soldier = function() {
 		var player = new Player();
 		//center the sprite's anchor point and position
