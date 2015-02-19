@@ -1,10 +1,40 @@
+/*
+ * this file holds all the helper function that are called through out our game
+ */
+
+
 //----------------------------------------------------------------------------------
 
-  function in_view(p1,p2,angle){
+/*
+ * checks if a point is with in the area of the triangle( three point that form a triangle)
+ */
 
-  }
+function in_triangle(p,a,b,c){
+
+   var v0 = [c.x-a.x,c.y-a.y];
+   var v1 = [b.x-a.x,b.y-a.y];
+   var v2 = [p.x-a.x,p.y-a.y];
 
 
+   var dot00 = (v0[0]*v0[0]) + (v0[1]*v0[1]);
+   var dot01 = (v0[0]*v1[0]) + (v0[1]*v1[1]);
+   var dot02 = (v0[0]*v2[0]) + (v0[1]*v2[1]);
+   var dot11 = (v1[0]*v1[0]) + (v1[1]*v1[1]);
+   var dot12 = (v1[0]*v2[0]) + (v1[1]*v2[1]);
+
+   var invDenom = 1/ (dot00 * dot11 - dot01 * dot01);
+
+   var u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+   var v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+   return ((u >= 0) && (v >= 0) && (u + v < 1));
+}
+
+//--------------------------------------------------------------------------------------
+
+/*
+ * rotate any point around the origin by n degrees
+ */
 
 function rotate_point(pointX, pointY, originX, originY, angle) {
   angle = angle * Math.PI / 180.0;
@@ -14,43 +44,44 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
   };
 }
 
-
-
-function toDegrees(angle){
-  return angle * (180 / Math.PI);
-}
-
-
-function toRadians(angle){
-  return angle * (Math.PI/180);
-}
-
-
-
 //----------------------------------------------------------------------------------
 
+/*
+ * returns an array of positions(x and y) from one point to another
+ */
+
+
   function getRay(v1,v2){
-     var dx = Math.abs(v2[0] - v1[0]);
-     var dy = Math.abs(v2[1] - v1[1]);
-     var sx = v1[0] < v2[0] ? 1 : -1;
-     var sy = v1[1] < v2[1] ? 1 : -1;
+     var dx = Math.abs(v2.x - v1.x);
+     var dy = Math.abs(v2.y - v1.y);
+     var sx = v1.x < v2.x ? 1 : -1;
+     var sy = v1.y < v2.y ? 1 : -1;
      var err = dx-dy;
 
      var ray = [];
-        while(v1[0]!=v2[0] || v1[1]!=v2[1]){
-            ray.push(v1[0],v1[1]);
+        while(v1.x!=v2.x || v1.y!=v2.y){
+            ray.push(v1.x,v1.y);
              var e2 = 2*err;
              if(e2>-dy){
                 err = err - dy;
-                v[0] += sx;
+                v1.x += sx;
               }
               if(e2<dx){
                 err = err + dx;
-                v1[1] += sy;
+                v1.y += sy;
                 }
       }
    return ray;
   }
+
+//--------------------------------------------------------------------------------
+
+function get_dist_point(origin,x,y){
+   return {
+      x: origin.x + x,
+      y: origin.y + y
+   }
+}
 
 
 //--------------------------------------------------------------------------------
@@ -81,6 +112,7 @@ function location_in_grid(position,grid){
 
   return [x_position,y_position];
 }
+
 //-----------------------------------------------------------------------------------
 
 /*
@@ -150,8 +182,8 @@ function isGoal(start,goal){
 /*
  * this function will generate the next move for the civilian so the
  * A_star search can use to data
- * NOTE- this funciton returns the next position and a boolean if the
- * next move is a valid one
+ * NOTE- this funciton returns the next position and a boolean (if the
+ * next move is a valid one)
  */
 
 function generate_move(current_pos,action,grid){

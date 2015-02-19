@@ -12,6 +12,7 @@ function Player() {
 			//TODO: THIS RELIES ON THE GAME OBJECT BEGIN SPECIFICALLY CALLED GAME! FIX!!!
 			game.active = sprite;
 		};
+
 	//This is the Player update function, only called on the active soldier
 	sprite.update = function() {
 		//If this soldier is hiding return and don't do movement.

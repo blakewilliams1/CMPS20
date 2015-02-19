@@ -15,10 +15,14 @@ function Civilian(){
   this.sprite;
   this.actions = ["north","south","east","west"];
   this.moves = [];
+
   this.goal = {"x":Math.floor(Math.random() * window_width), "y":Math.floor(Math.random() * window_height)};
-  this.vision_distance = 15;
-  this.vision_angle = (Math.PI/2);
+
+
+  this.vision_distance = 200;
+  this.vision_angle = 45;
  // console.log("angle ",this.vision_angle);
+
   this.at_goal = false;
   this.search_grid = []
   this.spotted = false;
@@ -28,13 +32,12 @@ function Civilian(){
    */
 
   this.update = function(){
+     this.center = {
+       x:this.sprite.position.x,
+       y:this.sprite.position.y
+  }
      if(this.at_goal){
-        var location = [this.sprite.position.x, this.sprite.position.y];
-        var position = location_in_grid(location,game.grid);
-        this.goal.x = Math.floor(Math.random() * window_width);
-        this.goal.y = Math.floor(Math.random() * window_height);
-        this.moves = this.A_star(game.grid);
-        this.at_goal = false;
+        this.find_path();
       }else{
 
      if(this.moves.length == 0){
@@ -44,18 +47,22 @@ function Civilian(){
       var move = this.moves.shift();
     switch (move){
       case "east":
+    this.scan_area(this.center, this.vision_distance,0);
     this.sprite.position.x += steps;
     break;
 
     case "west":
+    this.scan_area(this.center, -(this.vision_distance),0);
     this.sprite.position.x -= steps;
     break;
 
     case "north":
+    this.scan_area(this.center, 0, -(this.vision_distance));
     this.sprite.position.y -= steps;
     break;
 
     case "south":
+    this.scan_area(this.center, 0, this.vision_distance);
     this.sprite.position.y += steps;
     break;
     }
@@ -79,8 +86,8 @@ function create_civilian(){
 
   sprite.anchor.x = sprite.anchor.y =.5;
 
-  sprite.position.x = game.grid[75][0].x;
-  sprite.position.y = game.grid[0][45].y;
+  sprite.position.x = 600;
+  sprite.position.y = 250;
 
   civilian.sprite = sprite;
   game.enemies.push(civilian);
@@ -137,7 +144,43 @@ Civilian.prototype  = {
 
           }
       return []
+    },
+
+
+    find_path: function(){
+         var location = [this.sprite.position.x, this.sprite.position.y];
+         var position = location_in_grid(location,game.grid);
+         this.goal.x = Math.floor(Math.random() * window_width);
+         this.goal.y = Math.floor(Math.random() * window_height);
+         this.moves = this.A_star(game.grid);
+         this.at_goal = false;
+    },
+
+    scan_area: function(origin,x,y){
+      for( var i = 0; i < game.soldiers.length;i++){
+      var target = {
+              x: game.soldiers[i].position.x,
+              y: game.soldiers[i].position.y
+      }
+
+      var point = get_dist_point(origin,x,y);
+      var b = rotate_point(point.x, point.y, origin.x, origin.y, -(this.vision_angle));
+      var c = rotate_point(point.x, point.y, origin.x, origin.y, (this.vision_angle));
+
+      if(in_triangle(target,origin,b,c)){
+        var line = getRay(origin,target);
+
+        if(true){
+          //do what ever
+          console.log("found");
+        }
+
+      }
     }
+  }
+
+
+
 }
 
 //------------------------------------------------------------------------------------

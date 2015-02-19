@@ -2,39 +2,33 @@
   * This file holds functions like creating a game object and game object
   * function
   */
- 
-/*
- * create an instance of the game
- */
- 
-var angle = Math.PI / 2;
+
+
  /*
   * create an instance of the game
   */
- 
+
 
 function Game(){
     // The pixi.js stage represents the root of
    // our display tree. Can be rendered by one
   // of the pixi.js renderers.
-    this.stage = new PIXI.Stage(0xCCCCCC,true);
 
-  console.log("origin", [600,300]);
-  console.log("start point ", [600,500]);
-  var point = rotate_point(600, 100, 600, 300, 45)
-  console.log("new point ", point.x, point.y);
+  this.stage = new PIXI.Stage(0xCCCCCC,true);
 
- 
+
  	//console.log("new point ", new_point);
  	// Create a renderer instance.
  	// We choose Canvas and not webGL.
+
+
  	this.view = document.getElementById("myCanvas");
  	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);
- 
+
  	/*
  	 * initilize the soliders and enemy arrays
  	 */
- 
+
  	this.soldiers = [];
  	this.soldier_count = 0;
  	this.hiding_spots = [];
@@ -47,6 +41,8 @@ function Game(){
  	this.score=0;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
  	this.stage.addChild(this.score_text);
+
+
  	this.update = function() {
  		game.active.update();
  		for (var i = 0; i < game.enemies.length; i++) {
@@ -54,6 +50,8 @@ function Game(){
  		}
  		this.score_text.setText(this.score.toString());
  	};
+
+
 
  	this.create_soldier = function() {
  		var player = new Player();
@@ -66,6 +64,8 @@ function Game(){
  		this.soldiers.push(player);
  		this.stage.addChild(player);
  	}
+
+
  	this.hide_active_soldier = function() {
  		for (var i = 0; i < this.hiding_spots.length; i++) {
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
@@ -76,15 +76,19 @@ function Game(){
  			}
  		}
  	};
+
+
  	this.create_hiding_spot = function() {
  		var trashCan = new HidingSpot(100, 100);
  		this.stage.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
  	}
+
+
  	this.init_game = function() {
  		//Create the first soldier
  		for (var i = 0; i < 2; i++) {
- 			//   create_civilian();
+ 			 create_civilian();
  		}
  		this.create_soldier();
  		//The active soldier is the one soldier we just created
@@ -96,14 +100,16 @@ function Game(){
  		create_wall(350, 350);
  	};
  }
- 
+
+
  function Tile() {
  	this.x
  	this.y
  	this.width
  	this.free
  }
- 
+
+
  function create_grid(game) {
  	for (var i = 4; i < window_width; i += 8) {
  		var list = [];

@@ -2,16 +2,14 @@ var window_width = 1200;
 var window_height = 600;
 
 var game = new Game();
-
+create_grid(game);
 window.onload = function init() {
-
+   game.init_game();
 	// Add the renderer view element to the
 	// DOM
-	game.init_game();
 	document.body.appendChild(game.renderer.view);
 	requestAnimFrame(animate);
-	create_grid(game);
-	
+
 
 	var loop = 0,
 	    skipTicks = 1000 / game.fps,
@@ -91,4 +89,4 @@ window.onkeyup = function(event) {
 		game.active.direction = "none";
 		break;
 	}
-}; 
+};
