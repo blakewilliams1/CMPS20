@@ -44,7 +44,6 @@ function Player() {
 			sprite.objectBehind = hidingSpot;
 			hidingSpot.hiding_soldier = sprite;
 			//change 'game' to whatever we all the game instance
-			//game.score+=hidingSpot.points;
 			//change sprite
 			hidingSpot.occupied = true;
 		}
@@ -52,22 +51,11 @@ function Player() {
 	sprite.unhide = function() {
 		if (!sprite.visible) {
 			sprite.visible = true;
-			game.score -= sprite.objectBehind.points;
 			//stop both sprites from referencing each other
 			sprite.objectBehind.hiding_soldier = null;
 			sprite.objectBehind = null;
+			game.score-=10;
 		}
 	};
 	return sprite;
 };
-
-/*function create_soldier() {
-	var player = new Player();
-	//center the sprite's anchor point and position
-	player.sprite.mousedown = function(event) {
-		game.active = player;
-	};
-	game.active = player;
-	game.soldiers.push(player);
-	game.stage.addChild(player.sprite);
-}*/

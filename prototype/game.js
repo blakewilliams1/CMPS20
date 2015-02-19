@@ -14,10 +14,8 @@ function Game() {
 	// our display tree. Can be rendered by one
 	// of the pixi.js renderers.
 	this.stage = new PIXI.Stage(0xCCCCCC, true);
-
 	console.log("origin", [600, 300]);
 	console.log("start point ", [600, 100]);
-
 	var new_point = get_view_points([600, 100], [600, 300]);
 
 	//console.log("new point ", new_point);
@@ -25,9 +23,6 @@ function Game() {
 	// We choose Canvas and not webGL.
 	this.view = document.getElementById("myCanvas");
 	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);
-
-	console.log(window_width);
-	console.log(window_height);
 
 	/*
 	 * initilize the soliders and enemy arrays
@@ -42,20 +37,23 @@ function Game() {
 	this.grid = [];
 	this.active
 	this.fps = 60;
+	this.score=0;
+	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
+	this.stage.addChild(this.score_text);
 	this.update = function() {
 		game.active.update();
 		for (var i = 0; i < game.enemies.length; i++) {
 			this.enemies[i].update();
 		}
+		this.score_text.setText(this.score.toString());
 	};
-	
 	this.create_soldier = function() {
 		var player = new Player();
 		//center the sprite's anchor point and position
 		/*player.mousedown = function(event) {
-			console.log("clicked"+ player);
-			this.active = player;
-		};*/
+		 console.log("clicked"+ player);
+		 this.active = player;
+		 };*/
 		this.active = player;
 		this.soldiers.push(player);
 		this.stage.addChild(player);
@@ -66,9 +64,15 @@ function Game() {
 			var yDistance = Math.abs(this.active.position.y - this.hiding_spots[i].position.y);
 			if (xDistance < 32 && yDistance < 32) {
 				this.active.hide(this.hiding_spots[i]);
+				this.score+=10;
 			}
 		}
 	};
+	this.create_hiding_spot = function() {
+		var trashCan = new HidingSpot(100, 100);
+		this.stage.addChild(trashCan);
+		this.hiding_spots.push(trashCan);
+	}
 	this.init_game = function() {
 		//Create the first soldier
 		for (var i = 0; i < 2; i++) {
@@ -77,7 +81,7 @@ function Game() {
 		this.create_soldier();
 		//The active soldier is the one soldier we just created
 		this.active = this.soldiers[0];
-		create_hiding_spot();
+		this.create_hiding_spot();
 		//create_alarm(300, 300);
 		//var alarm = new Alarm(300,300);
 		//this.stage.addChild(alarm.sprite);

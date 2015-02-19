@@ -2,11 +2,12 @@ var window_width = 1200;
 var window_height = 600;
 
 var game = new Game();
-game.init_game();
+
 window.onload = function init() {
 
 	// Add the renderer view element to the
 	// DOM
+	game.init_game();
 	document.body.appendChild(game.renderer.view);
 	requestAnimFrame(animate);
 	create_grid(game);
