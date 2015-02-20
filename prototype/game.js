@@ -15,12 +15,12 @@ function Game(){
  	this.view = document.getElementById("myCanvas");
  	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);
 	//initialize game attributes
+	this.alarms=[];
  	this.soldiers = [];
  	this.soldier_count = 0;
  	this.hiding_spots = [];
  	this.walls = [];
  	this.enemies = [];
- 	this.objects = [];
  	this.grid = [];
  	this.active
  	this.fps = 60;
@@ -41,11 +41,17 @@ function Game(){
 				game.active.revert_step();
 			}
 		}
+		//check if any alarms have been triggered
+		for(var i=0;i<this.alarms.length;i++){
+			if(this.alarms[i].triggered){
+				//signal game over
+			}
+		}
  	};
  	this.countdown = function(){
  		var t = 10-parseInt(((new Date().getTime() - this.time)/1000).toString());
  		this.score_text.setText("Score: "+this.score.toString());
- 		if(t<0){
+ 		if(t<1){
  			this.time=new Date().getTime();
  			this.create_soldier();
  			t=10;
@@ -105,7 +111,7 @@ function Game(){
 		if(key=='S')this.active.direction = "down";
 		if(key=='D')this.active.direction = "right";
 		if(key=='E')this.hide_active_soldier();
-		if(key=='F')this.create_soldier();
+		if(key=='F')this.time=0;
 	};
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
@@ -122,6 +128,8 @@ function Game(){
  		this.stage.addChild(gui);
  		this.score_text.position.x=30;
  		this.score_text.position.y=window_height-60;
+ 		this.time_text.position.x=200;
+ 		this.time_text.position.y=window_height-60;
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);
  		
@@ -133,8 +141,11 @@ function Game(){
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
  		this.create_hiding_spot(100,100,"trashcan","trashcanSoldier");
- 		//var alarm = new Alarm(300,300);
- 		//this.stage.addChild(alarm.sprite);
+ 		this.create_hiding_spot(150,500,"trashcan","trashcanSoldier");
+ 		this.create_hiding_spot(600,400,"trashcan","trashcanSoldier");
+ 		this.create_hiding_spot(450,100,"trashcan","trashcanSoldier");
+ 		var alarm = new Alarm(300,300,this);
+ 		this.stage.addChild(alarm);
  		this.create_wall(250, 450);
  		this.create_wall(350, 100);
  		this.create_wall(650, 200);

@@ -1,16 +1,22 @@
 function Alarm(x,y){
-  this.off_tex = PIXI.Texture.fromImage("../Art Assets/png/alarm.png");
-  this.on_tex = PIXI.Texture.fromImage("../Art Assets/png/alarmTriggered.png");
-  this.sprite = new PIXI.Sprite(this.off_tex);
-  this.sprite.anchor.x = .5;
-  this.sprite.anchor.y = .5;
-  this.sprite.position.x = x;
-  this.sprite.position.y = y;
+  var sprite = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/alarm.png"));
+  sprite.on_tex = PIXI.Texture.fromImage("../Art Assets/png/alarmTriggered.png");
+  sprite.off_tex = PIXI.Texture.fromImage("../Art Assets/png/alarm.png");
+  sprite.anchor.x = .5;
+  sprite.anchor.y = .5;
+  sprite.position.x = x;
+  sprite.position.y = y;
+  sprite.triggered=false;
   
-  this.update = function() {
+  sprite.update = function() {
 	
   }
-  this.trigger_alarm=function(){
-  	this.sprite.setTexture(this.sprite.on_tex);
+  sprite.trigger=function(){
+  	if(!sprite.triggered){
+	  	sprite.setTexture(sprite.on_tex);
+  		sprite.triggered=true;
+	  }
   }
+  //parent.stage.addChild(sprite);
+  return sprite;
 }
