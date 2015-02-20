@@ -48,6 +48,7 @@ function Game(){
  		if(t<0){
  			this.time=new Date().getTime();
  			this.create_soldier();
+ 			t=10;
  		}
  		this.time_text.setText("New Soldier in: "+(t));
  	}
@@ -68,7 +69,6 @@ function Game(){
  			}
  		}
  	};
-	
 	this.create_civilian=function(x,y){
 		var civilian = new Civilian();
 		var texture = PIXI.Texture.fromImage("../Art Assets/png/UkraineForward1.png");
@@ -82,20 +82,22 @@ function Game(){
 		var position = location_in_grid(location,this.grid);
 		civilian.moves = civilian.A_star(game.grid)
 		this.stage.addChild(sprite);
-	}
- 	
- 	this.create_hiding_spot = function() {
- 		var trashCan = new HidingSpot(100, 100);
+	}	
+ 	this.create_hiding_spot = function(x,y,empty_tex,filled_tex) {
+ 		var trashCan = new HidingSpot(x,y,empty_tex,filled_tex);
  		this.stage.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
  	}
-	
 	this.create_wall=function(x, y) {
 		var wall = new Wall(x, y);
 		this.stage.addChild(wall.sprite);
 		this.walls.push(wall);
 	}
-	
+	this.create_building=function(x, y) {
+		var building= new Building(x, y);
+		this.stage.addChild(building.sprite);
+		this.walls.push(building);
+	}
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
 		if(key=='W')this.active.direction = "up";
@@ -105,7 +107,6 @@ function Game(){
 		if(key=='E')this.hide_active_soldier();
 		if(key=='F')this.create_soldier();
 	};
-	
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
 		//the second condition fixes stuttering on direction change
@@ -114,7 +115,6 @@ function Game(){
 		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
 		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
 	}
-	
 	//NOTE: Currently the only thing being made is a soldier and a wall
 	//for collision debugging
  	this.init_game = function() {
@@ -132,16 +132,16 @@ function Game(){
  		this.create_soldier();
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
- 		this.create_hiding_spot();
+ 		this.create_hiding_spot(100,100,"trashcan","trashcanSoldier");
  		//var alarm = new Alarm(300,300);
  		//this.stage.addChild(alarm.sprite);
- 		this.create_wall(300, 400);
+ 		this.create_wall(250, 450);
  		this.create_wall(350, 100);
- 		this.create_wall(600, 200);
- 		this.create_wall(550, 350);
+ 		this.create_wall(650, 200);
+ 		this.create_wall(500, 600);
+ 		this.create_building(200,300);
  	};
  }
-
 
  function Tile() {
  	this.x
@@ -156,7 +156,6 @@ function Game(){
 	var sprite = new PIXI.Sprite(texture);
 	sprite.position.x = 0;
 	sprite.position.y = 700;
-	
 	return sprite;
  }
  

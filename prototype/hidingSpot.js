@@ -1,7 +1,7 @@
-function HidingSpot(x, y) {
-	var new_hiding_spot = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/trashcan.png"));
-	new_hiding_spot.emptyTexture=PIXI.Texture.fromImage("../Art Assets/png/trashcan.png");
-	new_hiding_spot.hidingTexture = PIXI.Texture.fromImage("../Art Assets/png/trashcanSoldier.png");
+function HidingSpot(x,y,empty_tex,filled_tex) {
+	var new_hiding_spot = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/"+empty_tex+".png"));
+	new_hiding_spot.emptyTexture=PIXI.Texture.fromImage("../Art Assets/png/"+empty_tex+".png");
+	new_hiding_spot.hidingTexture = PIXI.Texture.fromImage("../Art Assets/png/"+filled_tex+".png");
 	new_hiding_spot.setInteractive(true);
 	new_hiding_spot.position.x = x;
 	new_hiding_spot.position.y = y;

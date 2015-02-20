@@ -15,6 +15,7 @@ function Player() {
 	sprite.mousedown = function(event) {
 			//TODO: THIS RELIES ON THE GAME OBJECT BEGIN SPECIFICALLY CALLED GAME! FIX!!!
 			game.active = sprite;
+			sprite.direction="none";
 		};
 
 	//This is the Player update function, only called on the active soldier

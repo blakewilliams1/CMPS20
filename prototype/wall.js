@@ -1,5 +1,5 @@
 function Wall(x, y) {
-	this.texture = PIXI.Texture.fromImage("../Art Assets/png/smallBuilding.png");
+	this.texture = PIXI.Texture.fromImage("../Art Assets/png/shittyFence.png");
 	this.sprite = new PIXI.Sprite(this.texture);
 	this.sprite.anchor.x = .5;
 	this.sprite.anchor.y = .5;
