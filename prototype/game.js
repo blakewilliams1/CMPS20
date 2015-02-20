@@ -4,11 +4,12 @@
   */
 
  //create an instance of the game
-function Game(){
+function Game(parent){
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
  	this.view = document.getElementById("myCanvas");
  	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);
 	//initialize game attributes
+	this.parent=parent;
 	this.alarms=[];
  	this.soldiers = [];
  	this.soldier_count = 0;
@@ -24,22 +25,25 @@ function Game(){
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
 
  	this.update = function() {
- 		game.active.update();
- 		//update civilians
- 		for (var i = 0; i < game.civilians.length; i++) {
- 			this.civilians[i].update();
- 		}
- 		this.countdown();
-		//check if the active soldier is colliding
-		for(var i=0;i<this.walls.length;i++){
-			if(collided(this.active,this.walls[i].sprite)){
-				game.active.revert_step();
+ 		//only update the game if it's the top screen
+ 		if(this==this.parent[this.parent.length-1]){
+ 			game.active.update();
+ 			//update civilians
+ 			for (var i = 0; i < game.civilians.length; i++) {
+ 				this.civilians[i].update();
+ 			}
+ 			this.countdown();
+			//check if the active soldier is colliding
+			for(var i=0;i<this.walls.length;i++){
+				if(collided(this.active,this.walls[i].sprite)){
+					game.active.revert_step();
+				}
 			}
-		}
-		//check if any alarms have been triggered
-		for(var i=0;i<this.alarms.length;i++){
-			if(this.alarms[i].triggered){
+			//check if any alarms have been triggered
+			for(var i=0;i<this.alarms.length;i++){
+				if(this.alarms[i].triggered){
 				//signal game over
+				}
 			}
 		}
  	};
@@ -107,7 +111,7 @@ function Game(){
 		if(key=='E')this.hide_active_soldier();
 		if(key=='F')this.time=0;
 		if(event.keyCode==27){
-			//pause game
+			//press esc to pause game
 		}
 	};
 	this.keyup=function(event){
@@ -119,6 +123,7 @@ function Game(){
 		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
 	}
  	this.init_game = function() {
+ 		//initiate the gui
  		var gui = new drawGui();
  		this.stage.addChild(gui);
  		this.score_text.position.x=30;
@@ -127,7 +132,6 @@ function Game(){
  		this.time_text.position.y=window_height-60;
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);
- 		//Create the first soldier
  		for (var i = 0; i < 2; i++) {
  			 //this.create_civilian(600,250);
  		}
@@ -138,7 +142,7 @@ function Game(){
  		this.create_hiding_spot(150,500,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(600,400,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(450,100,"trashcan","trashcanSoldier");
- 		var alarm = new Alarm(300,300,this);
+ 		var alarm = new Alarm(300,300);
  		this.stage.addChild(alarm);
  		this.create_wall(250, 450);
  		this.create_wall(350, 100);

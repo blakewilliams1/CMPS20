@@ -17,6 +17,5 @@ function Alarm(x,y){
   		sprite.triggered=true;
 	  }
   }
-  //parent.stage.addChild(sprite);
   return sprite;
 }

@@ -1,7 +1,6 @@
 function Player() {
 	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldier(singleframe).png");
 	var sprite = new PIXI.Sprite(tex);
-	
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
 	sprite.position.x = 200;
@@ -48,8 +47,6 @@ function Player() {
 		if (!hidingSpot.occupied) {
 			sprite.prevX=sprite.position.x;
 			sprite.prevY=sprite.position.y;
-			sprite.position.x=-sprite.position.x;
-			sprite.position.y=-sprite.position.y;
 			//This soldier is now hiding.
 			sprite.visible = false;
 			//Change sprite
@@ -65,8 +62,6 @@ function Player() {
 	};
 	sprite.unhide = function() {
 		if (!sprite.visible) {
-			sprite.position.x=-sprite.position.x;
-			sprite.position.y=-sprite.position.y;
 			sprite.visible = true;
 			//stop both sprites from referencing each other
 			sprite.objectBehind.hiding_soldier = null;

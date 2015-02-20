@@ -1,7 +1,7 @@
 var window_width = 1200;
 var window_height = 800;
-var screenManager=[];
-var game = new Game();
+var screenManager=new Array();
+var game = new Game(screenManager);
 create_grid(game);
 screenManager.push(game);
 window.onload = function init() {

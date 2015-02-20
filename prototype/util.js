@@ -308,6 +308,7 @@ function collided(first,second){
 		console.log("error! checking null objects!");
 		return false;
 	}
+	if(!first.visible||!second.visible)return false;
 	var x1=first.position.x-first.anchor.x*first.width;
 	var x2=second.position.x-second.anchor.x*second.width;
 	var y1=first.position.y-first.anchor.y*first.height;
