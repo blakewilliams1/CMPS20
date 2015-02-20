@@ -4,12 +4,14 @@
   */
 
  //create an instance of the game
-function Game(parent){
-	this.stage = new PIXI.Stage(0xCCCCCC,true);
+function Game(parent,stage,view,renderer){
+	this.stage=stage;
+	this.view=view;
+	this.renderer=renderer;
+	/*this.stage = new PIXI.Stage(0xCCCCCC,true);
  	this.view = document.getElementById("myCanvas");
- 	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);
+ 	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);*/
 	//initialize game attributes
-	this.parent=parent;
 	this.alarms=[];
  	this.soldiers = [];
  	this.soldier_count = 0;
@@ -22,11 +24,10 @@ function Game(parent){
  	this.score=0;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
  	this.time=new Date().getTime();
+ 	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
 
  	this.update = function() {
- 		//only update the game if it's the top screen
- 		if(this==this.parent[this.parent.length-1]){
  			game.active.update();
  			//update civilians
  			for (var i = 0; i < game.civilians.length; i++) {
@@ -45,17 +46,16 @@ function Game(parent){
 				//signal game over
 				}
 			}
-		}
  	};
  	this.countdown = function(){
- 		var t = 10-parseInt(((new Date().getTime() - this.time)/1000).toString());
+ 		this.elapsed_t = 10-parseInt(((new Date().getTime() - this.time)/1000).toString());
  		this.score_text.setText("Score: "+this.score.toString());
- 		if(t<1){
+ 		if(this.elapsed_t<1){
  			this.time=new Date().getTime();
  			this.create_soldier();
- 			t=10;
+ 			this.elapsed_t=10;
  		}
- 		this.time_text.setText("New Soldier in: "+(t));
+ 		this.time_text.setText("New Soldier in: "+(this.elapsed_t));
  	}
  	this.create_soldier = function() {
  		var player = new Player();
@@ -112,6 +112,7 @@ function Game(parent){
 		if(key=='F')this.time=0;
 		if(event.keyCode==27){
 			//press esc to pause game
+			parent.create_pause_menu();
 		}
 	};
 	this.keyup=function(event){
@@ -122,7 +123,8 @@ function Game(parent){
 		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
 		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
 	}
- 	this.init_game = function() {
+ 	this.init_ = function() {
+ 		create_grid(this);
  		//initiate the gui
  		var gui = new drawGui();
  		this.stage.addChild(gui);
@@ -142,7 +144,7 @@ function Game(parent){
  		this.create_hiding_spot(150,500,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(600,400,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(450,100,"trashcan","trashcanSoldier");
- 		var alarm = new Alarm(300,300);
+ 		var alarm = new Alarm(300,300,this);
  		this.stage.addChild(alarm);
  		this.create_wall(250, 450);
  		this.create_wall(350, 100);
@@ -168,7 +170,7 @@ function Game(parent){
 	return sprite;
  }
  
- function create_grid(game) {
+ function create_grid(the_game) {
  	for (var i = 4; i < window_width; i += 8) {
  		var list = [];
  		for (var j = 4; j < window_height; j += 8) {
@@ -179,6 +181,6 @@ function Game(parent){
  			tile.free = false;
  			list.push(tile);
  		}
- 		game.grid.push(list);
+ 		the_game.grid.push(list);
  	}
  }
