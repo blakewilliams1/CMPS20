@@ -34,9 +34,7 @@ function Game(){
  		for (var i = 0; i < game.enemies.length; i++) {
  			this.enemies[i].update();
  		}
- 		var t = parseInt(((new Date().getTime() - this.time)/1000).toString());
- 		this.score_text.setText("Score: "+this.score.toString());
- 		this.time_text.setText("New Soldier in: "+(t));
+ 		this.countdown();
 		//check if the active soldier is colliding
 		for(var i=0;i<this.walls.length;i++){
 			if(collided(this.active,this.walls[i].sprite)){
@@ -44,7 +42,15 @@ function Game(){
 			}
 		}
  	};
- 	
+ 	this.countdown = function(){
+ 		var t = 10-parseInt(((new Date().getTime() - this.time)/1000).toString());
+ 		this.score_text.setText("Score: "+this.score.toString());
+ 		if(t<0){
+ 			this.time=new Date().getTime();
+ 			this.create_soldier();
+ 		}
+ 		this.time_text.setText("New Soldier in: "+(t));
+ 	}
  	this.create_soldier = function() {
  		var player = new Player();
  		this.active = player;
