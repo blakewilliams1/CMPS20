@@ -11,7 +11,6 @@ window.onload = function init() {
 	document.body.appendChild(game.renderer.view);
 	requestAnimFrame(animate);
 
-
 	var loop = 0,
 	    skipTicks = 1000 / game.fps,
 	    maxFrameSkip = 10,

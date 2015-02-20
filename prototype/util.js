@@ -293,3 +293,26 @@ function add_action(path,action){
     return way;
   }
 }
+
+/*
+* Uses the objects axis aligned bounding boxes to check if a 
+* collision has occurred.
+*/
+
+function collided(first,second)(
+	//NOTE: currently must pass in sprites
+	//NOTE: also doesn't account for modified anchors,
+	//and I'm assuming 'width' correctly stores it's
+	//width in pixels
+	if(first==null||second==null){
+		console.log("error! checking null objects!");
+		return false;
+	}
+	if((first.position.x+first.width>=second.x&&
+	first.position.y+first.height>second.y)||
+	(second.position.x+second.width>=first.x&&
+	second.position.y+second.height>first.y)){
+		return true;
+	}
+	return false;
+}

@@ -42,7 +42,6 @@ function Game(){
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
  	this.stage.addChild(this.score_text);
 
-
  	this.update = function() {
  		game.active.update();
  		for (var i = 0; i < game.enemies.length; i++) {
