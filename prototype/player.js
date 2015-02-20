@@ -1,9 +1,13 @@
 function Player() {
-	var sprite = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/soldier(singleframe).png"));
+	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldier(singleframe).png");
+	var sprite = new PIXI.Sprite(tex);
+	
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
 	sprite.position.x = 200;
 	sprite.position.y = 200;
+	sprite.prevX=sprite.position.x;
+	sprite.prevY=sprite.position.y;
 	sprite.gridSize = 4;
 	sprite.setInteractive(true);
 	sprite.direction = "none";
@@ -16,9 +20,12 @@ function Player() {
 	//This is the Player update function, only called on the active soldier
 	sprite.update = function() {
 		//If this soldier is hiding return and don't do movement.
-		if (sprite.objectBehind != null)
+		if (sprite.objectBehind != null){
 			return;
+		}
 		//If this soldier is colliding with a wall return and don't do movement
+		sprite.prevX=sprite.position.x;
+		sprite.prevY=sprite.position.y;
 		switch (sprite.direction) {
 		case "right":
 			sprite.position.x += 4;

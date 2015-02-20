@@ -1,5 +1,5 @@
 function Wall(x, y) {
-	this.texture = PIXI.Texture.fromImage("../Art Assets/png/alarm.png");
+	this.texture = PIXI.Texture.fromImage("../Art Assets/png/smallBuilding.png");
 	this.sprite = new PIXI.Sprite(this.texture);
 	this.sprite.anchor.x = .5;
 	this.sprite.anchor.y = .5;
@@ -8,9 +8,4 @@ function Wall(x, y) {
 	this.update = function() {
 		
 	}
-}
-
-function create_wall(x, y) {
-	var wall = new Wall(x, y);
-	game.stage.addChild(wall.sprite);
 }

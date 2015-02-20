@@ -299,7 +299,7 @@ function add_action(path,action){
 * collision has occurred.
 */
 
-/*function collided(first,second){
+function collided(first,second){
 	//NOTE: currently must pass in sprites
 	//NOTE: also doesn't account for modified anchors,
 	//and I'm assuming 'width' correctly stores it's
@@ -308,11 +308,15 @@ function add_action(path,action){
 		console.log("error! checking null objects!");
 		return false;
 	}
-	if((first.position.x+first.width>=second.x&&
-	first.position.y+first.height>second.y)||
-	(second.position.x+second.width>=first.x&&
-	second.position.y+second.height>first.y)){
+	var x1=first.position.x-first.anchor.x*first.width;
+	var x2=second.position.x-second.anchor.x*second.width;
+	var y1=first.position.y-first.anchor.y*first.height;
+	var y2=second.position.y-second.anchor.y*second.height;
+	if(x1<x2+second.width&&
+		x1+first.width>x2&&
+		y1<y2+second.height&&
+		first.height+y1>y2){
 		return true;
 	}
 	return false;
-}*/
+}
