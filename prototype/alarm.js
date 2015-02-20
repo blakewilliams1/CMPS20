@@ -9,9 +9,4 @@ function Alarm(x,y){
   this.update = function() {
 	
   }
-  }
-  
-    function create_alarm(x,y) {
-	/*var alarm = new Alarm(x,y);
-	game.stage.addChild(alarm.sprite);*/
-  }
+}

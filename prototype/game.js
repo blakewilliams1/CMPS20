@@ -54,11 +54,6 @@ function Game(){
 
  	this.create_soldier = function() {
  		var player = new Player();
- 		//center the sprite's anchor point and position
- 		/*player.mousedown = function(event) {
- 		 console.log("clicked"+ player);
- 		 this.active = player;
- 		 };*/
  		this.active = player;
  		this.soldiers.push(player);
  		this.stage.addChild(player);
@@ -130,8 +125,8 @@ function Game(){
  		this.active = this.soldiers[0];
  		this.create_hiding_spot();
  		//create_alarm(300, 300);
- 		//var alarm = new Alarm(300,300);
- 		//this.stage.addChild(alarm.sprite);
+ 		var alarm = new Alarm(300,300);
+ 		this.stage.addChild(alarm.sprite);
  		create_wall(350, 350);
  	};
  }

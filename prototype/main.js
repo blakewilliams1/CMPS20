@@ -10,8 +10,8 @@ window.onload = function init() {
 	// DOM
 	document.body.appendChild(game.renderer.view);
 	requestAnimFrame(animate);
-
-	var loop = 0,
+//temporarily commented out the FPS meter
+/*	var loop = 0,
 	    skipTicks = 1000 / game.fps,
 	    maxFrameSkip = 10,
 	    nextGameTick = (new Date).getTime(),
@@ -23,19 +23,20 @@ window.onload = function init() {
 		theme : 'dark',
 		heat : 10,
 		left : '1000px'
-	});
+	});*/
 
 	function animate() {
-		loop = 0;
+		/*loop = 0;
 		while ((new Date).getTime() > nextGameTick) {
 			fpsmeter.tickStart();
-			game.update();
+			
 			nextGameTick += skipTicks;
 			loop++;
 			fpsmeter.tick();
 		}
-		if (loop)
-			game.renderer.render(game.stage);
+		if (loop)*/
+		game.update();
+		game.renderer.render(game.stage);
 		requestAnimFrame(animate);
 	}
 
