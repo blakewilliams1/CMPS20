@@ -26,14 +26,17 @@ function Game(){
  	this.fps = 60;
  	this.score=0;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
- 	this.stage.addChild(this.score_text);
+ 	this.time=new Date().getTime();
+ 	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
 
  	this.update = function() {
  		game.active.update();
  		for (var i = 0; i < game.enemies.length; i++) {
  			this.enemies[i].update();
  		}
- 		this.score_text.setText(this.score.toString());
+ 		var t = parseInt(((new Date().getTime() - this.time)/1000).toString());
+ 		this.score_text.setText("Score: "+this.score.toString());
+ 		this.time_text.setText("New Soldier in: "+(t));
 		//check if the active soldier is colliding
 		for(var i=0;i<this.walls.length;i++){
 			if(collided(this.active,this.walls[i].sprite)){
@@ -41,12 +44,14 @@ function Game(){
 			}
 		}
  	};
+ 	
  	this.create_soldier = function() {
  		var player = new Player();
  		this.active = player;
  		this.soldiers.push(player);
  		this.stage.addChild(player);
  	}
+ 	
  	this.hide_active_soldier = function() {
  		for (var i = 0; i < this.hiding_spots.length; i++) {
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
@@ -57,6 +62,7 @@ function Game(){
  			}
  		}
  	};
+	
 	this.create_civilian=function(x,y){
 		var civilian = new Civilian();
 		var texture = PIXI.Texture.fromImage("../Art Assets/png/UkraineForward1.png");
@@ -71,16 +77,19 @@ function Game(){
 		civilian.moves = civilian.A_star(game.grid)
 		this.stage.addChild(sprite);
 	}
+ 	
  	this.create_hiding_spot = function() {
  		var trashCan = new HidingSpot(100, 100);
  		this.stage.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
  	}
+	
 	this.create_wall=function(x, y) {
 		var wall = new Wall(x, y);
 		this.stage.addChild(wall.sprite);
 		this.walls.push(wall);
 	}
+	
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
 		if(key=='W')this.active.direction = "up";
@@ -90,6 +99,7 @@ function Game(){
 		if(key=='E')this.hide_active_soldier();
 		if(key=='F')this.create_soldier();
 	};
+	
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
 		//the second condition fixes stuttering on direction change
@@ -102,6 +112,13 @@ function Game(){
 	//NOTE: Currently the only thing being made is a soldier and a wall
 	//for collision debugging
  	this.init_game = function() {
+ 		var gui = new drawGui();
+ 		this.stage.addChild(gui);
+ 		this.score_text.position.x=30;
+ 		this.score_text.position.y=window_height-60;
+ 		this.stage.addChild(this.score_text);
+ 		this.stage.addChild(this.time_text);
+ 		
  		//Create the first soldier
  		for (var i = 0; i < 2; i++) {
  		//	 this.create_civilian(600,250);
@@ -112,7 +129,10 @@ function Game(){
  		this.create_hiding_spot();
  		//var alarm = new Alarm(300,300);
  		//this.stage.addChild(alarm.sprite);
- 		this.create_wall(350, 350);
+ 		this.create_wall(300, 400);
+ 		this.create_wall(350, 100);
+ 		this.create_wall(600, 200);
+ 		this.create_wall(550, 350);
  	};
  }
 
@@ -123,6 +143,17 @@ function Game(){
  	this.width
  	this.free
  }
+ 
+ //Temp Gui for score and alarm for soldiers
+ function drawGui(){
+    var texture = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
+	var sprite = new PIXI.Sprite(texture);
+	sprite.position.x = 0;
+	sprite.position.y = 700;
+	
+	return sprite;
+ }
+ 
 
 
  function create_grid(game) {

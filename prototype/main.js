@@ -1,5 +1,5 @@
 var window_width = 1200;
-var window_height = 600;
+var window_height = 800;
 var screenManager=[];
 var game = new Game();
 create_grid(game);
