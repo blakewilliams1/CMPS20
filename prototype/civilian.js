@@ -77,25 +77,7 @@ function Civilian(){
  * this function creates a new civilian and the texture for that civilian
  */
 
-function create_civilian(){
 
-  var civilian = new Civilian();
-
-  var texture = PIXI.Texture.fromImage("../Art Assets/png/UkraineForward1.png");
-  var sprite = new PIXI.Sprite(texture);
-
-  sprite.anchor.x = sprite.anchor.y =.5;
-
-  sprite.position.x = 600;
-  sprite.position.y = 250;
-
-  civilian.sprite = sprite;
-  game.enemies.push(civilian);
-  var location = [sprite.position.x,sprite.position.y];
-  var position = location_in_grid(location,game.grid);
-  civilian.moves = civilian.A_star(game.grid)
-  game.stage.addChild(sprite);
-}
 
 
 //-----------------------------------------------------------------------------------

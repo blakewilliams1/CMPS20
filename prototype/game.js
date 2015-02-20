@@ -72,44 +72,34 @@ function Game(){
  	};
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
-		switch (key) {
-		case 'W':
-			this.active.direction = "up";
-			break;
-		case 'A':
-			this.active.direction = "left";
-			break;
-		case 'S':
-			this.active.direction = "down";
-			break;
-		case 'D':
-			this.active.direction = "right";
-			break;
-		case 'F':
-			this.create_soldier();
-			break;
-		case 'E':
-			this.hide_active_soldier();
-			break;
-		}
+		if(key=='W')this.active.direction = "up";
+		if(key=='A')this.active.direction = "left";
+		if(key=='S')this.active.direction = "down";
+		if(key=='D')this.active.direction = "right";
+		if(key=='E')this.hide_active_soldier();
+		if(key=='F')this.create_soldier();
 	};
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
-		switch (key) {
-		case 'W':
-			this.active.direction = "none";
-			break;
-		case 'A':
-			this.active.direction = "none";
-			break;
-		case 'S':
-			this.active.direction = "none";
-			break;
-		case 'D':
-			this.active.direction = "none";
-			break;
-		}
+		if(key=='W'&&this.active.direction=="up")this.active.direction = "none";
+		if(key=='A'&&this.active.direction=="left")this.active.direction = "none";
+		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
+		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
 	}
+	this.create_civilian=function(x,y){
+		var civilian = new Civilian();
+		var texture = PIXI.Texture.fromImage("../Art Assets/png/UkraineForward1.png");
+		var sprite = new PIXI.Sprite(texture);
+		sprite.anchor.x = sprite.anchor.y =.5;
+		sprite.position.x = x;
+		sprite.position.y = y;
+		civilian.sprite = sprite;
+		this.enemies.push(civilian);
+		var location = [sprite.position.x,sprite.position.y];
+		var position = location_in_grid(location,this.grid);
+		civilian.moves = civilian.A_star(game.grid)
+		this.stage.addChild(sprite);
+}
  	this.create_hiding_spot = function() {
  		var trashCan = new HidingSpot(100, 100);
  		this.stage.addChild(trashCan);
@@ -118,13 +108,12 @@ function Game(){
  	this.init_game = function() {
  		//Create the first soldier
  		for (var i = 0; i < 2; i++) {
- 			 create_civilian();
+ 		//	 this.create_civilian(600,250);
  		}
  		this.create_soldier();
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
  		this.create_hiding_spot();
- 		//create_alarm(300, 300);
  		var alarm = new Alarm(300,300);
  		this.stage.addChild(alarm.sprite);
  		create_wall(350, 350);
