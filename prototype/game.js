@@ -3,15 +3,9 @@
   * function
   */
 
-
- /*
-  * create an instance of the game
-  */
-
-
+ //create an instance of the game
 function Game(){
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
-
  	this.view = document.getElementById("myCanvas");
  	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);
 	//initialize game attributes
@@ -20,7 +14,7 @@ function Game(){
  	this.soldier_count = 0;
  	this.hiding_spots = [];
  	this.walls = [];
- 	this.enemies = [];
+ 	this.civilians = [];
  	this.grid = [];
  	this.active
  	this.fps = 60;
@@ -31,8 +25,9 @@ function Game(){
 
  	this.update = function() {
  		game.active.update();
- 		for (var i = 0; i < game.enemies.length; i++) {
- 			this.enemies[i].update();
+ 		//update civilians
+ 		for (var i = 0; i < game.civilians.length; i++) {
+ 			this.civilians[i].update();
  		}
  		this.countdown();
 		//check if the active soldier is colliding
@@ -64,7 +59,6 @@ function Game(){
  		this.soldiers.push(player);
  		this.stage.addChild(player);
  	}
- 	
  	this.hide_active_soldier = function() {
  		for (var i = 0; i < this.hiding_spots.length; i++) {
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
@@ -83,7 +77,7 @@ function Game(){
 		sprite.position.x = x;
 		sprite.position.y = y;
 		civilian.sprite = sprite;
-		this.enemies.push(civilian);
+		this.civilians.push(civilian);
 		var location = [sprite.position.x,sprite.position.y];
 		var position = location_in_grid(location,this.grid);
 		civilian.moves = civilian.A_star(game.grid)
@@ -94,12 +88,12 @@ function Game(){
  		this.stage.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
  	}
-	this.create_wall=function(x, y) {
+	this.create_wall=function(x,y) {
 		var wall = new Wall(x, y);
 		this.stage.addChild(wall.sprite);
 		this.walls.push(wall);
 	}
-	this.create_building=function(x, y) {
+	this.create_building=function(x,y) {
 		var building= new Building(x, y);
 		this.stage.addChild(building.sprite);
 		this.walls.push(building);
@@ -112,6 +106,9 @@ function Game(){
 		if(key=='D')this.active.direction = "right";
 		if(key=='E')this.hide_active_soldier();
 		if(key=='F')this.time=0;
+		if(event.keyCode==27){
+			//pause game
+		}
 	};
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
@@ -121,8 +118,6 @@ function Game(){
 		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
 		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
 	}
-	//NOTE: Currently the only thing being made is a soldier and a wall
-	//for collision debugging
  	this.init_game = function() {
  		var gui = new drawGui();
  		this.stage.addChild(gui);
@@ -132,10 +127,9 @@ function Game(){
  		this.time_text.position.y=window_height-60;
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);
- 		
  		//Create the first soldier
  		for (var i = 0; i < 2; i++) {
- 		//	 this.create_civilian(600,250);
+ 			 //this.create_civilian(600,250);
  		}
  		this.create_soldier();
  		//The active soldier is the one soldier we just created
@@ -170,8 +164,6 @@ function Game(){
 	return sprite;
  }
  
-
-
  function create_grid(game) {
  	for (var i = 4; i < window_width; i += 8) {
  		var list = [];

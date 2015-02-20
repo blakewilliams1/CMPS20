@@ -24,7 +24,7 @@ function Civilian(){
  // console.log("angle ",this.vision_angle);
 
   this.at_goal = false;
-  this.search_grid = []
+  this.search_grid = [];
   this.spotted = false;
   /*
    * this creates a list of moves that the civilian need take to
@@ -100,7 +100,9 @@ Civilian.prototype  = {
                 var current_pos = current_state[0];
                 var path = current_state[1];
                 var cost = current_state[2];
-
+//THIS NEXT LINE IS WHAT IS CAUSING THE BUG!!!!!!!
+//THE FUNCTION inArray IS BEING PASSED HUUUUUGE ARRAYS
+//RIDICULOUSLY OVER THE TOP HUGE ARRAYS
                 if(inArray(current_pos,visited)){
                   continue;
                 }
