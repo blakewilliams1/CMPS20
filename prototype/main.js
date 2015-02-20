@@ -5,7 +5,7 @@ var game = new Game();
 create_grid(game);
 screenManager.push(game);
 window.onload = function init() {
-   game.init_game();
+    game.init_game();
 	// Add the renderer view element to the
 	// DOM
 	document.body.appendChild(game.renderer.view);

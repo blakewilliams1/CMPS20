@@ -81,7 +81,7 @@ function create_civilian(){
 
   var civilian = new Civilian();
 
-  var texture = PIXI.Texture.fromImage("../Art Assets/png/Ukraine1.png");
+  var texture = PIXI.Texture.fromImage("../Art Assets/png/UkraineForward1.png");
   var sprite = new PIXI.Sprite(texture);
 
   sprite.anchor.x = sprite.anchor.y =.5;

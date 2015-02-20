@@ -299,12 +299,12 @@ function add_action(path,action){
 * collision has occurred.
 */
 
-function collided(first,second)(
+/*function collided(first,second){
 	//NOTE: currently must pass in sprites
 	//NOTE: also doesn't account for modified anchors,
 	//and I'm assuming 'width' correctly stores it's
 	//width in pixels
-	if(first==null||second==null){
+	if(first==0||second==0){
 		console.log("error! checking null objects!");
 		return false;
 	}
@@ -315,4 +315,4 @@ function collided(first,second)(
 		return true;
 	}
 	return false;
-}
+}*/
