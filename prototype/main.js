@@ -1,8 +1,9 @@
 var window_width = 1200;
 var window_height = 600;
-
+var screenManager=[];
 var game = new Game();
 create_grid(game);
+screenManager.push(game);
 window.onload = function init() {
    game.init_game();
 	// Add the renderer view element to the
@@ -43,50 +44,9 @@ window.onload = function init() {
 
 
 window.onkeydown = function(event) {
-	var key = String.fromCharCode(event.keyCode);
-	switch (key) {
-	case 'W':
-		game.active.direction = "up";
-		break;
-
-	case 'A':
-		game.active.direction = "left";
-		break;
-
-	case 'S':
-		game.active.direction = "down";
-		break;
-
-	case 'D':
-		game.active.direction = "right";
-		break;
-
-	case 'F':
-		game.create_soldier();
-		break;
-	case 'E':
-		game.hide_active_soldier();
-		break;
-	}
+	screenManager[screenManager.length-1].keydown(event);
 };
 
 window.onkeyup = function(event) {
-	var key = String.fromCharCode(event.keyCode);
-	switch (key) {
-	case 'W':
-		game.active.direction = "none";
-		break;
-
-	case 'A':
-		game.active.direction = "none";
-		break;
-
-	case 'S':
-		game.active.direction = "none";
-		break;
-
-	case 'D':
-		game.active.direction = "none";
-		break;
-	}
+	screenManager[screenManager.length-1].keyup(event);
 };

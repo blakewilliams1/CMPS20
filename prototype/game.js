@@ -76,15 +76,51 @@ function Game(){
  			}
  		}
  	};
-
-
+	this.keydown=function(event){
+		var key = String.fromCharCode(event.keyCode);
+		switch (key) {
+		case 'W':
+			this.active.direction = "up";
+			break;
+		case 'A':
+			this.active.direction = "left";
+			break;
+		case 'S':
+			this.active.direction = "down";
+			break;
+		case 'D':
+			this.active.direction = "right";
+			break;
+		case 'F':
+			this.create_soldier();
+			break;
+		case 'E':
+			this.hide_active_soldier();
+			break;
+		}
+	};
+	this.keyup=function(event){
+		var key = String.fromCharCode(event.keyCode);
+		switch (key) {
+		case 'W':
+			this.active.direction = "none";
+			break;
+		case 'A':
+			this.active.direction = "none";
+			break;
+		case 'S':
+			this.active.direction = "none";
+			break;
+		case 'D':
+			this.active.direction = "none";
+			break;
+		}
+	}
  	this.create_hiding_spot = function() {
  		var trashCan = new HidingSpot(100, 100);
  		this.stage.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
  	}
-
-
  	this.init_game = function() {
  		//Create the first soldier
  		for (var i = 0; i < 2; i++) {
