@@ -20,9 +20,7 @@ function Player() {
 	//This is the Player update function, only called on the active soldier
 	sprite.update = function() {
 		//If this soldier is hiding return and don't do movement.
-		if (sprite.objectBehind != null){
-			return;
-		}
+		if (sprite.objectBehind != null)return;
 		//If this soldier is colliding with a wall return and don't do movement
 		sprite.prevX=sprite.position.x;
 		sprite.prevY=sprite.position.y;
@@ -41,8 +39,16 @@ function Player() {
 			break;
 		}
 	};
+	sprite.revert_step=function(){
+		sprite.position.x=sprite.prevX;
+		sprite.position.y=sprite.prevY;
+	}
 	sprite.hide = function(hidingSpot) {
 		if (!hidingSpot.occupied) {
+			sprite.prevX=sprite.position.x;
+			sprite.prevY=sprite.position.y;
+			sprite.position.x=-sprite.position.x;
+			sprite.position.y=-sprite.position.y;
 			//This soldier is now hiding.
 			sprite.visible = false;
 			//Change sprite
@@ -58,6 +64,8 @@ function Player() {
 	};
 	sprite.unhide = function() {
 		if (!sprite.visible) {
+			sprite.position.x=-sprite.position.x;
+			sprite.position.y=-sprite.position.y;
 			sprite.visible = true;
 			//stop both sprites from referencing each other
 			sprite.objectBehind.hiding_soldier = null;

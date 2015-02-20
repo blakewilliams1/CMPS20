@@ -36,8 +36,8 @@ function Game(){
  		this.score_text.setText(this.score.toString());
 		//check if the active soldier is colliding
 		for(var i=0;i<this.walls.length;i++){
-			if(!collided(this.active,this.walls[i].sprite)){
-				//game.active.revert_step();
+			if(collided(this.active,this.walls[i].sprite)){
+				game.active.revert_step();
 			}
 		}
  	};
