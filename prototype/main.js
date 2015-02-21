@@ -1,18 +1,16 @@
 var window_width = 1200;
 var window_height = 800;
-var screenManager=new Array();
+var screenManager=[];
+screenManager.view=document.getElementById("myCanvas");
+screenManager.renderer= new PIXI.CanvasRenderer(window_width, window_height, screenManager.view);
 
-	var stage = new PIXI.Stage(0xCCCCCC,true);
- 	var view = document.getElementById("myCanvas");
- 	var renderer = new PIXI.CanvasRenderer(window_width, window_height, view);
-var game = new Game(screenManager,stage,view,renderer);
-game.init_();
-screenManager.push(game);
+
 
 window.onload = function init() {
 	// Add the renderer view element to the
 	// DOM
-	document.body.appendChild(renderer.view);
+	screenManager.create_game_screen();
+	document.body.appendChild(screenManager.renderer.view);
 	requestAnimFrame(animate);
 //temporarily commented out the FPS meter
 /*	var loop = 0,
@@ -40,20 +38,22 @@ window.onload = function init() {
 		}
 		if (loop)*/
 		screenManager[screenManager.length-1].update();
-		screenManager[screenManager.length-1].renderer.render(screenManager[screenManager.length-1].stage);
+		screenManager.renderer.render(screenManager[screenManager.length-1].stage);
 		requestAnimFrame(animate);
 	}
 
 };
-
+screenManager.create_game_screen=function(){
+	var gameScreen = new Game(screenManager);
+	gameScreen.init_();
+	this.push(gameScreen);
+}
 screenManager.create_pause_menu=function(){
-	var pauseScreen = new Pause(this,stage,view,renderer);
+	var pauseScreen = new Pause(this);
 	pauseScreen.init_();
-	document.body.appendChild(pauseScreen.renderer.view);
 	this.push(pauseScreen);
 }
 screenManager.signal_pop=function(){
-	document.body.removeChild(screenManager[screenManager.length-1].renderer.view);
 	screenManager.pop();
 }
 window.onkeydown = function(event) {

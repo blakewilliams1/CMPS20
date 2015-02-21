@@ -4,16 +4,11 @@
   */
 
  //create an instance of the game
-function Pause(parent,stage,view,renderer){
-	this.stage=stage;
-	this.view=view;
-	this.renderer=renderer;
-	/*this.stage = new PIXI.Stage(0xCCCCCC,true);
- 	this.view = document.getElementById("myCanvas");
- 	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);*/
-	//initialize game attributes
+function Pause(parent){
 	this.parent=parent;
-
+	this.view=parent.view;
+	this.renderer=parent.renderer;
+	this.stage = new PIXI.Stage(0xCCCCCC,true);
 
  	this.update = function() {
  		

@@ -4,13 +4,11 @@
   */
 
  //create an instance of the game
-function Game(parent,stage,view,renderer){
-	this.stage=stage;
-	this.view=view;
-	this.renderer=renderer;
-	/*this.stage = new PIXI.Stage(0xCCCCCC,true);
- 	this.view = document.getElementById("myCanvas");
- 	this.renderer = new PIXI.CanvasRenderer(window_width, window_height, this.view);*/
+function Game(parent){
+	this.parent=parent;
+	this.view=parent.view;
+	this.renderer=parent.renderer;
+	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	//initialize game attributes
 	this.alarms=[];
  	this.soldiers = [];
@@ -28,16 +26,16 @@ function Game(parent,stage,view,renderer){
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
 
  	this.update = function() {
- 			game.active.update();
+ 			this.active.update();
  			//update civilians
- 			for (var i = 0; i < game.civilians.length; i++) {
+ 			for (var i = 0; i < this.civilians.length; i++) {
  				this.civilians[i].update();
  			}
  			this.countdown();
 			//check if the active soldier is colliding
 			for(var i=0;i<this.walls.length;i++){
 				if(collided(this.active,this.walls[i].sprite)){
-					game.active.revert_step();
+					this.active.revert_step();
 				}
 			}
 			//check if any alarms have been triggered
@@ -58,7 +56,7 @@ function Game(parent,stage,view,renderer){
  		this.time_text.setText("New Soldier in: "+(this.elapsed_t));
  	}
  	this.create_soldier = function() {
- 		var player = new Player();
+ 		var player = new Player(this);
  		this.active = player;
  		this.soldiers.push(player);
  		this.stage.addChild(player);

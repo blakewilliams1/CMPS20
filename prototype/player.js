@@ -1,6 +1,7 @@
-function Player() {
+function Player(owner) {
 	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldier(singleframe).png");
 	var sprite = new PIXI.Sprite(tex);
+	sprite.owner=owner;
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
 	sprite.position.x = 200;
@@ -66,7 +67,7 @@ function Player() {
 			//stop both sprites from referencing each other
 			sprite.objectBehind.hiding_soldier = null;
 			sprite.objectBehind = null;
-			game.score-=10;
+			sprite.owner.score-=10;
 		}
 	};
 	return sprite;
