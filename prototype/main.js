@@ -62,7 +62,6 @@ screenManager.signal_pop=function(){
 window.onkeydown = function(event) {
 	screenManager[screenManager.length-1].keydown(event);
 };
-
 window.onkeyup = function(event) {
 	screenManager[screenManager.length-1].keyup(event);
 };
