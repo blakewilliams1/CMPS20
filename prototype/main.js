@@ -4,8 +4,6 @@ var screenManager=[];
 screenManager.view=document.getElementById("myCanvas");
 screenManager.renderer= new PIXI.CanvasRenderer(window_width, window_height, screenManager.view);
 
-
-
 window.onload = function init() {
 	// Add the renderer view element to the
 	// DOM
@@ -43,6 +41,11 @@ window.onload = function init() {
 	}
 
 };
+screenManager.create_title_menu=function(){
+	var titleScreen = new Title(screenManager);
+	titleScreen.init_();
+	this.push(titleScreen);
+}
 screenManager.create_game_screen=function(){
 	var gameScreen = new Game(screenManager);
 	gameScreen.init_();
