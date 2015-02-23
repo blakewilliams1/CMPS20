@@ -67,6 +67,7 @@ function Player(owner) {
 			sprite.objectBehind.hiding_soldier = null;
 			sprite.objectBehind = null;
 			sprite.owner.score-=10;
+			owner.active = this;
 		}
 	};
 	return sprite;
