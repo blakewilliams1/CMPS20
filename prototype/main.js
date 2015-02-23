@@ -41,7 +41,7 @@ window.onload = function init() {
 	}
 
 };
-screenManager.create_title_menu=function(){
+screenManager.create_title_screen=function(){
 	var titleScreen = new Title(screenManager);
 	titleScreen.init_();
 	this.push(titleScreen);
@@ -57,7 +57,7 @@ screenManager.create_pause_menu=function(){
 	this.push(pauseScreen);
 }
 screenManager.signal_pop=function(){
-	screenManager.pop();
+	if(screenManager.length>1)screenManager.pop();
 }
 window.onkeydown = function(event) {
 	screenManager[screenManager.length-1].keydown(event);

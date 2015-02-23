@@ -4,21 +4,18 @@
   */
 
  //create an instance of the game
-function Title(parent){
-	this.parent=parent;
-	this.view=parent.view;
-	this.renderer=parent.renderer;
+function Title(owner){
+	this.owner=owner;
+	this.view=owner.view;
+	this.renderer=owner.renderer;
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
-
+	this.new_game_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/newGameButton.png"));
  	this.update = function() {
  		
  	};
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
-		if(event.keyCode==27){
-			//press esc to un-pause game
-			parent.signal_pop();
-		}
+		
 	};
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
@@ -29,9 +26,16 @@ function Title(parent){
  }
  
  	this.init_ = function() {
+ 		this.new_game_button.setInteractive(true);
+ 		this.new_game_button.position.x=window_width/2;
+ 		this.new_game_button.position.y=window_height/2;
+ 		this.new_game_button.mousedown=function(event){
+ 			owner.create_game_screen();
+ 		}
+ 		this.stage.addChild(this.new_game_button);
  		//initiate the gui
  		this.drawGui();
- 		
+ 		console.log("asdfasd");
  	};
  }
 
