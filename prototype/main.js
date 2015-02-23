@@ -1,5 +1,7 @@
-var window_width = 1200;
-var window_height = 800;
+var window_width = 800;
+var window_height = 600;
+var map_width = 900;
+var map_height = 800;
 var screenManager=[];
 screenManager.view=document.getElementById("myCanvas");
 screenManager.renderer= new PIXI.CanvasRenderer(window_width, window_height, screenManager.view);

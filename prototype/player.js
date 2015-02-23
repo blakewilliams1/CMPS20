@@ -13,7 +13,6 @@ function Player(owner) {
 	sprite.direction = "none";
 	sprite.objectBehind;
 	sprite.mousedown = function(event) {
-			//TODO: THIS RELIES ON THE GAME OBJECT BEGIN SPECIFICALLY CALLED GAME! FIX!!!
 			sprite.owner.active = sprite;
 			sprite.direction="none";
 		};

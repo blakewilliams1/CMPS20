@@ -4,10 +4,11 @@
   */
 
  //create an instance of the game
-function Game(parent){
-	this.parent=parent;
-	this.view=parent.view;
-	this.renderer=parent.renderer;
+function Game(owner){
+	this.container=new PIXI.DisplayObjectContainer();
+	this.owner=owner;
+	this.view=owner.view;
+	this.renderer=owner.renderer;
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	//initialize game attributes
 	this.alarms=[];
@@ -41,10 +42,33 @@ function Game(parent){
 			//check if any alarms have been triggered
 			for(var i=0;i<this.alarms.length;i++){
 				if(this.alarms[i].triggered){
-				//signal game over
+					//signal game over
 				}
 			}
+			this.scroll_camera();
  	};
+ 	this.scroll_camera=function(){
+		if(this.active.position.x+this.container.position.x>window_width*4/5){
+			this.container.position.x=window_width*4/5-this.active.position.x;
+		}
+		if(this.active.position.x+this.container.position.x<window_width/5){
+			this.container.position.x=window_width/5-this.active.position.x;
+		}
+		if(this.active.position.y+this.container.position.y>window_height*4/5){
+			this.container.position.y=window_height*4/5-this.active.position.y;
+		}
+		if(this.active.position.y+this.container.position.y<window_height/5){
+			this.container.position.y=window_height/5-this.active.position.y;
+		}
+		if(this.container.position.x>0)this.container.position.x=0;
+		if(this.container.position.y>0)this.container.position.y=0;
+		if(this.container.position.x+map_width<window_width){
+			this.container.position.x=window_width-map_width;
+		}
+		if(this.container.position.y+map_height<window_height){
+			this.container.position.y=window_height-map_height;
+		}
+ 	}
  	this.countdown = function(){
  		this.elapsed_t = 10-parseInt(((new Date().getTime() - this.time)/1000).toString());
  		this.score_text.setText("Score: "+this.score.toString());
@@ -59,7 +83,7 @@ function Game(parent){
  		var player = new Player(this);
  		this.active = player;
  		this.soldiers.push(player);
- 		this.stage.addChild(player);
+ 		this.container.addChild(player);
  	}
  	this.hide_active_soldier = function() {
  		for (var i = 0; i < this.hiding_spots.length; i++) {
@@ -83,22 +107,40 @@ function Game(parent){
 		var location = [sprite.position.x,sprite.position.y];
 		var position = location_in_grid(location,this.grid);
 		civilian.moves = civilian.A_star(game.grid)
-		this.stage.addChild(sprite);
+		this.container.addChild(sprite);
 	}	
  	this.create_hiding_spot = function(x,y,empty_tex,filled_tex) {
  		var trashCan = new HidingSpot(x,y,empty_tex,filled_tex);
- 		this.stage.addChild(trashCan);
+ 		this.container.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
  	}
 	this.create_wall=function(x,y) {
 		var wall = new Wall(x, y);
-		this.stage.addChild(wall.sprite);
+		this.container.addChild(wall.sprite);
 		this.walls.push(wall);
 	}
 	this.create_building=function(x,y) {
 		var building= new Building(x, y);
-		this.stage.addChild(building.sprite);
+		this.container.addChild(building.sprite);
 		this.walls.push(building);
+	}
+	this.create_alarm=function(x,y) {
+		var alarm = new Alarm(x,y,this);
+		this.alarms.push(alarm);
+ 		this.container.addChild(alarm);
+	}
+	this.init_gui=function(){
+		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
+		var gui = new PIXI.Sprite(gui_base);
+		gui.position.x = 0;
+		gui.position.y = window_height-100;
+ 		this.score_text.position.x=30;
+ 		this.score_text.position.y=window_height-60;
+ 		this.time_text.position.x=200;
+ 		this.time_text.position.y=window_height-60;
+ 		this.stage.addChild(gui);
+ 		this.stage.addChild(this.score_text);
+ 		this.stage.addChild(this.time_text);
 	}
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
@@ -110,7 +152,7 @@ function Game(parent){
 		if(key=='F')this.time=0;
 		if(event.keyCode==27){
 			//press esc to pause game
-			parent.create_pause_menu();
+			owner.create_pause_menu();
 		}
 	};
 	this.keyup=function(event){
@@ -122,16 +164,11 @@ function Game(parent){
 		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
 	}
  	this.init_ = function() {
+ 		this.stage.addChild(this.container);
  		create_grid(this);
  		//initiate the gui
- 		var gui = new drawGui();
- 		this.stage.addChild(gui);
- 		this.score_text.position.x=30;
- 		this.score_text.position.y=window_height-60;
- 		this.time_text.position.x=200;
- 		this.time_text.position.y=window_height-60;
- 		this.stage.addChild(this.score_text);
- 		this.stage.addChild(this.time_text);
+		this.init_gui();
+ 		
  		for (var i = 0; i < 2; i++) {
  			 //this.create_civilian(600,250);
  		}
@@ -142,8 +179,7 @@ function Game(parent){
  		this.create_hiding_spot(150,500,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(600,400,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(450,100,"trashcan","trashcanSoldier");
- 		var alarm = new Alarm(300,300,this);
- 		this.stage.addChild(alarm);
+ 		this.create_alarm(300,300);
  		this.create_wall(250, 450);
  		this.create_wall(350, 100);
  		this.create_wall(650, 200);
@@ -158,16 +194,7 @@ function Game(parent){
  	this.width
  	this.free
  }
- 
- //Temp Gui for score and alarm for soldiers
- function drawGui(){
-    var texture = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
-	var sprite = new PIXI.Sprite(texture);
-	sprite.position.x = 0;
-	sprite.position.y = 700;
-	return sprite;
- }
- 
+
  function create_grid(the_game) {
  	for (var i = 4; i < window_width; i += 8) {
  		var list = [];
