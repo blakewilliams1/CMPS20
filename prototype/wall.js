@@ -5,7 +5,9 @@ function Wall(x, y) {
 	this.sprite.anchor.y = .5;
 	this.sprite.position.x = x;
 	this.sprite.position.y = y;
+  this.sprite.width = 128;
+  this.sprite.height = 32;
 	this.update = function() {
-		
+
 	}
 }

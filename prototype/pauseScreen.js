@@ -11,23 +11,24 @@ function Pause(owner){
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 
  	this.update = function() {
- 		
+
  	};
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
-		if(event.keyCode==27){
-			//press esc to un-pause game
-			owner.signal_pop();
-		}
+
 	};
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
+		if(event.keyCode==27){
+			//press esc to un-pause game
+			owner.signal_pop(2);
+		}
 
 	}
 	this.drawGui=function(){
-	    
+
  }
- 
+
  	this.init_ = function() {
 		var resume_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/resumeGameButton.png"));
 		resume_button.setInteractive(true);
@@ -35,8 +36,8 @@ function Pause(owner){
 		resume_button.position.y = window_height/2-resume_button.texture.height;
 		resume_button.anchor.x = 0.5;
 		resume_button.anchor.y = 0.5;
-		resume_button.mousedown=function(event){
- 			owner.signal_pop();
+		resume_button.click=function(event){
+ 			owner.signal_pop(2);
  		}
 		this.stage.addChild(resume_button);
 		var quit_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/quitGameButton.png"));
@@ -45,16 +46,15 @@ function Pause(owner){
 		quit_button.position.y = window_height/2+quit_button.texture.height;
 		quit_button.anchor.x = 0.5;
 		quit_button.anchor.y = 0.5;
-		quit_button.mousedown=function(event){
- 			owner.signal_pop();
- 			owner.signal_pop();
+		quit_button.click=function(event){
+ 			owner.signal_pop(1);
+ 			//owner.signal_pop();
  		}
 		this.stage.addChild(quit_button);
  		//initiate the gui
  		this.drawGui();
- 		
+
  	};
  }
 
  //Temp Gui for score and alarm for soldiers
- 

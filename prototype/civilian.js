@@ -10,15 +10,15 @@
  * civilian object
  */
 
- var steps = 2;
+ var steps = 25;
 function Civilian(){
   this.sprite;
   this.actions = ["north","south","east","west"];
   this.moves = [];
 
-  this.goal = {"x":Math.floor(Math.random() * window_width), "y":Math.floor(Math.random() * window_height)};
+  this.goal = {"x":50, "y":50};
 
-
+   //Math.floor(Math.random() * window_width)
   this.vision_distance = 200;
   this.vision_angle = 45;
  // console.log("angle ",this.vision_angle);
@@ -26,70 +26,70 @@ function Civilian(){
   this.at_goal = false;
   this.search_grid = [];
   this.spotted = false;
+
+  this.position = {
+      x:0,
+      y:0
+  }
   /*
    * this creates a list of moves that the civilian need take to
    * reach his goal
    */
 
-  this.update = function(){
-     this.center = {
+    this.loop = 0;
+    this.skipTicks = 1000 / 30;
+    this.maxFrameSkip = 10;
+    this.nextGameTick = (new Date).getTime();
+    this.lastGameTick;
+
+  this.update = function(grid,soldiers){
+
+    while ((new Date).getTime() > this.nextGameTick) {
+
+       this.center = {
        x:this.sprite.position.x,
        y:this.sprite.position.y
   }
-     if(this.at_goal){
-        this.find_path();
+     if((this.at_goal)){
+        this.at_goal = false;
+        this.find_path(grid);
       }else{
 
      if(this.moves.length == 0){
-        this.at_goal = true;
+         this.at_goal =true;
+        //this.moves = this.A_star(grid);
         return;
      }
-      var move = this.moves.shift();
-    switch (move){
-      case "east":
-    this.scan_area(this.center, this.vision_distance,0);
-    this.sprite.position.x += steps;
-    break;
 
-    case "west":
-    this.scan_area(this.center, -(this.vision_distance),0);
-    this.sprite.position.x -= steps;
-    break;
+     this.action(soldiers);
+     //console.log(this.sprite.position.x, this.sprite.position.y);
+  }
 
-    case "north":
-    this.scan_area(this.center, 0, -(this.vision_distance));
-    this.sprite.position.y -= steps;
-    break;
-
-    case "south":
-    this.scan_area(this.center, 0, this.vision_distance);
-    this.sprite.position.y += steps;
-    break;
+      this.nextGameTick += this.skipTicks;
     }
-  }
 
   }
+
 }
-
-//------------------------------------------------------------------------------
-
-/*
- * this function creates a new civilian and the texture for that civilian
- */
-
-
 
 
 //-----------------------------------------------------------------------------------
 
 Civilian.prototype  = {
     A_star: function(grid){
+          var sub_grid = create_sub_grid(this.sprite.position,grid);
           var frontier = new PriorityQueue();
           var visited = [];
           var moves = [];
-          var start = [this.sprite.position.x, this.sprite.position.y];
+          var edge_list = [];
+          var start = {
+                   x: this.sprite.position.x,
+                   y: this.sprite.position.y
+             };
 
-          if(isGoal(start,this.goal)) {
+          var grid_loc = get_new_position(this.sprite,grid);
+          console.log("this is grid_loc", grid_loc);
+          if(isGoal(start, this.goal)) {
               return moves;
               }
 
@@ -100,51 +100,57 @@ Civilian.prototype  = {
                 var current_pos = current_state[0];
                 var path = current_state[1];
                 var cost = current_state[2];
-//THIS NEXT LINE IS WHAT IS CAUSING THE BUG!!!!!!!
-//THE FUNCTION inArray IS BEING PASSED HUUUUUGE ARRAYS
-//RIDICULOUSLY OVER THE TOP HUGE ARRAYS
                 if(inArray(current_pos,visited)){
                   continue;
                 }
 
                 visited.push(current_pos);
 
-                if(isGoal(current_pos,this.goal)){
+                if(isGoal(current_pos, this.goal)){
+                    this.position = current_pos;
+                    //this.at_goal = true;
                     return path;
                       }
               count++
                 for(var i = 0; i < this.actions.length; i++){
                 var action = this.actions[i];
                 var result = generate_move(current_pos,action,grid);
-                if(result[1] == false){
-                    continue;
-                  }
-                var next_pos = result[0]
-                var new_path = add_action(path,action);
-                var new_cost = cost + 8;
-                var priority = 8 + heuristic(next_pos,this.goal);
-                frontier.enqueue([next_pos,new_path,new_cost],priority);
+
+                if(result[1]){
+                  var next_pos = result[0]
+                  var new_path = add_action(path,action);
+                  var new_cost = cost + 8;
+                  var priority = 8 + heuristic(next_pos,this.goal);
+                   if(on_edge(next_pos,sub_grid)){
+                      edge_list.push([next_pos,new_path]);
+                   }
+                  frontier.enqueue([next_pos,new_path,new_cost],priority);
+                }
               }
 
           }
-      return []
+
+
+      console.log("done");
+      var new_list = closest_path(edge_list,this.goal);
+      this.position = new_list[0];
+      return new_list[1];
     },
 
 
-    find_path: function(){
-         var location = [this.sprite.position.x, this.sprite.position.y];
-         var position = location_in_grid(location,game.grid);
+    find_path: function(grid){
+
          this.goal.x = Math.floor(Math.random() * window_width);
          this.goal.y = Math.floor(Math.random() * window_height);
-         this.moves = this.A_star(game.grid);
+         this.moves = this.A_star(grid);
          this.at_goal = false;
     },
 
-    scan_area: function(origin,x,y){
-      for( var i = 0; i < game.soldiers.length;i++){
+    scan_area: function(origin,x,y,soldiers){
+      for( var i = 0; i < soldiers.length; i++){
       var target = {
-              x: game.soldiers[i].position.x,
-              y: game.soldiers[i].position.y
+              x: soldiers[i].position.x,
+              y: soldiers[i].position.y
       }
 
       var point = get_dist_point(origin,x,y);
@@ -161,8 +167,35 @@ Civilian.prototype  = {
 
       }
     }
-  }
+  },
 
+
+    action: function(soldiers){
+
+      var move = this.moves.shift();
+    switch (move){
+      case "east":
+    this.scan_area(this.center, this.vision_distance,0,soldiers);
+    this.sprite.position.x += steps;
+    break;
+
+    case "west":
+    this.scan_area(this.center, -(this.vision_distance),0,soldiers);
+    this.sprite.position.x -= steps;
+    break;
+
+    case "north":
+    this.scan_area(this.center, 0, -(this.vision_distance),soldiers);
+    this.sprite.position.y -= steps;
+    break;
+
+    case "south":
+    this.scan_area(this.center, 0, this.vision_distance,soldiers);
+    this.sprite.position.y += steps;
+    break;
+    }
+
+  }
 
 
 }
@@ -176,6 +209,23 @@ Civilian.prototype  = {
 function heuristic(position,goal){
    var cost = (Math.abs(position[0] - goal.x) + Math.abs(position[1] - goal.y));
   return cost;
+}
+
+
+
+function closest_path(edge_list,goal){
+  var best_value = 100000000;
+  var best_path = [];
+
+  for(var i = 0; i < edge_list.length; i++){
+    var value = (Math.abs(edge_list[i][0].x - goal.x) + Math.abs(edge_list[i][0].y - goal.y));
+
+    if(value < best_value){
+       best_value = value;
+       best_path = edge_list[i];
+    }
+  }
+  return best_path;
 }
 
 

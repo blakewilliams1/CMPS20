@@ -90,27 +90,29 @@ function get_dist_point(origin,x,y){
  * this function returns the tile location in which a object is in
  */
 
-function location_in_grid(position,grid){
+function get_new_position(image,grid){
 
-  var x_position = 0;
-  var y_position = 0;
-  var grid_x = 0;
-  var grid_y = 0;
-  for(var i = 0; i < grid.length; i++){
-      if(inTile_x(position[0],grid[i][0])){
-          x_position = i
-          break;
+  for(var i = 0; i < grid[0].length; i++){
+
+    if(inTile_x(image.position.x, grid[i][0])){
+
+      for(var j = 0; j < grid[i][0].length; j++){
+
+        if(inTile_y(image.position.y, grid[i][j])){
+          console.log(i,j);
+          return {
+              x: i,
+              y: y
+          }
+
         }
+
+      }
+
     }
 
-  for(var j = 0; j < grid[x_position].length; j++){
-      if(inTile_y(position[1],grid[x_position][j])){
-         y_position = j;
-         break;
-        }
-    }
-
-  return [x_position,y_position];
+  }
+  console.log("location not found");
 }
 
 //-----------------------------------------------------------------------------------
@@ -121,7 +123,7 @@ function location_in_grid(position,grid){
 
 function inTile_x(position,tile){
     var in_tile = false;
-   if((position <= (tile.x + (tile.width/2))) && (position >= (tile.x - (tile.width/2)))){
+   if(position == tile.x){
       in_tile = true;
    }
   return in_tile
@@ -130,7 +132,7 @@ function inTile_x(position,tile){
 
 function inTile_y(position,tile){
     var in_tile = false;
-   if((position <= (tile.y + (tile.width/2))) && (position >= (tile.y - (tile.width/2)))){
+   if(position == tile.y){
       in_tile = true;
    }
   return in_tile
@@ -143,13 +145,13 @@ function inTile_y(position,tile){
  * returns if the civilian is at the goal
  */
 
-function isGoal(start,goal){
-  var dist_x = Math.abs(start[0] - goal.x);
+function isGoal(start, goal){
+  var dist_x = Math.abs(start.x - goal.x);
 
-  if( dist_x <= 8){
-     var dist_y = Math.abs(start[1] - goal.y);
+  if( dist_x <= 32){
+     var dist_y = Math.abs(start.y - goal.y);
 
-     if(dist_y <= 8){
+     if(dist_y <= 32){
       return true;
      }
    }
@@ -169,7 +171,7 @@ function isGoal(start,goal){
    for(var i = 0; i < array.length; i++){
       var pos = array[i];
 
-      if((object[0] == pos[0]) && object[1] == pos[1]){
+      if((object.x == pos.x) && (object.y == pos.y)){
         return true;
       }
    }
@@ -187,38 +189,66 @@ function isGoal(start,goal){
  */
 
 function generate_move(current_pos,action,grid){
-  var top_left = grid[0][0];
-  var bottom_right = grid[149][74];
-  var new_pos = []
+  var x_length = grid.length-1;
+  var y_length = grid[0].length-1;
+  //var top_left = grid[0][0];
+  //var bottom_right = grid[x_length][y_length];
+  var new_pos = {}
   var bool = true;
    switch (action){
     case "east":
-        new_pos = [(current_pos[0] + steps),current_pos[1]];
-       if(new_pos[0] > $(window).width() || new_pos[0] > bottom_right.x){
+        new_pos = {
+            x: current_pos.x + steps,
+            y: current_pos.y
+        };
+
+       if(new_pos.x > grid[x_length][0].x){
         bool = false;
+        break;
       }
-    break;
+     // bool = grid[new_pos.x][new_pos.y].free;
+
+        break;
 
     case "west":
-        new_pos = [(current_pos[0] - steps),current_pos[1]];
-        if(new_pos[0] < 0 || new_pos[0] < top_left.x){
+         new_pos = {
+            x: current_pos.x - steps,
+            y: current_pos.y
+        };
+
+        if(new_pos.x < grid[0][0].x){
           bool = false;
+          break;
         }
-    break;
+         //bool = grid[new_pos.x][new_pos.y].free;
+
+        break;
 
     case "north":
-        new_pos = [current_pos[0],(current_pos[1] - steps)];
-        if(new_pos[1] < 0 || new_pos[1] < top_left.y){
+         new_pos = {
+            x: current_pos.x,
+            y: current_pos.y - steps
+        };
+
+        if( new_pos.y < grid[0][0].y){
           bool = false;
+          break;
         }
-    break;
+         //bool = grid[new_pos.x][new_pos.y].free;
+          break;
 
     case "south":
-        new_pos = [current_pos[0],(current_pos[1] + steps)];
-        if(new_pos[1] > $(window).height() || new_pos[1] > bottom_right.y){
+         new_pos = {
+            x: current_pos.x,
+            y: current_pos.y + steps
+        };
+        if(new_pos.y > grid[x_length][y_length].y){
           bool = false;
+          break;
         }
-    break;
+         //bool = grid[new_pos.x][new_pos.y].free;
+
+        break;
     }
 return [new_pos,bool];
 
@@ -267,6 +297,7 @@ function PriorityQueue(){
     this.isEmpty = function(){
          return items.length == 0;
     }
+
     //removes the highest priority element from the queue
     this.dequeue = function(){
          return items.shift().element;
@@ -294,8 +325,10 @@ function add_action(path,action){
   }
 }
 
+//------------------------------------------------------------------------------------
+
 /*
-* Uses the objects axis aligned bounding boxes to check if a 
+* Uses the objects axis aligned bounding boxes to check if a
 * collision has occurred.
 */
 
@@ -320,4 +353,98 @@ function collided(first,second){
 		return true;
 	}
 	return false;
+}
+
+//----------------------------------------------------------------------------------------
+
+
+function check_walls(x,y,wall){
+   for(var i = 0; i < wall.length; i++){
+     var object = wall[i].sprite;
+     var object_x = object.position.x;
+     var object_y = object.position.y;
+     var dist_x = Math.abs(x - object_x);
+     var dist_y = Math.abs(y - object_y);
+
+     if(dist_x <= (object.width/2)) {
+        if(dist_y <= (object.height/2)) {
+          return false;
+        }
+     }
+
+
+   }
+  return true;
+}
+
+
+//---------------------------------------------------------------------------------------
+
+
+function Make_grid(x1,y1,x2,y2,grid){
+   var new_grid = [];
+    for (var i = x1; i < x2; i++){
+        var list = [];
+        for(var j = y1; j < y2; j++){
+          list.push(grid[i][j]);
+        }
+        new_grid.push(list);
+    }
+  return new_grid;
+}
+
+
+function create_sub_grid(position,grid){
+    var x = grid.length;
+    var y = grid[0].length;
+
+    console.log(x,y);
+
+    var x_value = grid[half_x-1][0].x;
+    console.log("x_value", x_value);
+
+    var y_value = grid[0][half_y-1].y;
+    console.log("y_value", y_value);
+
+
+    if((position.x < x_value ) && (position.y < y_value)){
+      console.log("in Q1");
+       return Make_grid(0,0, half_x, half_y,grid);
+    }
+
+
+    if((position.x < x_value) && (position.y >= y_value )){
+       console.log("in Q2");
+        return Make_grid(0, half_y, x, y,grid);
+
+    }
+
+
+    if((position.x >= x_value ) && (position.y < y_value )){
+       console.log("in Q3");
+       console.log("half_x" , half_x);
+       console.log("x length of grid", x);
+      return Make_grid(half_x, 0, x, half_y,grid);
+    }
+
+
+    if((position.x >= x_value ) && (position.y >= y_value)){
+        console.log("in Q4");
+       return Make_grid(half_x,half_y,x,y,grid);
+    }
+
+
+}
+
+
+
+
+
+function on_edge(pos,subgrid){
+   if(pos.x == subgrid.length || pos.y == subgrid[0].length){
+      console.log("yesssss");
+      return true;
+   }
+
+    return true;
 }
