@@ -157,6 +157,19 @@ function Game(owner){
 		this.alarms.push(alarm);
  		this.container.addChild(alarm);
 	}
+	
+	this.create_background=function() {
+		var x = 0;
+		var y = 0;
+		//map_width and map_height are defined at the top of main.js
+		while (x < map_width && y < map_height) {
+			var tile = new Tile(x,y);
+			this.container.addChild(tile);
+			x += 256;//MAKE MODULAR LATER
+			y += 256;
+		}
+	}
+	
 	this.init_gui=function(){
 		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
 		var gui = new PIXI.Sprite(gui_base);
@@ -205,6 +218,7 @@ function Game(owner){
  		//initiate the gui
 		this.init_gui();
 
+		//this.create_background();
  		this.create_soldier();
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
