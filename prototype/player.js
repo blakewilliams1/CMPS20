@@ -1,5 +1,5 @@
 function Player(owner) {
-	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldier(singleframe).png");
+	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png");
 	var sprite = new PIXI.Sprite(tex);
 	sprite.owner=owner;
 	sprite.anchor.x = .5;
