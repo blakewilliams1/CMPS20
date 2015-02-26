@@ -35,7 +35,6 @@ function Title(owner){
  		this.stage.addChild(this.new_game_button);
  		//initiate the gui
  		this.drawGui();
- 		console.log("asdfasd");
  	};
  }
 

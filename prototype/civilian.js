@@ -3,20 +3,20 @@
  * This file holds the initializer and all the functions of the civilians
  */
 
-//----------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
 
 /*
  * this is the initilize function of the
  * civilian object
  */
 
- var steps = 25;
+ var steps = 3;
 function Civilian(){
   this.sprite;
   this.actions = ["north","south","east","west"];
-  this.moves = [];
+  this.moves;
 
-  this.goal = {"x":50, "y":50};
+  this.goal = {x:1100, y:600};
 
    //Math.floor(Math.random() * window_width)
   this.vision_distance = 200;
@@ -26,6 +26,11 @@ function Civilian(){
   this.at_goal = false;
   this.search_grid = [];
   this.spotted = false;
+  this.count = 5;
+
+  this.pending = "none";
+  this.pend = false;
+  this.take = "none";
 
   this.position = {
       x:0,
@@ -36,115 +41,62 @@ function Civilian(){
    * reach his goal
    */
 
-    this.loop = 0;
-    this.skipTicks = 1000 / 30;
-    this.maxFrameSkip = 10;
-    this.nextGameTick = (new Date).getTime();
-    this.lastGameTick;
+//---------------------------------------------------------------------------------------
 
-  this.update = function(grid,soldiers){
-
-    while ((new Date).getTime() > this.nextGameTick) {
+  this.update = function(grid,soldiers,walls){
 
        this.center = {
        x:this.sprite.position.x,
        y:this.sprite.position.y
   }
-     if((this.at_goal)){
-        this.at_goal = false;
+       this.at_goal = isGoal(this.center,this.goal)
+       if(this.at_goal){
         this.find_path(grid);
-      }else{
+       }else{
+         this.moves = this.next_action(grid,this.goal,walls);
+       }
 
-     if(this.moves.length == 0){
-         this.at_goal =true;
-        //this.moves = this.A_star(grid);
-        return;
-     }
+
 
      this.action(soldiers);
      //console.log(this.sprite.position.x, this.sprite.position.y);
-  }
-
-      this.nextGameTick += this.skipTicks;
-    }
 
   }
 
 }
 
 
-//-----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 Civilian.prototype  = {
-    A_star: function(grid){
-          var sub_grid = create_sub_grid(this.sprite.position,grid);
-          var frontier = new PriorityQueue();
-          var visited = [];
-          var moves = [];
-          var edge_list = [];
-          var start = {
-                   x: this.sprite.position.x,
-                   y: this.sprite.position.y
-             };
-
-          var grid_loc = get_new_position(this.sprite,grid);
-          console.log("this is grid_loc", grid_loc);
-          if(isGoal(start, this.goal)) {
-              return moves;
-              }
-
-          frontier.enqueue([start,moves,0],1);
-          var count = 0;
-          while(!frontier.isEmpty()){
-                var current_state = frontier.dequeue();
-                var current_pos = current_state[0];
-                var path = current_state[1];
-                var cost = current_state[2];
-                if(inArray(current_pos,visited)){
-                  continue;
-                }
-
-                visited.push(current_pos);
-
-                if(isGoal(current_pos, this.goal)){
-                    this.position = current_pos;
-                    //this.at_goal = true;
-                    return path;
-                      }
-              count++
-                for(var i = 0; i < this.actions.length; i++){
-                var action = this.actions[i];
-                var result = generate_move(current_pos,action,grid);
-
-                if(result[1]){
-                  var next_pos = result[0]
-                  var new_path = add_action(path,action);
-                  var new_cost = cost + 8;
-                  var priority = 8 + heuristic(next_pos,this.goal);
-                   if(on_edge(next_pos,sub_grid)){
-                      edge_list.push([next_pos,new_path]);
-                   }
-                  frontier.enqueue([next_pos,new_path,new_cost],priority);
-                }
-              }
-
-          }
 
 
-      console.log("done");
-      var new_list = closest_path(edge_list,this.goal);
-      this.position = new_list[0];
-      return new_list[1];
-    },
+      next_action:function(grid,goal,wall){
 
+        var list = [];
+        var current_pos = {
+             x: this.sprite.position.x,
+             y: this.sprite.position.y
+         }
+        for(var i = 0; i < this.actions.length; i++){
+          var pos = generate_move(current_pos,this.actions[i],grid,goal,wall);
+             list.push([pos[0],this.actions[i],pos[1]]);
+        }
+
+        return this.closest_path(list,goal);
+      },
+
+
+//-----------------------------------------------------------------------------------------
 
     find_path: function(grid){
 
-         this.goal.x = Math.floor(Math.random() * window_width);
-         this.goal.y = Math.floor(Math.random() * window_height);
-         this.moves = this.A_star(grid);
-         this.at_goal = false;
+         this.goal.x = Math.floor(Math.random() * (map_width - 64));
+         this.goal.y = Math.floor(Math.random() *  (map_height - 64));
+         //this.moves = this.A_star(grid);
     },
+
+//-----------------------------------------------------------------------------------------
 
     scan_area: function(origin,x,y,soldiers){
       for( var i = 0; i < soldiers.length; i++){
@@ -169,10 +121,11 @@ Civilian.prototype  = {
     }
   },
 
+//----------------------------------------------------------------------------------------
 
     action: function(soldiers){
 
-      var move = this.moves.shift();
+      var move = this.moves;
     switch (move){
       case "east":
     this.scan_area(this.center, this.vision_distance,0,soldiers);
@@ -195,7 +148,61 @@ Civilian.prototype  = {
     break;
     }
 
+  },
+
+
+
+ closest_path: function(edge_list,goal){
+  var best_value = 0;
+  var best_path = [];
+  var best_bool = false;
+
+   if(this.pend){
+    for(var i = 0; i < edge_list.length; i++){
+        if(edge_list[i][1] == this.pending){
+           if(edge_list[i][2]){
+             return this.take;
+           }else{
+            this.pend = false;
+            return this.pending;
+           }
+        }
+    }
+   }
+  //var index = Math.floor(Math.random()*edge_list.length)
+
+  for(var i = 0; i < edge_list.length; i++){
+     //if(edge_list[i][2]) continue;
+    var value = (Math.abs(edge_list[i][0].x - goal.x) + Math.abs(edge_list[i][0].y - goal.y));
+
+
+    if (best_value == 0) {
+       best_value = value;
+       best_path = edge_list[i][1];
+       console.log("this is best", edge_list[i][2]);
+       best_bool = edge_list[i][2];
+
+   }else{
+     if(value < best_value){
+       best_value = value;
+       best_path = edge_list[i][1];
+       console.log("this is best", edge_list[i][2]);
+       best_bool = edge_list[i][2];
+          }
+     }
   }
+
+  if(best_bool){
+    this.pending = best_path;
+    this.pend =true;
+    this.count = 5;
+    this.take = choose_random_adj(best_path);
+    best_path = this.take;
+  }
+
+  return best_path
+
+   }
 
 
 }
@@ -212,20 +219,36 @@ function heuristic(position,goal){
 }
 
 
+//-----------------------------------------------------------------------------------
 
-function closest_path(edge_list,goal){
-  var best_value = 100000000;
-  var best_path = [];
 
-  for(var i = 0; i < edge_list.length; i++){
-    var value = (Math.abs(edge_list[i][0].x - goal.x) + Math.abs(edge_list[i][0].y - goal.y));
 
-    if(value < best_value){
-       best_value = value;
-       best_path = edge_list[i];
+
+
+function choose_random_adj(path){
+  var flip = Math.floor(Math.random() * 2);
+  switch (path){
+      case "east":
+    var option = ["north","south"];
+    return option[flip];
+    break;
+
+    case "west":
+    var option = ["north","south"];
+    return option[flip];
+    break;
+
+    case "north":
+    var option = ["west","east"];
+    return option[flip];
+    break;
+
+    case "south":
+    var option = ["west","east"];
+    return option[flip];
+    break;
     }
-  }
-  return best_path;
+
 }
 
 

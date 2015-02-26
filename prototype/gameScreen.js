@@ -31,7 +31,7 @@ function Game(owner){
  			this.active.update();
  			//update civilians
  			for (var i = 0; i < this.civilians.length; i++) {
- 				this.civilians[i].update(this.grid,this.soldiers);
+ 				this.civilians[i].update(this.grid,this.soldiers,this.walls);
  			}
  			this.countdown();
 			//check if the active soldier is colliding
@@ -126,7 +126,7 @@ function Game(owner){
 		//var location = [sprite.position.x,sprite.position.y];
 		//var position = location_in_grid(location,this.grid);
 		this.container.addChild(sprite);
-		civilian.moves = civilian.A_star(this.grid)
+		//civilian.moves = civilian.A_star(this.grid)
 	}
 
 //----------------------------------------------------
@@ -157,7 +157,7 @@ function Game(owner){
 		this.alarms.push(alarm);
  		this.container.addChild(alarm);
 	}
-	
+
 	this.create_background=function() {
 		var x = 0;
 		var y = 0;
@@ -169,7 +169,7 @@ function Game(owner){
 			y += 256;
 		}
 	}
-	
+
 	this.init_gui=function(){
 		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
 		var gui = new PIXI.Sprite(gui_base);
@@ -235,7 +235,7 @@ function Game(owner){
 
     this.create_grid();
 
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 1; i++) {
         this.create_civilian(16,16);
        //this.create_civilian(600,250);
     }

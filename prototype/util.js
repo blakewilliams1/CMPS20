@@ -78,7 +78,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 
 function get_dist_point(origin,x,y){
    return {
-      x: origin.x + x,
+      x : origin.x + x,
       y: origin.y + y
    }
 }
@@ -90,52 +90,20 @@ function get_dist_point(origin,x,y){
  * this function returns the tile location in which a object is in
  */
 
-function get_new_position(image,grid){
-
-  for(var i = 0; i < grid[0].length; i++){
-
-    if(inTile_x(image.position.x, grid[i][0])){
-
-      for(var j = 0; j < grid[i][0].length; j++){
-
-        if(inTile_y(image.position.y, grid[i][j])){
-          console.log(i,j);
-          return {
-              x: i,
-              y: y
-          }
-
+function in_grid(pos,grid){
+  for(var i = 0; i < grid.length; i++){
+     if((pos.x >= grid[i][0].x - 16) && (pos.x < grid[i][0].x + 16)){
+        for(var j = 0; j < grid[i].length; j++){
+           if((pos.y >= grid[i][j].y - 16) && (pos.y <= grid[i][j].y + 16)){
+              return {
+                   x: i,
+                   y: j
+              }
+           }
         }
-
-      }
-
-    }
-
+     }
   }
   console.log("location not found");
-}
-
-//-----------------------------------------------------------------------------------
-
-/*
- * the following two functions check if the x or y  position is in a tile
- */
-
-function inTile_x(position,tile){
-    var in_tile = false;
-   if(position == tile.x){
-      in_tile = true;
-   }
-  return in_tile
-}
-
-
-function inTile_y(position,tile){
-    var in_tile = false;
-   if(position == tile.y){
-      in_tile = true;
-   }
-  return in_tile
 }
 
 
@@ -148,10 +116,10 @@ function inTile_y(position,tile){
 function isGoal(start, goal){
   var dist_x = Math.abs(start.x - goal.x);
 
-  if( dist_x <= 32){
+  if( dist_x <= steps){
      var dist_y = Math.abs(start.y - goal.y);
 
-     if(dist_y <= 32){
+     if(dist_y <= steps){
       return true;
      }
    }
@@ -188,68 +156,77 @@ function isGoal(start, goal){
  * next move is a valid one)
  */
 
-function generate_move(current_pos,action,grid){
-  var x_length = grid.length-1;
-  var y_length = grid[0].length-1;
-  //var top_left = grid[0][0];
-  //var bottom_right = grid[x_length][y_length];
+function generate_move(pos,action,grid,goal,wall){
   var new_pos = {}
-  var bool = true;
+  var bool = false;
    switch (action){
     case "east":
         new_pos = {
-            x: current_pos.x + steps,
-            y: current_pos.y
+            x: pos.x + steps,
+            y: pos.y
         };
 
-       if(new_pos.x > grid[x_length][0].x){
-        bool = false;
+       if((new_pos.x > map_width) || (goal.x < new_pos.x)){
+        bool = true;
         break;
       }
-     // bool = grid[new_pos.x][new_pos.y].free;
+      var location = in_grid(new_pos,grid);
+       bool = check_walls(new_pos.x, new_pos.y, wall);
+      //bool = grid[location.x][location.y].free;
 
         break;
 
     case "west":
          new_pos = {
-            x: current_pos.x - steps,
-            y: current_pos.y
+            x: pos.x - steps,
+            y: pos.y
         };
 
-        if(new_pos.x < grid[0][0].x){
-          bool = false;
+
+
+        if((new_pos.x < 0) || (goal.x > new_pos.x)){
+          bool = true;
           break;
         }
-         //bool = grid[new_pos.x][new_pos.y].free;
+
+          var location = in_grid(new_pos,grid);
+          bool = check_walls(new_pos.x, new_pos.y, wall);
+         //bool = grid[location.x][location.y].free;
 
         break;
 
     case "north":
          new_pos = {
-            x: current_pos.x,
-            y: current_pos.y - steps
+            x: pos.x,
+            y: pos.y - steps
         };
 
-        if( new_pos.y < grid[0][0].y){
-          bool = false;
+        if((new_pos.y < 0) || (goal.y > new_pos.y)){
+          bool = true;
           break;
         }
-         //bool = grid[new_pos.x][new_pos.y].free;
+          var location = in_grid(new_pos,grid);
+          bool = check_walls(new_pos.x, new_pos.y, wall);
+         //bool = grid[location.x][location.y].free;
           break;
 
     case "south":
          new_pos = {
-            x: current_pos.x,
-            y: current_pos.y + steps
+            x: pos.x,
+            y: pos.y + steps
         };
-        if(new_pos.y > grid[x_length][y_length].y){
-          bool = false;
+
+        if((new_pos.y > map_height) || (goal.y < new_pos.y)){
+          bool = true;
           break;
         }
-         //bool = grid[new_pos.x][new_pos.y].free;
+        var location = in_grid(new_pos,grid);
+        bool = check_walls(new_pos.x, new_pos.y, wall);
+         //bool = grid[location.x][location.y].free;
 
         break;
     }
+  //console.log("new", new_pos.x, new_pos.y,);
 return [new_pos,bool];
 
 }
@@ -309,21 +286,6 @@ function PriorityQueue(){
     }
 }
 
-//-------------------------------------------------------------------------------------
-
-
-function add_action(path,action){
-  if(path.length == 0){
-     return [action];
-  }else{
-    var way = [];
-    for(var i = 0; i < path.length; i++){
-       way.push(path[i]);
-    }
-    way.push(action);
-    return way;
-  }
-}
 
 //------------------------------------------------------------------------------------
 
@@ -366,82 +328,26 @@ function check_walls(x,y,wall){
      var dist_x = Math.abs(x - object_x);
      var dist_y = Math.abs(y - object_y);
 
-     if(dist_x <= (object.width/2)) {
-        if(dist_y <= (object.height/2)) {
-          return false;
+     if(dist_x <= (object.width/2) +16 ) {
+        if(dist_y <= (object.height/2) +16) {
+          return true;
         }
      }
 
 
    }
-  return true;
+  return false;
 }
 
 
 //---------------------------------------------------------------------------------------
 
 
-function Make_grid(x1,y1,x2,y2,grid){
-   var new_grid = [];
-    for (var i = x1; i < x2; i++){
-        var list = [];
-        for(var j = y1; j < y2; j++){
-          list.push(grid[i][j]);
-        }
-        new_grid.push(list);
-    }
-  return new_grid;
-}
-
-
-function create_sub_grid(position,grid){
-    var x = grid.length;
-    var y = grid[0].length;
-
-    console.log(x,y);
-
-    var x_value = grid[half_x-1][0].x;
-    console.log("x_value", x_value);
-
-    var y_value = grid[0][half_y-1].y;
-    console.log("y_value", y_value);
-
-
-    if((position.x < x_value ) && (position.y < y_value)){
-      console.log("in Q1");
-       return Make_grid(0,0, half_x, half_y,grid);
-    }
-
-
-    if((position.x < x_value) && (position.y >= y_value )){
-       console.log("in Q2");
-        return Make_grid(0, half_y, x, y,grid);
-
-    }
-
-
-    if((position.x >= x_value ) && (position.y < y_value )){
-       console.log("in Q3");
-       console.log("half_x" , half_x);
-       console.log("x length of grid", x);
-      return Make_grid(half_x, 0, x, half_y,grid);
-    }
-
-
-    if((position.x >= x_value ) && (position.y >= y_value)){
-        console.log("in Q4");
-       return Make_grid(half_x,half_y,x,y,grid);
-    }
-
-
-}
-
-
-
-
-
 function on_edge(pos,subgrid){
-   if(pos.x == subgrid.length || pos.y == subgrid[0].length){
+   var x = subgrid.length -1;
+   var y = subgrid[0].length -1;
+
+   if(pos.x == subgrid[x][0].x|| pos.y == subgrid[0][y].y){
       console.log("yesssss");
       return true;
    }

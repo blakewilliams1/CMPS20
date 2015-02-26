@@ -6,7 +6,6 @@ var map_height = 800;
 
 var half_x = Math.floor((map_width/32)/2);
 var half_y = Math.floor((map_height/32)/2);
-console.log(half_x,half_y);
 var screenManager=[];
 screenManager.view=document.getElementById("myCanvas");
 screenManager.renderer= new PIXI.CanvasRenderer(window_width, window_height, screenManager.view);
@@ -45,6 +44,7 @@ window.onload = function init() {
 		if (loop)*/
 		screenManager[screenManager.length-1].update();
 		screenManager.renderer.render(screenManager[screenManager.length-1].stage);
+    //setInterval(animate, 1000/30);
 		requestAnimFrame(animate);
     fpsmeter.tick();
 	}
