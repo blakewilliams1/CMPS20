@@ -162,11 +162,14 @@ function Game(owner){
 		var x = 0;
 		var y = 0;
 		//map_width and map_height are defined at the top of main.js
-		while (x < map_width && y < map_height) {
-			var tile = new Tile(x,y);
-			this.container.addChild(tile);
-			x += 256;//MAKE MODULAR LATER
-			y += 256;
+		while (x < map_width) {
+			while(y < map_height) {
+				var tile = new Tile(x,y);
+				this.container.addChild(tile);
+				y += 256;
+			}
+			y = 0;
+			x += 256;
 		}
 	}
 
