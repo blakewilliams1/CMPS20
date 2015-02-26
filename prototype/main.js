@@ -47,7 +47,6 @@ window.onload = function init() {
 		screenManager.renderer.render(screenManager[screenManager.length-1].stage);
 		requestAnimFrame(animate);
     fpsmeter.tick();
-    console.log(screenManager.length);
 	}
 
 };

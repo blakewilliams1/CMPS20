@@ -164,7 +164,7 @@ function Game(owner){
 		//map_width and map_height are defined at the top of main.js
 		while (x < map_width && y < map_height) {
 			var tile = new Tile(x,y);
-			this.container.addChild(tile);
+			this.container.addChild(tile.sprite);
 			x += 256;//MAKE MODULAR LATER
 			y += 256;
 		}
@@ -218,7 +218,7 @@ function Game(owner){
  		//initiate the gui
 		this.init_gui();
 
-		//this.create_background();
+		this.create_background();
  		this.create_soldier();
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
@@ -244,7 +244,7 @@ function Game(owner){
 
  //--------------------------------------------------
 
- function Tile() {
+ function Grid_Tile() {
  	this.x
  	this.y
  	this.width
@@ -269,7 +269,7 @@ function Game(owner){
  	        for (var i = 16; i < map_width; i += 32) {
  		           var list = [];
  		           for (var j = 16; j < map_height - 60; j += 32) {
- 			              var tile = new Tile();
+ 			              var tile = new Grid_Tile();
  			              tile.x = i;
  			              tile.y = j;
  			              tile.width = 32;
