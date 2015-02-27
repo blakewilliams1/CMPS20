@@ -65,6 +65,11 @@ screenManager.create_pause_menu=function(){
 	pauseScreen.init_();
 	this.push(pauseScreen);
 }
+screenManager.create_credits_screen=function(){
+	var creditScreen = new Credits(screenManager);
+	creditScreen.init_();
+	this.push(creditScreen);
+}
 screenManager.signal_pop=function(pops){
 	while(screenManager.length>1&&screenManager.length>pops){
     screenManager.pop();
