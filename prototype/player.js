@@ -35,8 +35,8 @@ function Player(owner) {
 	sprite.owner=owner;
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
-	sprite.position.x = 200;
-	sprite.position.y = 200;
+	sprite.position.x = 1000;
+	sprite.position.y = 700;
 	sprite.prevX=sprite.position.x;
 	sprite.prevY=sprite.position.y;
 	sprite.gridSize = 4;
@@ -61,28 +61,16 @@ function Player(owner) {
 		sprite.prevY=sprite.position.y;
 		switch (sprite.direction) {
 		case "right":
-			this.setTexture(rightTextures[sprite.animCounter]);
-			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
-			if (sprite.animCounter >= 4) sprite.animCounter = 0;
-			sprite.position.x += 4;
+			sprite.moveRight();
 			break;
 		case "left":
-			this.setTexture(leftTextures[sprite.animCounter]);
-			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
-			if (sprite.animCounter >= 4) sprite.animCounter = 0;
-			sprite.position.x -= 4;
+			sprite.moveLeft();
 			break;
 		case "up":
-			this.setTexture(upTextures[sprite.animCounter]);
-			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
-			if (sprite.animCounter >= 4) sprite.animCounter = 0;
-			sprite.position.y -= 4;
+			sprite.moveUp();
 			break;
 		case "down":
-			this.setTexture(downTextures[sprite.animCounter]);
-			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
-			if (sprite.animCounter >= 4) sprite.animCounter = 0;
-			sprite.position.y += 4;
+			sprite.moveDown();
 			break;
 		}
 		if(sprite.position.x<0||sprite.position.y<0)sprite.revert_step();
@@ -120,5 +108,29 @@ function Player(owner) {
 			owner.active = this;
 		}
 	};
+	sprite.moveRight = function() {
+			this.setTexture(rightTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
+			sprite.position.x += 4;
+	};
+	sprite.moveLeft = function() {
+			this.setTexture(leftTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
+			sprite.position.x -= 4;
+	};
+	sprite.moveUp = function() {
+			this.setTexture(upTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
+			sprite.position.y -= 4;
+	}
+	sprite.moveDown = function() {
+			this.setTexture(downTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
+			sprite.position.y += 4;
+	}
 	return sprite;
 };
