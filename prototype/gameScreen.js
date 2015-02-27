@@ -16,13 +16,13 @@ function Game(owner){
  	this.civilians = [];
  	this.grid = [];
  	this.active
+	this.latestSoldier
  	this.fps = 60;
  	this.score=0;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
  	this.time=new Date().getTime();
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
-
 
 //-------------------------------------------------
 
@@ -33,7 +33,10 @@ function Game(owner){
  			for (var i = 0; i < this.civilians.length; i++) {
  				this.civilians[i].update(this.grid,this.soldiers,this.walls);
  			}
- 			this.countdown();
+			//If the newest soldier has entered the town, start the countdown.
+ 			//if (this.latestSoldier.position.y < 700) {
+				this.countdown();
+			//}
 			//check if the active soldier is colliding
 			for(var i=0;i<this.walls.length;i++){
 				if(collided(this.active,this.walls[i])){
@@ -91,6 +94,8 @@ function Game(owner){
  	this.create_soldier = function() {
  		var player = new Player(this);
  		this.active = player;
+		this.latestSoldier = player;
+		console.log(this.latestSoldier);
  		this.soldiers.push(player);
  		this.container.addChild(player);
  	}
@@ -178,11 +183,11 @@ function Game(owner){
 		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
 		var gui = new PIXI.Sprite(gui_base);
 		gui.position.x = 0;
-		gui.position.y = window_height-100;
+		gui.position.y = window_height-40;
  		this.score_text.position.x=30;
- 		this.score_text.position.y=window_height-60;
+ 		this.score_text.position.y=window_height-35;
  		this.time_text.position.x=200;
- 		this.time_text.position.y=window_height-60;
+ 		this.time_text.position.y=window_height-35;
  		this.stage.addChild(gui);
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);

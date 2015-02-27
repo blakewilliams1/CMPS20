@@ -179,14 +179,14 @@ Civilian.prototype  = {
     if (best_value == 0) {
        best_value = value;
        best_path = edge_list[i][1];
-       console.log("this is best", edge_list[i][2]);
+       //console.log("this is best", edge_list[i][2]);
        best_bool = edge_list[i][2];
 
    }else{
      if(value < best_value){
        best_value = value;
        best_path = edge_list[i][1];
-       console.log("this is best", edge_list[i][2]);
+       //console.log("this is best", edge_list[i][2]);
        best_bool = edge_list[i][2];
           }
      }
