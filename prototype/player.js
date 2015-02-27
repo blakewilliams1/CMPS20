@@ -75,7 +75,8 @@ function Player(owner) {
 		}
 		if(sprite.position.x<0||sprite.position.y<0)sprite.revert_step();
 		//TODO: hardcoded the height of the gui base
-		if(sprite.position.x>map_width||sprite.position.y>map_height-100)sprite.revert_step();
+		if(sprite.position.x>map_width||sprite.position.y>map_height-100)
+			sprite.revert_step();
 	};
 	sprite.revert_step=function(){
 		sprite.position.x=sprite.prevX;

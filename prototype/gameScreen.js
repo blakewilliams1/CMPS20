@@ -36,7 +36,7 @@ function Game(owner){
  			this.countdown();
 			//check if the active soldier is colliding
 			for(var i=0;i<this.walls.length;i++){
-				if(collided(this.active,this.walls[i].sprite)){
+				if(collided(this.active,this.walls[i])){
 					this.active.revert_step();
 				}
 			}
@@ -135,20 +135,21 @@ function Game(owner){
  		var trashCan = new HidingSpot(x,y,empty_tex,filled_tex);
  		this.container.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
+		this.walls.push(trashCan);
  	}
 
 //----------------------------------------------------
 
 	this.create_wall=function(x,y) {
 		var wall = new Wall(x, y);
-		this.container.addChild(wall.sprite);
+		this.container.addChild(wall);
 		this.walls.push(wall);
 	}
 
 //----------------------------------------------------
 	this.create_building=function(x,y) {
 		var building= new Building(x, y);
-		this.container.addChild(building.sprite);
+		this.container.addChild(building);
 		this.walls.push(building);
 	}
 

@@ -322,7 +322,7 @@ function collided(first,second){
 
 function check_walls(x,y,wall){
    for(var i = 0; i < wall.length; i++){
-     var object = wall[i].sprite;
+     var object = wall[i];
      var object_x = object.position.x;
      var object_y = object.position.y;
      var dist_x = Math.abs(x - object_x);
