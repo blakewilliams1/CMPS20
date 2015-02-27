@@ -15,6 +15,8 @@ window.onload = function init() {
 	// DOM
 	screenManager.create_title_screen();
 	document.body.appendChild(screenManager.renderer.view);
+
+	console.log(document.body)
 	requestAnimFrame(animate);
 //temporarily commented out the FPS meter
 /*	var loop = 0,
@@ -64,6 +66,11 @@ screenManager.create_pause_menu=function(){
 	var pauseScreen = new Pause(this);
 	pauseScreen.init_();
 	this.push(pauseScreen);
+}
+screenManager.create_credits_screen=function(){
+	var creditScreen = new Credits(screenManager);
+	creditScreen.init_();
+	this.push(creditScreen);
 }
 screenManager.signal_pop=function(pops){
 	while(screenManager.length>1&&screenManager.length>pops){

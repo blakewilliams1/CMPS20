@@ -8,6 +8,7 @@ function Game(owner){
 	this.container=new PIXI.DisplayObjectContainer();
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	//initialize game attributes
+
 	this.alarms=[];
  	this.soldiers = [];
  	this.soldier_count = 0;
@@ -16,13 +17,13 @@ function Game(owner){
  	this.civilians = [];
  	this.grid = [];
  	this.active
+	this.latestSoldier
  	this.fps = 60;
  	this.score=0;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
  	this.time=new Date().getTime();
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
-
 
 //-------------------------------------------------
 
@@ -33,10 +34,13 @@ function Game(owner){
  			for (var i = 0; i < this.civilians.length; i++) {
  				this.civilians[i].update(this.grid,this.soldiers,this.walls);
  			}
- 			this.countdown();
+			//If the newest soldier has entered the town, start the countdown.
+ 			//if (this.latestSoldier.position.y < 700) {
+				this.countdown();
+			//}
 			//check if the active soldier is colliding
 			for(var i=0;i<this.walls.length;i++){
-				if(collided(this.active,this.walls[i].sprite)){
+				if(collided(this.active,this.walls[i])){
 					this.active.revert_step();
 				}
 			}
@@ -91,6 +95,8 @@ function Game(owner){
  	this.create_soldier = function() {
  		var player = new Player(this);
  		this.active = player;
+		this.latestSoldier = player;
+		console.log(this.latestSoldier);
  		this.soldiers.push(player);
  		this.container.addChild(player);
  	}
@@ -101,7 +107,7 @@ function Game(owner){
  		for (var i = 0; i < this.hiding_spots.length; i++) {
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
  			var yDistance = Math.abs(this.active.position.y - this.hiding_spots[i].position.y);
- 			if (xDistance < 32 && yDistance < 32) {
+ 			if (xDistance < 45 && yDistance < 45) {
  				this.active.hide(this.hiding_spots[i]);
  				this.score+=10;
  			}
@@ -125,6 +131,7 @@ function Game(owner){
 		this.civilians.push(civilian);
 		//var location = [sprite.position.x,sprite.position.y];
 		//var position = location_in_grid(location,this.grid);
+		this.container.addChild(civilian.graphic);
 		this.container.addChild(sprite);
 		//civilian.moves = civilian.A_star(this.grid)
 	}
@@ -135,20 +142,21 @@ function Game(owner){
  		var trashCan = new HidingSpot(x,y,empty_tex,filled_tex);
  		this.container.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
+		this.walls.push(trashCan);
  	}
 
 //----------------------------------------------------
 
 	this.create_wall=function(x,y) {
 		var wall = new Wall(x, y);
-		this.container.addChild(wall.sprite);
+		this.container.addChild(wall);
 		this.walls.push(wall);
 	}
 
 //----------------------------------------------------
 	this.create_building=function(x,y) {
 		var building= new Building(x, y);
-		this.container.addChild(building.sprite);
+		this.container.addChild(building);
 		this.walls.push(building);
 	}
 
@@ -162,11 +170,14 @@ function Game(owner){
 		var x = 0;
 		var y = 0;
 		//map_width and map_height are defined at the top of main.js
-		while (x < map_width && y < map_height) {
-			var tile = new Tile(x,y);
-			this.container.addChild(tile);
-			x += 256;//MAKE MODULAR LATER
-			y += 256;
+		while (x < map_width) {
+			while(y < map_height) {
+				var tile = new Tile(x,y);
+				this.container.addChild(tile);
+				y += 256;
+			}
+			y = 0;
+			x += 256;
 		}
 	}
 
@@ -174,11 +185,11 @@ function Game(owner){
 		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
 		var gui = new PIXI.Sprite(gui_base);
 		gui.position.x = 0;
-		gui.position.y = window_height-100;
+		gui.position.y = window_height-40;
  		this.score_text.position.x=30;
- 		this.score_text.position.y=window_height-60;
+ 		this.score_text.position.y=window_height-35;
  		this.time_text.position.x=200;
- 		this.time_text.position.y=window_height-60;
+ 		this.time_text.position.y=window_height-35;
  		this.stage.addChild(gui);
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);
@@ -232,10 +243,9 @@ function Game(owner){
  		this.create_wall(650, 200);
  		this.create_wall(500, 600);
  		this.create_building(200,300);
-
     this.create_grid();
 
-    for (var i = 0; i < 1; i++) {
+    for (var i = 0; i < 5; i++) {
         this.create_civilian(16,16);
        //this.create_civilian(600,250);
     }

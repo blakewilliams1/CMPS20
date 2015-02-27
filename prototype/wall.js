@@ -1,13 +1,14 @@
 function Wall(x, y) {
-	this.texture = PIXI.Texture.fromImage("../Art Assets/png/shittyFence.png");
-	this.sprite = new PIXI.Sprite(this.texture);
-	this.sprite.anchor.x = .5;
-	this.sprite.anchor.y = .5;
-	this.sprite.position.x = x;
-	this.sprite.position.y = y;
-  this.sprite.width = 128;
-  this.sprite.height = 32;
-	this.update = function() {
+	var texture = PIXI.Texture.fromImage("../Art Assets/png/shittyFence.png");
+	var sprite = new PIXI.Sprite(texture);
+	sprite.anchor.x = .5;
+	sprite.anchor.y = .5;
+	sprite.position.x = x;
+	sprite.position.y = y;
+	sprite.width = 128;
+	sprite.height = 32;
+	sprite.update = function() {
 
 	}
+	return sprite;
 }

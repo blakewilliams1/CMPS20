@@ -10,7 +10,7 @@
  * civilian object
  */
 
- var steps = 3;
+ var steps = 2;
 function Civilian(){
   this.sprite;
   this.actions = ["north","south","east","west"];
@@ -19,7 +19,7 @@ function Civilian(){
   this.goal = {x:1100, y:600};
 
    //Math.floor(Math.random() * window_width)
-  this.vision_distance = 200;
+  this.vision_distance = 150;
   this.vision_angle = 45;
  // console.log("angle ",this.vision_angle);
 
@@ -27,6 +27,8 @@ function Civilian(){
   this.search_grid = [];
   this.spotted = false;
   this.count = 5;
+
+  this.graphic = new PIXI.Graphics()
 
   this.pending = "none";
   this.pend = false;
@@ -44,7 +46,7 @@ function Civilian(){
 //---------------------------------------------------------------------------------------
 
   this.update = function(grid,soldiers,walls){
-
+       this.graphic.clear();
        this.center = {
        x:this.sprite.position.x,
        y:this.sprite.position.y
@@ -58,7 +60,7 @@ function Civilian(){
 
 
 
-     this.action(soldiers);
+     this.action(soldiers,walls);
      //console.log(this.sprite.position.x, this.sprite.position.y);
 
   }
@@ -98,7 +100,8 @@ Civilian.prototype  = {
 
 //-----------------------------------------------------------------------------------------
 
-    scan_area: function(origin,x,y,soldiers){
+    scan_area: function(origin,x,y,soldiers,walls){
+
       for( var i = 0; i < soldiers.length; i++){
       var target = {
               x: soldiers[i].position.x,
@@ -108,12 +111,23 @@ Civilian.prototype  = {
       var point = get_dist_point(origin,x,y);
       var b = rotate_point(point.x, point.y, origin.x, origin.y, -(this.vision_angle));
       var c = rotate_point(point.x, point.y, origin.x, origin.y, (this.vision_angle));
+       this.graphic.clear();
+
+       this.graphic.beginFill(0xFFFF00);
+       this.graphic.alpha = .2
+       console.log(this.graphic.alpha);
+       this.graphic.moveTo(origin.x,origin.y);
+       this.graphic.lineTo(b.x, b.y);
+       this.graphic.lineTo(c.x, c.y);
+       this.graphic.endFill();
 
       if(in_triangle(target,origin,b,c)){
-        var line = getRay(origin,target);
+         console.log("in triangle");
+         var line = getRay(origin,target);
 
         if(true){
           //do what ever
+          alert("found")
           console.log("found");
         }
 
@@ -123,27 +137,27 @@ Civilian.prototype  = {
 
 //----------------------------------------------------------------------------------------
 
-    action: function(soldiers){
+    action: function(soldiers, walls){
 
       var move = this.moves;
     switch (move){
       case "east":
-    this.scan_area(this.center, this.vision_distance,0,soldiers);
+    this.scan_area(this.center, this.vision_distance,0,soldiers,walls);
     this.sprite.position.x += steps;
     break;
 
     case "west":
-    this.scan_area(this.center, -(this.vision_distance),0,soldiers);
+    this.scan_area(this.center, -(this.vision_distance),0,soldiers,walls);
     this.sprite.position.x -= steps;
     break;
 
     case "north":
-    this.scan_area(this.center, 0, -(this.vision_distance),soldiers);
+    this.scan_area(this.center, 0, -(this.vision_distance),soldiers,walls);
     this.sprite.position.y -= steps;
     break;
 
     case "south":
-    this.scan_area(this.center, 0, this.vision_distance,soldiers);
+    this.scan_area(this.center, 0, this.vision_distance,soldiers,walls);
     this.sprite.position.y += steps;
     break;
     }
@@ -179,14 +193,12 @@ Civilian.prototype  = {
     if (best_value == 0) {
        best_value = value;
        best_path = edge_list[i][1];
-       console.log("this is best", edge_list[i][2]);
        best_bool = edge_list[i][2];
 
    }else{
      if(value < best_value){
        best_value = value;
        best_path = edge_list[i][1];
-       console.log("this is best", edge_list[i][2]);
        best_bool = edge_list[i][2];
           }
      }
@@ -249,6 +261,16 @@ function choose_random_adj(path){
     break;
     }
 
+}
+
+
+function check_line(line,walls){
+  for(var i = 0; i < line.length;i++){
+      if(check_walls(line[i].x, line[i].y,walls)){
+        return true;
+      }
+  }
+  return false;
 }
 
 

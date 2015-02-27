@@ -60,7 +60,10 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 
      var ray = [];
         while(v1.x!=v2.x || v1.y!=v2.y){
-            ray.push(v1.x,v1.y);
+            ray.push({
+                  x:v1.x,
+                  y:v1.y
+                  });
              var e2 = 2*err;
              if(e2>-dy){
                 err = err - dy;
@@ -322,7 +325,7 @@ function collided(first,second){
 
 function check_walls(x,y,wall){
    for(var i = 0; i < wall.length; i++){
-     var object = wall[i].sprite;
+     var object = wall[i];
      var object_x = object.position.x;
      var object_y = object.position.y;
      var dist_x = Math.abs(x - object_x);

@@ -1,14 +1,49 @@
+	var rightTextures = [
+		PIXI.Texture.fromImage("../Art Assets/png/soldierRight1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierRight2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierRight3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierRight4.png")
+	]
+	
+	var leftTextures = [
+		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft4.png")
+	]
+	
+	var upTextures = [
+		PIXI.Texture.fromImage("../Art Assets/png/soldierBack1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierBack2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierBack3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierBack4.png")
+	]
+	
+	var downTextures = [
+		PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierForward2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierForward3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierForward4.png")
+	]
+	
+	var otherTex = PIXI.Texture.fromImage("../Art Assets/png/soldierRight1.png");
+
+
 function Player(owner) {
 	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png");
 	var sprite = new PIXI.Sprite(tex);
 	sprite.owner=owner;
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
-	sprite.position.x = 200;
-	sprite.position.y = 200;
+	sprite.position.x = 1000;
+	sprite.position.y = 700;
 	sprite.prevX=sprite.position.x;
 	sprite.prevY=sprite.position.y;
 	sprite.gridSize = 4;
+	//This counter is used below to control the index of the current texture
+	sprite.animCounter = 0;
+	//This counter is used below to control how fast animation is
+	sprite.animCounter2 = 0;
 	sprite.setInteractive(true);
 	sprite.direction = "none";
 	sprite.objectBehind;
@@ -26,21 +61,22 @@ function Player(owner) {
 		sprite.prevY=sprite.position.y;
 		switch (sprite.direction) {
 		case "right":
-			sprite.position.x += 4;
+			sprite.moveRight();
 			break;
 		case "left":
-			sprite.position.x -= 4;
+			sprite.moveLeft();
 			break;
 		case "up":
-			sprite.position.y -= 4;
+			sprite.moveUp();
 			break;
 		case "down":
-			sprite.position.y += 4;
+			sprite.moveDown();
 			break;
 		}
 		if(sprite.position.x<0||sprite.position.y<0)sprite.revert_step();
 		//TODO: hardcoded the height of the gui base
-		if(sprite.position.x>map_width||sprite.position.y>map_height-100)sprite.revert_step();
+		if(sprite.position.x>map_width||sprite.position.y>map_height-100)
+			sprite.revert_step();
 	};
 	sprite.revert_step=function(){
 		sprite.position.x=sprite.prevX;
@@ -73,5 +109,29 @@ function Player(owner) {
 			owner.active = this;
 		}
 	};
+	sprite.moveRight = function() {
+			this.setTexture(rightTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
+			sprite.position.x += 4;
+	};
+	sprite.moveLeft = function() {
+			this.setTexture(leftTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
+			sprite.position.x -= 4;
+	};
+	sprite.moveUp = function() {
+			this.setTexture(upTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
+			sprite.position.y -= 4;
+	}
+	sprite.moveDown = function() {
+			this.setTexture(downTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
+			sprite.position.y += 4;
+	}
 	return sprite;
 };
