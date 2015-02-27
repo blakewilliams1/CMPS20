@@ -1,3 +1,34 @@
+	var rightTextures = [
+		PIXI.Texture.fromImage("../Art Assets/png/soldierRight1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierRight2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierRight3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierRight4.png")
+	]
+	
+	var leftTextures = [
+		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft4.png")
+	]
+	
+	var upTextures = [
+		PIXI.Texture.fromImage("../Art Assets/png/soldierBack1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierBack2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierBack3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierBack4.png")
+	]
+	
+	var downTextures = [
+		PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierForward2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierForward3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/soldierForward4.png")
+	]
+	
+	var otherTex = PIXI.Texture.fromImage("../Art Assets/png/soldierRight1.png");
+
+
 function Player(owner) {
 	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png");
 	var sprite = new PIXI.Sprite(tex);
@@ -9,6 +40,10 @@ function Player(owner) {
 	sprite.prevX=sprite.position.x;
 	sprite.prevY=sprite.position.y;
 	sprite.gridSize = 4;
+	//This counter is used below to control the index of the current texture
+	sprite.animCounter = 0;
+	//This counter is used below to control how fast animation is
+	sprite.animCounter2 = 0;
 	sprite.setInteractive(true);
 	sprite.direction = "none";
 	sprite.objectBehind;
@@ -26,15 +61,27 @@ function Player(owner) {
 		sprite.prevY=sprite.position.y;
 		switch (sprite.direction) {
 		case "right":
+			this.setTexture(rightTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
 			sprite.position.x += 4;
 			break;
 		case "left":
+			this.setTexture(leftTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
 			sprite.position.x -= 4;
 			break;
 		case "up":
+			this.setTexture(upTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
 			sprite.position.y -= 4;
 			break;
 		case "down":
+			this.setTexture(downTextures[sprite.animCounter]);
+			if (sprite.animCounter2++ % 10 == 0) ++sprite.animCounter;
+			if (sprite.animCounter >= 4) sprite.animCounter = 0;
 			sprite.position.y += 4;
 			break;
 		}
