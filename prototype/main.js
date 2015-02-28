@@ -83,3 +83,8 @@ window.onkeydown = function(event) {
 window.onkeyup = function(event) {
 	screenManager[screenManager.length-1].keyup(event);
 };
+
+
+window.onmousemove = function(){
+
+}

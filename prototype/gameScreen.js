@@ -32,12 +32,12 @@ function Game(owner){
  			this.active.update();
  			//update civilians
  			for (var i = 0; i < this.civilians.length; i++) {
- 				this.civilians[i].update(this.grid,this.soldiers,this.walls);
+ 				this.civilians[i].update(this.grid, this.soldiers, this.walls, this.alarms);
  			}
 			//If the newest soldier has entered the town, start the countdown.
  			//if (this.latestSoldier.position.y < 700) {
 				this.countdown();
-			//}
+			//
 			//check if the active soldier is colliding
 			for(var i=0;i<this.walls.length;i++){
 				if(collided(this.active,this.walls[i])){

@@ -52,28 +52,31 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 
 
   function getRay(v1,v2){
-     var dx = Math.abs(v2.x - v1.x);
-     var dy = Math.abs(v2.y - v1.y);
-     var sx = v1.x < v2.x ? 1 : -1;
-     var sy = v1.y < v2.y ? 1 : -1;
+     var v11 = v1;
+     var v22 = v2;
+     var dx = Math.abs(v22.x - v11.x);
+     var dy = Math.abs(v22.y - v11.y);
+     var sx = v11.x < v22.x ? 1 : -1;
+     var sy = v11.y < v22.y ? 1 : -1;
      var err = dx-dy;
 
      var ray = [];
-        while(v1.x!=v2.x || v1.y!=v2.y){
+        while(v11.x!=v22.x || v11.y!=v22.y){
             ray.push({
-                  x:v1.x,
-                  y:v1.y
+                  x:v11.x,
+                  y:v11.y
                   });
              var e2 = 2*err;
              if(e2>-dy){
                 err = err - dy;
-                v1.x += sx;
+                v11.x += sx;
               }
               if(e2<dx){
                 err = err + dx;
-                v1.y += sy;
-                }
+                v11.y += sy;
+              }
       }
+
    return ray;
   }
 
@@ -331,8 +334,8 @@ function check_walls(x,y,wall){
      var dist_x = Math.abs(x - object_x);
      var dist_y = Math.abs(y - object_y);
 
-     if(dist_x <= (object.width/2) +16 ) {
-        if(dist_y <= (object.height/2) +16) {
+     if(dist_x <= (object.width/2) + 16 ) {
+        if(dist_y <= (object.height/2) + 16) {
           return true;
         }
      }

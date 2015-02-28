@@ -16,16 +16,19 @@ function Civilian(){
   this.actions = ["north","south","east","west"];
   this.moves;
 
-  this.goal = {x:1100, y:600};
+  this.goal = {x:Math.floor(Math.random() * (map_width - 64)), y:Math.floor(Math.random() * (map_height - 64))};
 
    //Math.floor(Math.random() * window_width)
   this.vision_distance = 150;
   this.vision_angle = 45;
+
+  this.point1 = {};
+  this.point2 = {};
  // console.log("angle ",this.vision_angle);
 
   this.at_goal = false;
   this.search_grid = [];
-  this.spotted = false;
+  this.found = false;
   this.count = 5;
 
   this.graphic = new PIXI.Graphics()
@@ -45,7 +48,7 @@ function Civilian(){
 
 //---------------------------------------------------------------------------------------
 
-  this.update = function(grid,soldiers,walls){
+  this.update = function(grid,soldiers,walls,alarms){
        this.graphic.clear();
        this.center = {
        x:this.sprite.position.x,
@@ -60,7 +63,7 @@ function Civilian(){
 
 
 
-     this.action(soldiers,walls);
+     this.action(soldiers,walls,alarms);
      //console.log(this.sprite.position.x, this.sprite.position.y);
 
   }
@@ -100,7 +103,7 @@ Civilian.prototype  = {
 
 //-----------------------------------------------------------------------------------------
 
-    scan_area: function(origin,x,y,soldiers,walls){
+    scan_area: function(origin,x,y,soldiers,walls,alarms){
 
       for( var i = 0; i < soldiers.length; i++){
       var target = {
@@ -109,25 +112,28 @@ Civilian.prototype  = {
       }
 
       var point = get_dist_point(origin,x,y);
-      var b = rotate_point(point.x, point.y, origin.x, origin.y, -(this.vision_angle));
-      var c = rotate_point(point.x, point.y, origin.x, origin.y, (this.vision_angle));
-       this.graphic.clear();
+       var b = rotate_point(point.x, point.y, origin.x, origin.y, -(this.vision_angle));
+       var c = rotate_point(point.x, point.y, origin.x, origin.y, (this.vision_angle));
 
+       this.graphic.clear();
        this.graphic.beginFill(0xFFFF00);
        this.graphic.alpha = .2
-       console.log(this.graphic.alpha);
-       this.graphic.moveTo(origin.x,origin.y);
+       this.graphic.moveTo(this.sprite.position.x,this.sprite.position.y);
        this.graphic.lineTo(b.x, b.y);
        this.graphic.lineTo(c.x, c.y);
        this.graphic.endFill();
-
+       if(!soldiers[i].visible) continue;
       if(in_triangle(target,origin,b,c)){
-         console.log("in triangle");
-         var line = getRay(origin,target);
+         var cent = origin;
+         var line = getRay(cent,target);
 
-        if(true){
+        if(check_line(line,walls)){
           //do what ever
-          alert("found")
+          this.found = true;
+          this.goal = {
+                x: alarms[0].position.x,
+                y: alarms[0].position.y
+          }
           console.log("found");
         }
 
@@ -137,27 +143,27 @@ Civilian.prototype  = {
 
 //----------------------------------------------------------------------------------------
 
-    action: function(soldiers, walls){
+    action: function(soldiers, walls,alarms){
 
       var move = this.moves;
     switch (move){
       case "east":
-    this.scan_area(this.center, this.vision_distance,0,soldiers,walls);
+      if(!this.found)this.scan_area(this.center, this.vision_distance,0,soldiers,walls,alarms);
     this.sprite.position.x += steps;
     break;
 
     case "west":
-    this.scan_area(this.center, -(this.vision_distance),0,soldiers,walls);
+    if(!this.found)this.scan_area(this.center, -(this.vision_distance),0,soldiers,walls,alarms);
     this.sprite.position.x -= steps;
     break;
 
     case "north":
-    this.scan_area(this.center, 0, -(this.vision_distance),soldiers,walls);
+    if(!this.found)this.scan_area(this.center, 0, -(this.vision_distance),soldiers,walls,alarms);
     this.sprite.position.y -= steps;
     break;
 
     case "south":
-    this.scan_area(this.center, 0, this.vision_distance,soldiers,walls);
+    if(!this.found)this.scan_area(this.center, 0, this.vision_distance,soldiers,walls,alarms);
     this.sprite.position.y += steps;
     break;
     }
@@ -181,12 +187,10 @@ Civilian.prototype  = {
             return this.pending;
            }
         }
-    }
+      }
    }
-  //var index = Math.floor(Math.random()*edge_list.length)
 
   for(var i = 0; i < edge_list.length; i++){
-     //if(edge_list[i][2]) continue;
     var value = (Math.abs(edge_list[i][0].x - goal.x) + Math.abs(edge_list[i][0].y - goal.y));
 
 
@@ -265,12 +269,28 @@ function choose_random_adj(path){
 
 
 function check_line(line,walls){
+  console.log(line);
   for(var i = 0; i < line.length;i++){
-      if(check_walls(line[i].x, line[i].y,walls)){
-        return true;
-      }
+     for( var j = 0; j < walls.length; j++){
+        console.log(line[i]);
+        var x = line[i].x;
+        var y = line[i].y;
+
+        var width = walls[j].width/2
+        var x_pos = walls[j].position.x
+
+        if( (x <  x_pos + width) && (x > x_pos - width)){
+          var height = walls[j].height/2;
+          var y_pos = walls[j].position.y
+
+          if( (y < y_pos + height) && (y > y_pos - height)){
+            return false;
+          }
+        }
+     }
+
   }
-  return false;
+  return true;
 }
 
 

@@ -4,28 +4,28 @@
 		PIXI.Texture.fromImage("../Art Assets/png/soldierRight3.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierRight4.png")
 	]
-	
+
 	var leftTextures = [
 		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft1.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft2.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft3.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft4.png")
 	]
-	
+
 	var upTextures = [
 		PIXI.Texture.fromImage("../Art Assets/png/soldierBack1.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierBack2.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierBack3.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierBack4.png")
 	]
-	
+
 	var downTextures = [
 		PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierForward2.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierForward3.png"),
 		PIXI.Texture.fromImage("../Art Assets/png/soldierForward4.png")
 	]
-	
+
 	var otherTex = PIXI.Texture.fromImage("../Art Assets/png/soldierRight1.png");
 
 
