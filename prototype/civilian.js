@@ -5,6 +5,38 @@
 
 //--------------------------------------------------------------------------------------
 
+
+// initilize all the textures for the civilian
+
+
+var rightText = [
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineRight1.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UnkraineRight2.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineRight3.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UnkraineRight4.png")
+  ]
+
+  var leftText = [
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineLeft1.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineLeft2.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineLeft3.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineLeft4.png")
+  ]
+
+  var upText = [
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineBack1.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineBack2.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineBack3.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineBack4.png")
+  ]
+
+  var downText = [
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineForward1.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineForward2.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineForward3.png"),
+    PIXI.Texture.fromImage("../Art Assets/png/UkraineForward4.png")
+  ]
+
 /*
  * this is the initilize function of the
  * civilian object
@@ -15,6 +47,8 @@ function Civilian(){
   this.sprite;
   this.actions = ["north","south","east","west"];
   this.moves;
+  this.animCounter = 0;
+  this.animCounter2 = 0;
 
   this.goal = {x:Math.floor(Math.random() * (map_width - 64)), y:Math.floor(Math.random() * (map_height - 64))};
 
@@ -149,21 +183,41 @@ Civilian.prototype  = {
     switch (move){
       case "east":
       if(!this.found)this.scan_area(this.center, this.vision_distance,0,soldiers,walls,alarms);
-    this.sprite.position.x += steps;
+
+      this.sprite.setTexture(rightText[this.animCounter]);
+      if (this.animCounter2++ % 10 == 0) ++this.animCounter;
+      if (this.animCounter >= 4) this.animCounter = 0;
+
+      this.sprite.position.x += steps;
     break;
 
     case "west":
     if(!this.found)this.scan_area(this.center, -(this.vision_distance),0,soldiers,walls,alarms);
+
+     this.sprite.setTexture(leftText[this.animCounter]);
+      if (this.animCounter2++ % 10 == 0) ++this.animCounter;
+      if (this.animCounter >= 4) this.animCounter = 0;
+
     this.sprite.position.x -= steps;
     break;
 
     case "north":
     if(!this.found)this.scan_area(this.center, 0, -(this.vision_distance),soldiers,walls,alarms);
+
+     this.sprite.setTexture(upText[this.animCounter]);
+      if (this.animCounter2++ % 10 == 0) ++this.animCounter;
+      if (this.animCounter >= 4) this.animCounter = 0;
+
     this.sprite.position.y -= steps;
     break;
 
     case "south":
     if(!this.found)this.scan_area(this.center, 0, this.vision_distance,soldiers,walls,alarms);
+
+     this.sprite.setTexture(downText[this.animCounter]);
+      if (this.animCounter2++ % 10 == 0) ++this.animCounter;
+      if (this.animCounter >= 4) this.animCounter = 0;
+
     this.sprite.position.y += steps;
     break;
     }
