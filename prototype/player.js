@@ -133,5 +133,11 @@ function Player(owner) {
 			if (sprite.animCounter >= 4) sprite.animCounter = 0;
 			sprite.position.y += 4;
 	}
+	sprite.knock_out=function(civilian){
+		if(civilian.found){
+			//play punching sound
+			//either remove civilian from stage or make him lie down?
+		}
+	}
 	return sprite;
 };

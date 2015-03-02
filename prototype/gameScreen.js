@@ -96,20 +96,32 @@ function Game(owner){
  		var player = new Player(this);
  		this.active = player;
 		this.latestSoldier = player;
-		console.log(this.latestSoldier);
  		this.soldiers.push(player);
  		this.container.addChild(player);
  	}
 
 //----------------------------------------------------
 
- 	this.hide_active_soldier = function() {
+	this.hide_active_soldier = function() {
  		for (var i = 0; i < this.hiding_spots.length; i++) {
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
  			var yDistance = Math.abs(this.active.position.y - this.hiding_spots[i].position.y);
  			if (xDistance < 45 && yDistance < 45) {
  				this.active.hide(this.hiding_spots[i]);
  				this.score+=10;
+ 			}
+ 		}
+ 	};
+
+//----------------------------------------------------
+
+ 	this.knock_out = function() {
+ 		for (var i = 0; i < this.civilians.length; i++) {
+ 			var xDistance = Math.abs(this.active.position.x - this.civilians[i].sprite.position.x);
+ 			var yDistance = Math.abs(this.active.position.y - this.civilians[i].sprite.position.y);
+ 			if (xDistance < 45 && yDistance < 45) {
+ 				this.active.knock_out(this.civilians[i].sprite);
+ 				break;
  			}
  		}
  	};
@@ -216,6 +228,7 @@ function Game(owner){
 		if(key=='A'&&this.active.direction=="left")this.active.direction = "none";
 		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
 		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
+		if(key=='Q')this.knock_out();
 		if(event.keyCode==27){
 			//press esc to pause game
 			owner.create_pause_menu();

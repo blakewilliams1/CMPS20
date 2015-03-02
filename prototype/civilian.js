@@ -168,7 +168,7 @@ Civilian.prototype  = {
                 x: alarms[0].position.x,
                 y: alarms[0].position.y
           }
-          console.log("found");
+          //console.log("found");
         }
 
       }
@@ -326,7 +326,7 @@ function check_line(line,walls){
   console.log(line);
   for(var i = 0; i < line.length;i++){
      for( var j = 0; j < walls.length; j++){
-        console.log(line[i]);
+        //console.log(line[i]);
         var x = line[i].x;
         var y = line[i].y;
 
