@@ -206,6 +206,13 @@ function Game(owner){
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);
 	}
+	
+//----------------------------------------------------
+
+	this.signal_triggered_alarm=function() {
+		alert("Game Over"+'\n'+"Your score was "+this.score);
+		//Do something better to signal game over
+	}
 
 //----------------------------------------------------
 	this.keydown=function(event){

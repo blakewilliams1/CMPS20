@@ -94,12 +94,27 @@ function Civilian(){
        }else{
          this.moves = this.next_action(grid,this.goal,walls);
        }
-
-
-
+	   
+	   
      this.action(soldiers,walls,alarms);
      //console.log(this.sprite.position.x, this.sprite.position.y);
-
+     
+	 //ring alarm if needed
+	  if(this.at_goal&&this.found){
+		  var curr_alarm = 'undefined';
+		  for(var i=0;i<alarms.length;i++){
+			  if(Math.abs(alarms[i].position.x-this.sprite.position.x)<32&&
+			  Math.abs(alarms[i].position.y-this.sprite.position.y)<32){
+			  curr_alarm=alarms[i];
+			  break;
+			  }
+		  }
+		  console.log(curr_alarm);
+		  if(curr_alarm!='undefined'){
+			  curr_alarm.trigger();
+		  }
+		  this.found=false;//not sure if this is needed
+	  }
   }
 
 }
