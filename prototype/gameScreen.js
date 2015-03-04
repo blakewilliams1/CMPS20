@@ -60,17 +60,17 @@ function Game(owner){
 
 
  	this.scroll_camera=function(){
-		if(mouse_loaction.x+this.container.position.x>window_width*4/5){
-			this.container.position.x=window_width*4/5-mouse_loaction.x;
+		if(mouse_location.x+this.container.position.x>window_width*4/5){
+			this.container.position.x=window_width*4/5-mouse_location.x;
 		}
-		if(mouse_loaction.x+this.container.position.x<window_width/5){
-			this.container.position.x=window_width/5- mouse_loaction.x;
+		if(mouse_location.x+this.container.position.x<window_width/5){
+			this.container.position.x=window_width/5- mouse_location.x;
 		}
 		if( mouse_location.y+this.container.position.y>window_height*4/5){
-			this.container.position.y=window_height*4/5- mouse_loaction.y;
+			this.container.position.y=window_height*4/5- mouse_location.y;
 		}
 		if(mouse_location.y+this.container.position.y<window_height/5){
-			this.container.position.y=window_height/5-mouse_loaction.y;
+			this.container.position.y=window_height/5-mouse_location.y;
 		}
 		if(this.container.position.x>0)this.container.position.x=0;
 		if(this.container.position.y>0)this.container.position.y=0;
@@ -271,8 +271,8 @@ function Game(owner){
  		this.create_wall(500, 600);
  		this.create_building(200,300);*/
 		//Top row of hiding spots.
-		this.create_hiding_spot(map_width*9/10,map_height*1/10,"trashcan","trashcanSoldier");
-		this.create_hiding_spot(map_width*6/10, map_height*1/8,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*9/10,map_height*1/10,"trashcan");
+		this.create_hiding_spot(map_width*6/10, map_height*1/8,"trashcan");
 		//Street 1
 		this.create_building(map_width*6/10, map_height*1/4);
 		this.create_building(map_width*15/20, map_height*1/4);
@@ -280,15 +280,15 @@ function Game(owner){
 		this.create_building(map_width*6/10, map_height*4/7);
 		this.create_building(map_width*8/10, map_height*4/7);
 		//Second row of hiding spots.
-		this.create_hiding_spot(map_width*5/10,map_height*4/7,"trashcan","trashcanSoldier");
-		this.create_hiding_spot(map_width*9/10,map_height*4/7,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*5/10,map_height*4/7,"trashcan");
+		this.create_hiding_spot(map_width*9/10,map_height*4/7,"trashcan");
 		//Lower left hand hiding spot.
-		this.create_hiding_spot(map_width*1/20,map_height*9/10,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*1/20,map_height*9/10,"trashcan");
 		//Upper left hand hiding spots.
-		this.create_hiding_spot(map_width*1/10, map_height*1/3,"trashcan","trashcanSoldier");
-		this.create_hiding_spot(map_width*1/20,map_height*1/10,"trashcan","trashcanSoldier");
-		this.create_hiding_spot(map_width*1/4,map_height*1/3,"trashcan","trashcanSoldier");
-		this.create_hiding_spot(map_width*1/4,map_height*1/10,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*1/10, map_height*1/3,"trashcan");
+		this.create_hiding_spot(map_width*1/20,map_height*1/10,"trashcan");
+		this.create_hiding_spot(map_width*1/4,map_height*1/3,"bench");
+		this.create_hiding_spot(map_width*1/4,map_height*1/10,"pond");
 		//Wallz
 		for (var i = 0; i <= map_height ; i+=32){
 			if (i < 1/3*map_height || i > 2/3*map_height)

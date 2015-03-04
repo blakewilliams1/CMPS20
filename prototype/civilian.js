@@ -47,6 +47,7 @@ var position_list = [{x:32,y:32}, {x:600,y:32}, {x:1100,y:32}, {x:32,y:300}, {x:
  var steps = 2;
 function Civilian(){
   this.sprite;
+  this.soldierType=0;
   this.actions = ["north","south","east","west"];
   this.moves;
   this.animCounter = 0;

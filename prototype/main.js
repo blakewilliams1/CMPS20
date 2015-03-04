@@ -28,13 +28,11 @@ window.onload = function init() {
 	});
 
 	function animate() {
-    fpsmeter.tickStart();
-
+		fpsmeter.tickStart();
 		screenManager[screenManager.length-1].update();
 		screenManager.renderer.render(screenManager[screenManager.length-1].stage);
-
 		requestAnimFrame(animate);
-    fpsmeter.tick();
+		fpsmeter.tick();
 	}
 
 };
@@ -71,12 +69,9 @@ window.onkeyup = function(event) {
 };
 
 window.onmousemove = function(evt){
-
 	var rect = screenManager.renderer.view.getBoundingClientRect();
-
-	 mouse_loaction = {
+	mouse_location = {
 	 	        x:evt.clientX - rect.left,
 	 	        y:evt.clientY - rect.top
 	 	      }
-
 }

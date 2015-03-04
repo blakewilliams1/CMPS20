@@ -49,7 +49,6 @@ function Pause(owner){
 		quit_button.position.y = window_height/2+32//quit_button.texture.height;
 		quit_button.click=function(event){
  			owner.signal_pop(1);
- 			//owner.signal_pop();
  		}
 		this.stage.addChild(quit_button);
  		//initiate the gui

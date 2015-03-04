@@ -29,6 +29,7 @@ function Title(owner){
  		this.new_game_button.position.x=window_width/2;
  		this.new_game_button.position.y=window_height/2;
  		this.new_game_button.click=function(event){
+			if(owner.length==1)
  			owner.create_game_screen();
  		}
 		this.stage.addChild(this.new_game_button);
@@ -37,6 +38,7 @@ function Title(owner){
  		this.credits_button.position.x=window_width/2;
  		this.credits_button.position.y=window_height/2+50;
  		this.credits_button.click=function(event){
+			if(owner.length==1)
  			owner.create_credits_screen();
  		}
  		this.stage.addChild(this.credits_button);

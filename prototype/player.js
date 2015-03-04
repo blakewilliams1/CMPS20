@@ -33,7 +33,7 @@ function Player(owner) {
 	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png");
 	var sprite = new PIXI.Sprite(tex);
 	sprite.owner=owner;
-	sprite.soldierType=0;
+	sprite.soldierType=1;
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
 	sprite.position.x = Math.floor(7*map_width/9);
@@ -90,7 +90,7 @@ function Player(owner) {
 			//This soldier is now hiding.
 			sprite.visible = false;
 			//Change sprite
-			hidingSpot.setTexture(hidingSpot.hidingTexture);
+			hidingSpot.changeTexture(sprite.soldierType);
 			//Now this soldier object and the hiding_spot object
 			//will store references to each other.
 			sprite.objectBehind = hidingSpot;
