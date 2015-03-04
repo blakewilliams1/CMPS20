@@ -35,8 +35,8 @@ function Player(owner) {
 	sprite.owner=owner;
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
-	sprite.position.x = 1000;
-	sprite.position.y = 700;
+	sprite.position.x = 7*map_width/9;
+	sprite.position.y = 7*map_height/9;
 	sprite.prevX=sprite.position.x;
 	sprite.prevY=sprite.position.y;
 	sprite.gridSize = 4;

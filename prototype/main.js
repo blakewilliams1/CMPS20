@@ -2,7 +2,7 @@
 var window_width = 1184;
 var window_height = 600;
 var map_width = 1184;
-var map_height = 800;
+var map_height = 600;
 
 var half_x = Math.floor((map_width/32)/2);
 var half_y = Math.floor((map_height/32)/2);
@@ -83,7 +83,6 @@ window.onkeydown = function(event) {
 window.onkeyup = function(event) {
 	screenManager[screenManager.length-1].keyup(event);
 };
-
 
 window.onmousemove = function(){
 

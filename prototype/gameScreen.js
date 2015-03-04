@@ -253,7 +253,9 @@ function Game(owner){
  		this.create_soldier();
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
- 		this.create_hiding_spot(100,100,"trashcan","trashcanSoldier");
+		
+		//Build the map:
+ 		/*this.create_hiding_spot(100,100,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(150,500,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(600,400,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(450,100,"trashcan","trashcanSoldier");
@@ -262,7 +264,35 @@ function Game(owner){
  		this.create_wall(350, 100);
  		this.create_wall(650, 200);
  		this.create_wall(500, 600);
- 		this.create_building(200,300);
+ 		this.create_building(200,300);*/
+		//Top row of hiding spots.
+		this.create_hiding_spot(map_width*9/10,map_height*1/10,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*6/10, map_height*1/8,"trashcan","trashcanSoldier");
+		//Street 1
+		this.create_building(map_width*6/10, map_height*1/4);
+		this.create_building(map_width*15/20, map_height*1/4);
+		//Street 2
+		this.create_building(map_width*6/10, map_height*4/7);
+		this.create_building(map_width*8/10, map_height*4/7);
+		//Second row of hiding spots.
+		this.create_hiding_spot(map_width*5/10,map_height*4/7,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*9/10,map_height*4/7,"trashcan","trashcanSoldier");
+		//Lower left hand hiding spot.
+		this.create_hiding_spot(map_width*1/20,map_height*9/10,"trashcan","trashcanSoldier");
+		//Upper left hand hiding spots.
+		this.create_hiding_spot(map_width*1/10, map_height*1/3,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*1/20,map_height*1/10,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*1/4,map_height*1/3,"trashcan","trashcanSoldier");
+		this.create_hiding_spot(map_width*1/4,map_height*1/10,"trashcan","trashcanSoldier");
+		//Wallz
+		for (var i = 0; i <= map_height ; i+=32){
+			if (i < 1/3*map_height || i > 2/3*map_height)
+				this.create_wall(map_width*3/8, i);
+		}
+		//Alarm
+		this.create_alarm(map_width/3,map_height/2);
+		//Done building the map
+		
     this.create_grid();
 
     for (var i = 0; i < 5; i++) {
