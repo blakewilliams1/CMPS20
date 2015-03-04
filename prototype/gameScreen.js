@@ -256,12 +256,9 @@ function Game(owner){
  		this.stage.addChild(this.container);
  		//initiate the gui
 		this.init_gui();
-
 		this.create_background();
- 		this.create_soldier();
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
-
 		//Build the map:
  		/*this.create_hiding_spot(100,100,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(150,500,"trashcan","trashcanSoldier");
@@ -308,6 +305,7 @@ function Game(owner){
         this.create_civilian(pos.x,pos.y);
        //this.create_civilian(600,250);
     }
+	this.create_soldier();
  	};
  }
 

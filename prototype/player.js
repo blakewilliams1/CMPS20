@@ -33,6 +33,7 @@ function Player(owner) {
 	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png");
 	var sprite = new PIXI.Sprite(tex);
 	sprite.owner=owner;
+	sprite.soldierType=0;
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
 	sprite.position.x = Math.floor(7*map_width/9);
