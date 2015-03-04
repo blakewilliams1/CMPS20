@@ -4,6 +4,11 @@
   */
 
  //create an instance of the game
+
+ var mouse_location = {
+ 	      x: 0,
+ 	      y: 0
+ }
 function Game(owner){
 	this.container=new PIXI.DisplayObjectContainer();
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
@@ -55,17 +60,17 @@ function Game(owner){
 
 
  	this.scroll_camera=function(){
-		if(this.active.position.x+this.container.position.x>window_width*4/5){
-			this.container.position.x=window_width*4/5-this.active.position.x;
+		if(mouse_loaction.x+this.container.position.x>window_width*4/5){
+			this.container.position.x=window_width*4/5-mouse_loaction.x;
 		}
-		if(this.active.position.x+this.container.position.x<window_width/5){
-			this.container.position.x=window_width/5-this.active.position.x;
+		if(mouse_loaction.x+this.container.position.x<window_width/5){
+			this.container.position.x=window_width/5- mouse_loaction.x;
 		}
-		if(this.active.position.y+this.container.position.y>window_height*4/5){
-			this.container.position.y=window_height*4/5-this.active.position.y;
+		if( mouse_location.y+this.container.position.y>window_height*4/5){
+			this.container.position.y=window_height*4/5- mouse_loaction.y;
 		}
-		if(this.active.position.y+this.container.position.y<window_height/5){
-			this.container.position.y=window_height/5-this.active.position.y;
+		if(mouse_location.y+this.container.position.y<window_height/5){
+			this.container.position.y=window_height/5-mouse_loaction.y;
 		}
 		if(this.container.position.x>0)this.container.position.x=0;
 		if(this.container.position.y>0)this.container.position.y=0;
@@ -141,10 +146,13 @@ function Game(owner){
 		sprite.position.y = y;
 		civilian.sprite = sprite;
 		this.civilians.push(civilian);
+		for(var i = 0; i < 3; i++){
+			civilian.goal_list.push(position_list[Math.floor(Math.random() * position_list.length)]);
+		}
 		//var location = [sprite.position.x,sprite.position.y];
 		//var position = location_in_grid(location,this.grid);
-		this.container.addChild(civilian.graphic);
 		this.container.addChild(sprite);
+		this.container.addChild(civilian.graphic);
 		//civilian.moves = civilian.A_star(this.grid)
 	}
 
@@ -206,7 +214,7 @@ function Game(owner){
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);
 	}
-	
+
 //----------------------------------------------------
 
 	this.signal_triggered_alarm=function() {
@@ -253,7 +261,7 @@ function Game(owner){
  		this.create_soldier();
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
-		
+
 		//Build the map:
  		/*this.create_hiding_spot(100,100,"trashcan","trashcanSoldier");
  		this.create_hiding_spot(150,500,"trashcan","trashcanSoldier");
@@ -292,11 +300,12 @@ function Game(owner){
 		//Alarm
 		this.create_alarm(map_width/3,map_height/2);
 		//Done building the map
-		
+
     this.create_grid();
 
     for (var i = 0; i < 5; i++) {
-        this.create_civilian(16,16);
+    	  var pos = position_list[Math.floor(Math.random() * position_list.length)]
+        this.create_civilian(pos.x,pos.y);
        //this.create_civilian(600,250);
     }
  	};

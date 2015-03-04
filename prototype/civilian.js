@@ -37,6 +37,8 @@ var rightText = [
     PIXI.Texture.fromImage("../Art Assets/png/UkraineForward4.png")
   ]
 
+
+var position_list = [{x:32,y:32}, {x:600,y:32}, {x:1100,y:32}, {x:32,y:300}, {x:600,y:300}, {x:1100,y:300}, {x:600,y:700}]
 /*
  * this is the initilize function of the
  * civilian object
@@ -52,9 +54,11 @@ function Civilian(){
 
   this.goal = {x:Math.floor(Math.random() * (map_width - 64)), y:Math.floor(Math.random() * (map_height - 64))};
 
+  this.goal_list = [];
+
    //Math.floor(Math.random() * window_width)
-  this.vision_distance = 150;
-  this.vision_angle = 45;
+  this.vision_distance = 100;
+  this.vision_angle = 25;
 
   this.point1 = {};
   this.point2 = {};
@@ -94,27 +98,9 @@ function Civilian(){
        }else{
          this.moves = this.next_action(grid,this.goal,walls);
        }
-	   
-	   
+
+
      this.action(soldiers,walls,alarms);
-     //console.log(this.sprite.position.x, this.sprite.position.y);
-     
-	 //ring alarm if needed
-	  if(this.at_goal&&this.found){
-		  var curr_alarm = 'undefined';
-		  for(var i=0;i<alarms.length;i++){
-			  if(Math.abs(alarms[i].position.x-this.sprite.position.x)<32&&
-			  Math.abs(alarms[i].position.y-this.sprite.position.y)<32){
-			  curr_alarm=alarms[i];
-			  break;
-			  }
-		  }
-		  console.log(curr_alarm);
-		  if(curr_alarm!='undefined'){
-			  curr_alarm.trigger();
-		  }
-		  this.found=false;//not sure if this is needed
-	  }
   }
 
 }
@@ -144,10 +130,9 @@ Civilian.prototype  = {
 //-----------------------------------------------------------------------------------------
 
     find_path: function(grid){
-
-         this.goal.x = Math.floor(Math.random() * (map_width - 64));
-         this.goal.y = Math.floor(Math.random() *  (map_height - 64));
-         //this.moves = this.A_star(grid);
+        var new_goal = this.goal_list[Math.floor(Math.random() * this.goal_list.length)];
+         this.goal.x = new_goal.x;
+         this.goal.y = new_goal.y;
     },
 
 //-----------------------------------------------------------------------------------------
@@ -174,33 +159,14 @@ Civilian.prototype  = {
        if(!soldiers[i].visible) continue;
        if(in_triangle(target,origin,b,c)){
          var cent = origin;
+         console.log("hello");
          var line = getRay(cent,target);
 
-        if(check_line(line,walls)){
+        //if(check_line(line,walls)){
           //do what ever
-          this.found = true;
-          //begining of modified code
-          if(alarms.length==0)return;
-          var curr_alarm = alarms[0];
-		  for(var i=0;i<alarms.length;i++){
-			var x1=curr_alarm.position.x;
-			var y1=curr_alarm.position.y;
-			var x2=alarms[i].position.x;
-			var y2=alarms[i].position.y;
-			var x3=this.sprite.position.x;
-			var x3=this.sprite.position.y;
-			if(Math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))<Math.sqrt((x1-x3)*(x1-x3)+(y1-y3)*(y1-y3))){
-				curr_alarm=alarms[i];
-            }
-          }
-          //end of modified code
-          this.goal = {
-                x: curr_alarm.position.x,
-                y: curr_alarm.position.y
-          }
-          //console.log("found");
-        }
-
+          //this.found = true;
+        //}
+       console.log("done");
       }
     }
   },

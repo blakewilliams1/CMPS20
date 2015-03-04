@@ -18,13 +18,7 @@ window.onload = function init() {
 
 	console.log(document.body)
 	requestAnimFrame(animate);
-//temporarily commented out the FPS meter
-/*	var loop = 0,
-	    skipTicks = 1000 / game.fps,
-	    maxFrameSkip = 10,
-	    nextGameTick = (new Date).getTime(),
-	    lastGameTick;
- */
+
 	var fpsmeter = new FPSMeter({
 		decimals : 0,
 		graph : true,
@@ -35,18 +29,10 @@ window.onload = function init() {
 
 	function animate() {
     fpsmeter.tickStart();
-		/*loop = 0;
-		while ((new Date).getTime() > nextGameTick) {
-			fpsmeter.tickStart();
 
-			nextGameTick += skipTicks;
-			loop++;
-			fpsmeter.tick();
-		}
-		if (loop)*/
 		screenManager[screenManager.length-1].update();
 		screenManager.renderer.render(screenManager[screenManager.length-1].stage);
-    //setInterval(animate, 1000/30);
+
 		requestAnimFrame(animate);
     fpsmeter.tick();
 	}
@@ -84,6 +70,13 @@ window.onkeyup = function(event) {
 	screenManager[screenManager.length-1].keyup(event);
 };
 
-window.onmousemove = function(){
+window.onmousemove = function(evt){
+
+	var rect = screenManager.renderer.view.getBoundingClientRect();
+
+	 mouse_loaction = {
+	 	        x:evt.clientX - rect.left,
+	 	        y:evt.clientY - rect.top
+	 	      }
 
 }

@@ -52,6 +52,8 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 
 
   function getRay(v1,v2){
+     console.log(v1,v2);
+     console.log("in get ray")
      var v11 = v1;
      var v22 = v2;
      var dx = Math.abs(v22.x - v11.x);
@@ -59,7 +61,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
      var sx = v11.x < v22.x ? 1 : -1;
      var sy = v11.y < v22.y ? 1 : -1;
      var err = dx-dy;
-
+      console.log("declared all variables");
      var ray = [];
         while(v11.x!=v22.x || v11.y!=v22.y){
             ray.push({
@@ -76,6 +78,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
                 v11.y += sy;
               }
       }
+    console.log("done with while");
 
    return ray;
   }
@@ -109,7 +112,7 @@ function in_grid(pos,grid){
         }
      }
   }
-  console.log("location not found");
+
 }
 
 
