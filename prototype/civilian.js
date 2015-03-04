@@ -179,9 +179,24 @@ Civilian.prototype  = {
         if(check_line(line,walls)){
           //do what ever
           this.found = true;
+          //begining of modified code
+          if(alarms.length==0)return;
+          var curr_alarm = alarms[0];
+	  for(var i=0;i<alarms.length;i++){
+	  	var x1=curr_alarm.position.x;
+	  	var y1=curr_alarm.position.y;
+	  	var x2=alarms[i].position.x;
+	  	var y2=alarms[i].position.y;
+	  	var x3=this.sprite.position.x;
+	  	var x3=this.sprite.position.y;
+	    if(Math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2)<Math.sqrt((x1-x3)*(x1-x3)+(y1-y3)*(y1-y3)){
+	    curr_alarm=alarms[i];
+            }
+          }
+          //end of modified code
           this.goal = {
-                x: alarms[0].position.x,
-                y: alarms[0].position.y
+                x: curr_alarm.position.x,
+                y: curr_alarm.position.y
           }
           //console.log("found");
         }
