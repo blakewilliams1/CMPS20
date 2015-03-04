@@ -172,7 +172,7 @@ Civilian.prototype  = {
        this.graphic.lineTo(c.x, c.y);
        this.graphic.endFill();
        if(!soldiers[i].visible) continue;
-      if(in_triangle(target,origin,b,c)){
+       if(in_triangle(target,origin,b,c)){
          var cent = origin;
          var line = getRay(cent,target);
 
@@ -182,15 +182,15 @@ Civilian.prototype  = {
           //begining of modified code
           if(alarms.length==0)return;
           var curr_alarm = alarms[0];
-	  for(var i=0;i<alarms.length;i++){
-	  	var x1=curr_alarm.position.x;
-	  	var y1=curr_alarm.position.y;
-	  	var x2=alarms[i].position.x;
-	  	var y2=alarms[i].position.y;
-	  	var x3=this.sprite.position.x;
-	  	var x3=this.sprite.position.y;
-	    if(Math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2)<Math.sqrt((x1-x3)*(x1-x3)+(y1-y3)*(y1-y3)){
-	    curr_alarm=alarms[i];
+		  for(var i=0;i<alarms.length;i++){
+			var x1=curr_alarm.position.x;
+			var y1=curr_alarm.position.y;
+			var x2=alarms[i].position.x;
+			var y2=alarms[i].position.y;
+			var x3=this.sprite.position.x;
+			var x3=this.sprite.position.y;
+			if(Math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))<Math.sqrt((x1-x3)*(x1-x3)+(y1-y3)*(y1-y3))){
+				curr_alarm=alarms[i];
             }
           }
           //end of modified code
