@@ -52,8 +52,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 
 
   function getRay(v1,v2){
-     console.log(v1,v2);
-     console.log("in get ray")
+
      var v11 = v1;
      var v22 = v2;
      var dx = Math.abs(v22.x - v11.x);
@@ -61,7 +60,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
      var sx = v11.x < v22.x ? 1 : -1;
      var sy = v11.y < v22.y ? 1 : -1;
      var err = dx-dy;
-      console.log("declared all variables");
+
      var ray = [];
         while(v11.x!=v22.x || v11.y!=v22.y){
             ray.push({
@@ -78,7 +77,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
                 v11.y += sy;
               }
       }
-    console.log("done with while");
+
 
    return ray;
   }
@@ -181,7 +180,6 @@ function generate_move(pos,action,grid,goal,wall){
       }
       var location = in_grid(new_pos,grid);
        bool = check_walls(new_pos.x, new_pos.y, wall);
-      //bool = grid[location.x][location.y].free;
 
         break;
 
@@ -193,14 +191,13 @@ function generate_move(pos,action,grid,goal,wall){
 
 
 
-        if((new_pos.x < 0) || (goal.x > new_pos.x)){
+        if((new_pos.x < 10) || (goal.x > new_pos.x)){
           bool = true;
           break;
         }
 
           var location = in_grid(new_pos,grid);
           bool = check_walls(new_pos.x, new_pos.y, wall);
-         //bool = grid[location.x][location.y].free;
 
         break;
 
@@ -216,7 +213,6 @@ function generate_move(pos,action,grid,goal,wall){
         }
           var location = in_grid(new_pos,grid);
           bool = check_walls(new_pos.x, new_pos.y, wall);
-         //bool = grid[location.x][location.y].free;
           break;
 
     case "south":
@@ -225,17 +221,15 @@ function generate_move(pos,action,grid,goal,wall){
             y: pos.y + steps
         };
 
-        if((new_pos.y > map_height) || (goal.y < new_pos.y)){
+        if((new_pos.y > map_height - 60) || (goal.y < new_pos.y)){
           bool = true;
           break;
         }
         var location = in_grid(new_pos,grid);
         bool = check_walls(new_pos.x, new_pos.y, wall);
-         //bool = grid[location.x][location.y].free;
 
         break;
     }
-  //console.log("new", new_pos.x, new_pos.y,);
 return [new_pos,bool];
 
 }

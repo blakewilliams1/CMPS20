@@ -38,7 +38,7 @@ var rightText = [
   ]
 
 
-var position_list = [{x:32,y:32}, {x:600,y:32}, {x:1100,y:32}, {x:32,y:300}, {x:600,y:300}, {x:1100,y:300}, {x:600,y:700}]
+var position_list = [{x:32,y:32}, {x:600,y:32}, {x:1100,y:32}, {x:32,y:300}, {x:600,y:300}, {x:1100,y:300}, {x:600,y:500}]
 /*
  * this is the initilize function of the
  * civilian object
@@ -93,6 +93,7 @@ function Civilian(){
        x:this.sprite.position.x,
        y:this.sprite.position.y
   }
+        if((isGoal(this.center,this.goal)) && (this.found)){ return;}
        this.at_goal = isGoal(this.center,this.goal)
        if(this.at_goal){
         this.find_path(grid);
@@ -160,14 +161,15 @@ Civilian.prototype  = {
        if(!soldiers[i].visible) continue;
        if(in_triangle(target,origin,b,c)){
          var cent = origin;
-         console.log("hello");
          var line = getRay(cent,target);
 
-        //if(check_line(line,walls)){
+        if(check_line(line,walls)){
           //do what ever
-          //this.found = true;
-        //}
-       console.log("done");
+          this.found = true;
+          this.pend = false;
+          this.goal = closest_alarm(origin,alarms);
+          console.log(this.goal);
+        }
       }
     }
   },
@@ -235,6 +237,7 @@ Civilian.prototype  = {
              return this.take;
            }else{
             this.pend = false;
+            this.take = 'none';
             return this.pending;
            }
         }
@@ -319,6 +322,8 @@ function choose_random_adj(path){
 }
 
 
+//-------------------------------------------------------
+
 function check_line(line,walls){
   console.log(line);
   for(var i = 0; i < line.length;i++){
@@ -344,4 +349,27 @@ function check_line(line,walls){
   return true;
 }
 
+
+//----------------------------------------
+
+
+function closest_alarm(position,alarms){
+  var closest = 100000000;
+  var closest_alarm;
+
+  for (var i = 0; i < alarms.length; i++){
+     var pos = {
+           x: alarms[i].position.x,
+           y: alarms[i].position.y
+     };
+     console.log(pos);
+     var value = (Math.abs(position.x - pos.x) + Math.abs(position.y - pos.x));
+     if (value < closest){
+        closest = value;
+        closest_alarm = pos;
+        console.log(closest_alarm)
+     }
+  }
+  return closest_alarm;
+}
 
