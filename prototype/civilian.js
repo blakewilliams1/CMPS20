@@ -54,6 +54,7 @@ function Civilian(){
   this.animCounter2 = 0;
 
   this.goal = {x:Math.floor(Math.random() * (map_width - 64)), y:Math.floor(Math.random() * (map_height - 64))};
+  this.alarm;
 
   this.goal_list = [];
 
@@ -93,6 +94,7 @@ function Civilian(){
        x:this.sprite.position.x,
        y:this.sprite.position.y
   }
+
         if((isGoal(this.center,this.goal)) && (this.found)){
 			closest_alarm(this.center,alarms).trigger();
 			return;
@@ -170,12 +172,12 @@ Civilian.prototype  = {
           //do what ever
           this.found = true;
           this.pend = false;
+
           this.goal = {
            x: closest_alarm(origin,alarms).position.x,
            y: closest_alarm(origin,alarms).position.y
 		  };
-		  //this.goal=closest_alarm(origin,alarms);
-          //console.log(this.goal);
+
         }
       }
     }
@@ -363,7 +365,7 @@ function check_line(line,walls){
 function closest_alarm(position,alarms){
   var closest = 100000000;
   var closest_alarm;
-
+  var alarm;
   for (var i = 0; i < alarms.length; i++){
      var pos = {
            x: alarms[i].position.x,
@@ -374,7 +376,6 @@ function closest_alarm(position,alarms){
      if (value < closest){
         closest = value;
         closest_alarm = alarms[i];
-        //console.log(closest_alarm)
      }
   }
   return closest_alarm;

@@ -10,6 +10,8 @@
  	      y: 0
  }
 function Game(owner){
+	this.end_game = false;
+	this.timer = 0
 	this.container=new PIXI.DisplayObjectContainer();
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	//initialize game attributes
@@ -34,7 +36,17 @@ function Game(owner){
 //-------------------------------------------------
 
 // this is the main update function for the game
+
  	this.update = function() {
+ 		  if(this.end_game){
+ 		  	if(this.timer > 1){
+ 		  		//this.end_game_menu();
+ 		  		alert("game over");
+ 		  		return;
+
+ 		  	}
+ 		  	this.timer++;
+ 		  }
  			this.active.update();
  			//update civilians
  			for (var i = 0; i < this.civilians.length; i++) {
@@ -50,12 +62,13 @@ function Game(owner){
 					this.active.revert_step();
 				}
 			}
-			//check if any alarms have been triggered
+
 			if(this.triggeredTime!=undefined){
 				//if it's been longer than the given milliseconds, signal game over
 				if((new Date().getTime() - this.triggeredTime)>1500){
 					this.signal_triggered_alarm();
 					this.triggeredTime=undefined;
+
 				}
 			}
 			this.scroll_camera();
@@ -225,7 +238,7 @@ function Game(owner){
 
 	this.signal_triggered_alarm=function() {
 		alert("Game Over"+'\n'+"Your score was "+this.score);
-		
+    owner.create_game_over(owner);
 		//Do something better to signal game over
 	}
 
@@ -262,14 +275,19 @@ function Game(owner){
  	this.init_ = function() {
  		this.stage.addChild(this.container);
  		//initiate the gui
+
 		this.init_gui();
 		this.create_background();
+
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
+
 		//Build the map:
 		//Top row of hiding spots.
+
 		this.levelManager = new LevelBuilder(this);
 		this.levelManager.buildLevel(1);
+
  	};
  }
 

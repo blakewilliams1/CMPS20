@@ -56,6 +56,11 @@ screenManager.create_credits_screen=function(){
 	creditScreen.init_();
 	this.push(creditScreen);
 }
+screenManager.create_game_over = function(){
+ var gameOver = new Game_over(screenManager);
+ gameOver.init_();
+ this.push(gameOver);
+}
 screenManager.signal_pop=function(pops){
 	while(screenManager.length>1&&screenManager.length>pops){
     screenManager.pop();
