@@ -23,7 +23,7 @@ function LevelBuilder(game){
 		game.create_hiding_spot(map_width*1/20,map_height*9/10,"trashcan");
 		//Upper left hand hiding spots.
 		game.create_hiding_spot(map_width*1/10, map_height*1/3,"trashcan");
-		game.create_hiding_spot(map_width*1/20,map_height*1/10,"trashcan");
+		game.create_hiding_spot(map_width*1/20,map_height*1/10,"bush");
 		game.create_hiding_spot(map_width*1/4,map_height*1/3,"bench");
 		game.create_hiding_spot(map_width*1/4,map_height*1/10,"pond");
 		//Wallz
@@ -33,15 +33,13 @@ function LevelBuilder(game){
 		}
 		//Alarm
 		game.create_alarm(map_width/3,map_height/2);
-		//Done building the map
+		game.create_grid();
 
-    game.create_grid();
-
-    for (var i = 0; i < 5; i++) {
+		for (var i = 0; i < 5; i++) {
     	  var pos = position_list[Math.floor(Math.random() * position_list.length)]
-        game.create_civilian(pos.x,pos.y);
-    }
-	game.create_soldier();
+          game.create_civilian(pos.x,pos.y);
+		}
+		game.create_soldier();
 	}
 	
 	//----------------------------------

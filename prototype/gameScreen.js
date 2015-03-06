@@ -111,6 +111,9 @@ function Game(owner){
 //----------------------------------------------------
 
 	this.hide_active_soldier = function() {
+		/*TODO: This should account for the width of the sprites
+		//since it doesn't, it thinks the soldier isn't close enough with
+		wider objects*/
  		for (var i = 0; i < this.hiding_spots.length; i++) {
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
  			var yDistance = Math.abs(this.active.position.y - this.hiding_spots[i].position.y);

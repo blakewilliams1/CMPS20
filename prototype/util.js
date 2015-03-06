@@ -299,11 +299,8 @@ function PriorityQueue(){
 
 function collided(first,second){
 	//NOTE: currently must pass in sprites
-	//NOTE: also doesn't account for modified anchors,
-	//and I'm assuming 'width' correctly stores it's
-	//width in pixels
-	if(first==0||second==0){
-		console.log("error! checking null objects!");
+	if(first==undefined||second==undefined){
+		console.log("error! checking undefined objects!");
 		return false;
 	}
 	if(!first.visible||!second.visible)return false;
