@@ -93,7 +93,10 @@ function Civilian(){
        x:this.sprite.position.x,
        y:this.sprite.position.y
   }
-        if((isGoal(this.center,this.goal)) && (this.found)){ return;}
+        if((isGoal(this.center,this.goal)) && (this.found)){
+			closest_alarm(this.center,alarms).trigger();
+			return;
+		}
        this.at_goal = isGoal(this.center,this.goal)
        if(this.at_goal){
         this.find_path(grid);
@@ -167,8 +170,12 @@ Civilian.prototype  = {
           //do what ever
           this.found = true;
           this.pend = false;
-          this.goal = closest_alarm(origin,alarms);
-          console.log(this.goal);
+          this.goal = {
+           x: closest_alarm(origin,alarms).position.x,
+           y: closest_alarm(origin,alarms).position.y
+		  };
+		  //this.goal=closest_alarm(origin,alarms);
+          //console.log(this.goal);
         }
       }
     }
@@ -325,7 +332,7 @@ function choose_random_adj(path){
 //-------------------------------------------------------
 
 function check_line(line,walls){
-  console.log(line);
+  //console.log(line);
   for(var i = 0; i < line.length;i++){
      for( var j = 0; j < walls.length; j++){
         //console.log(line[i]);
@@ -362,12 +369,12 @@ function closest_alarm(position,alarms){
            x: alarms[i].position.x,
            y: alarms[i].position.y
      };
-     console.log(pos);
+     //console.log(pos);
      var value = (Math.abs(position.x - pos.x) + Math.abs(position.y - pos.x));
      if (value < closest){
         closest = value;
-        closest_alarm = pos;
-        console.log(closest_alarm)
+        closest_alarm = alarms[i];
+        //console.log(closest_alarm)
      }
   }
   return closest_alarm;

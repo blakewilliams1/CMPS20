@@ -8,13 +8,12 @@ function Alarm(x,y,owner){
   sprite.position.x = x;
   sprite.position.y = y;
   sprite.triggered=false;
-  
+
   sprite.trigger=function(){
-	  console.log("trigger");
   	if(!sprite.triggered){
 	  	sprite.setTexture(sprite.on_tex);
   		sprite.triggered=true;
-		sprite.owner.signal_triggered_alarm();
+		owner.triggeredTime=new Date().getTime();
 	  }
   }
   return sprite;

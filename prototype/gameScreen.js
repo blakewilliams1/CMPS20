@@ -24,6 +24,7 @@ function Game(owner){
  	this.active
 	this.latestSoldier
  	this.fps = 60;
+	this.triggeredTime;
  	this.score=0;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
  	this.time=new Date().getTime();
@@ -50,9 +51,11 @@ function Game(owner){
 				}
 			}
 			//check if any alarms have been triggered
-			for(var i=0;i<this.alarms.length;i++){
-				if(this.alarms[i].triggered){
-					//signal game over
+			if(this.triggeredTime!=undefined){
+				//if it's been longer than the given milliseconds, signal game over
+				if((new Date().getTime() - this.triggeredTime)>1500){
+					this.signal_triggered_alarm();
+					this.triggeredTime=undefined;
 				}
 			}
 			this.scroll_camera();
@@ -219,6 +222,7 @@ function Game(owner){
 
 	this.signal_triggered_alarm=function() {
 		alert("Game Over"+'\n'+"Your score was "+this.score);
+		
 		//Do something better to signal game over
 	}
 
@@ -260,52 +264,9 @@ function Game(owner){
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
 		//Build the map:
- 		/*this.create_hiding_spot(100,100,"trashcan","trashcanSoldier");
- 		this.create_hiding_spot(150,500,"trashcan","trashcanSoldier");
- 		this.create_hiding_spot(600,400,"trashcan","trashcanSoldier");
- 		this.create_hiding_spot(450,100,"trashcan","trashcanSoldier");
- 		this.create_alarm(300,300);
- 		this.create_wall(250, 450);
- 		this.create_wall(350, 100);
- 		this.create_wall(650, 200);
- 		this.create_wall(500, 600);
- 		this.create_building(200,300);*/
 		//Top row of hiding spots.
-		this.create_hiding_spot(map_width*9/10,map_height*1/10,"trashcan");
-		this.create_hiding_spot(map_width*6/10, map_height*1/8,"trashcan");
-		//Street 1
-		this.create_building(map_width*6/10, map_height*1/4);
-		this.create_building(map_width*15/20, map_height*1/4);
-		//Street 2
-		this.create_building(map_width*6/10, map_height*4/7);
-		this.create_building(map_width*8/10, map_height*4/7);
-		//Second row of hiding spots.
-		this.create_hiding_spot(map_width*5/10,map_height*4/7,"trashcan");
-		this.create_hiding_spot(map_width*9/10,map_height*4/7,"trashcan");
-		//Lower left hand hiding spot.
-		this.create_hiding_spot(map_width*1/20,map_height*9/10,"trashcan");
-		//Upper left hand hiding spots.
-		this.create_hiding_spot(map_width*1/10, map_height*1/3,"trashcan");
-		this.create_hiding_spot(map_width*1/20,map_height*1/10,"trashcan");
-		this.create_hiding_spot(map_width*1/4,map_height*1/3,"bench");
-		this.create_hiding_spot(map_width*1/4,map_height*1/10,"pond");
-		//Wallz
-		for (var i = 0; i <= map_height ; i+=32){
-			if (i < 1/3*map_height || i > 2/3*map_height)
-				this.create_wall(map_width*3/8, i);
-		}
-		//Alarm
-		this.create_alarm(map_width/3,map_height/2);
-		//Done building the map
-
-    this.create_grid();
-
-    for (var i = 0; i < 5; i++) {
-    	  var pos = position_list[Math.floor(Math.random() * position_list.length)]
-        this.create_civilian(pos.x,pos.y);
-       //this.create_civilian(600,250);
-    }
-	this.create_soldier();
+		this.levelManager = new LevelBuilder(this);
+		this.levelManager.buildLevel(1);
  	};
  }
 
@@ -316,17 +277,6 @@ function Game(owner){
  	this.y
  	this.width
  	this.free
- }
-
-//--------------------------------------------------
-
- //Temp Gui for score and alarm for soldiers
- function drawGui(){
-  var texture = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
-	var sprite = new PIXI.Sprite(texture);
-	sprite.position.x = 0;
-	sprite.position.y = 700;
-	return sprite;
  }
 
 //-------------------------------------------------
