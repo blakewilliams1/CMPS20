@@ -4,8 +4,8 @@ var window_height = 600;
 var map_width = 1184;
 var map_height = 600;
 
-var half_x = Math.floor((map_width/32)/2);
-var half_y = Math.floor((map_height/32)/2);
+var half_x = Math.floor(map_width/64);
+var half_y = Math.floor(map_height/64);
 var screenManager=[];
 screenManager.view=document.getElementById("myCanvas");
 screenManager.renderer= new PIXI.CanvasRenderer(window_width, window_height, screenManager.view);
@@ -36,6 +36,8 @@ window.onload = function init() {
 	}
 
 };
+
+
 screenManager.create_title_screen=function(){
 	var titleScreen = new Title(screenManager);
 	titleScreen.init_();
@@ -55,6 +57,11 @@ screenManager.create_credits_screen=function(){
 	var creditScreen = new Credits(screenManager);
 	creditScreen.init_();
 	this.push(creditScreen);
+}
+screenManager.create_level_screen=function(){
+	var levelScreen = new Credits(screenManager);
+	levelScreen.init_();
+	this.push(levelScreen);
 }
 screenManager.create_game_over = function(){
  var gameOver = new Game_over(screenManager);
