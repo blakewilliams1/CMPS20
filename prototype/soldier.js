@@ -29,7 +29,7 @@
 	var otherTex = PIXI.Texture.fromImage("../Art Assets/png/soldierRight1.png");
 
 
-function Player(owner) {
+function Soldier(owner) {
 	var tex = PIXI.Texture.fromImage("../Art Assets/png/soldierForward1.png");
 	var sprite = new PIXI.Sprite(tex);
 	sprite.owner=owner;
@@ -134,11 +134,6 @@ function Player(owner) {
 			if (sprite.animCounter >= 4) sprite.animCounter = 0;
 			sprite.position.y += 4;
 	}
-	sprite.knock_out=function(civilian){
-		if(civilian.found){
-			//play punching sound
-			//either remove civilian from stage or make him lie down?
-		}
-	}
+	
 	return sprite;
 };

@@ -11,7 +11,8 @@ function Title(owner){
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	this.new_game_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/newGameButton.png"));
 	this.credits_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/creditsButton.png"));
-	this.title_text = new PIXI.Text("Our Game", {font:"40px Arial", fill:"black"});
+	this.level_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/levelSelectButton.png"));
+	this.title_text = new PIXI.Text("Stealth Invasion", {font:"40px Arial", fill:"black"});
  	this.update = function() {
 
  	};
@@ -46,7 +47,18 @@ function Title(owner){
 		this.title_text.position.x=window_width/2;
 		this.title_text.position.y=window_height/2-100;
 		this.stage.addChild(this.title_text);
- 	};
+ 			this.stage.addChild(this.new_game_button);
+		
+	    this.stage.addChild(this.level_button);
+		this.level_button.setInteractive(true);
+		this.level_button.anchor.x=0.5;
+ 		this.level_button.position.x=window_width/2;
+ 		this.level_button.position.y=window_height/2+100;
+ 		this.level_button.click=function(event){
+			if(owner.length==1)
+ 			owner.create_credits_screen();
+	    }
+	};
  }
 
  //Temp Gui for score and alarm for soldiers

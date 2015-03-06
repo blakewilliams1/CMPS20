@@ -101,12 +101,12 @@ function Game(owner){
 //-------------------------------------------------
 
  	this.countdown = function(){
- 		this.elapsed_t = 10-parseInt(((new Date().getTime() - this.time)/1000).toString());
+ 		this.elapsed_t = 15-parseInt(((new Date().getTime() - this.time)/1000).toString());
  		this.score_text.setText("Score: "+this.score.toString());
  		if(this.elapsed_t<1){
  			this.time=new Date().getTime();
  			this.create_soldier();
- 			this.elapsed_t=10;
+ 			this.elapsed_t=15;
  		}
  		this.time_text.setText("New Soldier in: "+(this.elapsed_t));
  	}
@@ -114,13 +114,21 @@ function Game(owner){
 //--------------------------------------------------
 
  	this.create_soldier = function() {
- 		var player = new Player(this);
+ 		var player = new Soldier(this);
  		this.active = player;
 		this.latestSoldier = player;
  		this.soldiers.push(player);
  		this.container.addChild(player);
  	}
+//--------------------------------------------------
 
+ 	this.create_buff_soldier = function() {
+ 		var player = new BuffSoldier(this);
+ 		this.active = player;
+		this.latestSoldier = player;
+ 		this.soldiers.push(player);
+ 		this.container.addChild(player);
+ 	}
 //----------------------------------------------------
 
 	this.hide_active_soldier = function() {
