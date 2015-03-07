@@ -21,7 +21,7 @@ function Credits(owner){
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
 		if(event.keyCode=27){
-			owner.signal_pop(1);
+			owner.signal_pop();
 		}
 	}
  	this.init_ = function() {

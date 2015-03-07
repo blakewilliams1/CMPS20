@@ -15,7 +15,7 @@ function Game(owner){
 	this.container=new PIXI.DisplayObjectContainer();
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	//initialize game attributes
-
+	this.pauseMenu=0;
 	this.alarms=[];
  	this.soldiers = [];
  	this.soldier_count = 0;
@@ -38,40 +38,38 @@ function Game(owner){
 // this is the main update function for the game
 
  	this.update = function() {
- 		  if(this.end_game){
- 		  	if(this.timer > 1){
- 		  		//this.end_game_menu();
+		if(this.end_game){
+			if(this.timer > 1){
+				//this.end_game_menu();
  		  		alert("game over");
  		  		return;
-
  		  	}
  		  	this.timer++;
- 		  }
- 			this.active.update();
- 			//update civilians
- 			for (var i = 0; i < this.civilians.length; i++) {
- 				this.civilians[i].update(this.grid, this.soldiers, this.walls, this.alarms);
- 			}
-			//If the newest soldier has entered the town, start the countdown.
- 			//if (this.latestSoldier.position.y < 700) {
-				this.countdown();
-			//
-			//check if the active soldier is colliding
-			for(var i=0;i<this.walls.length;i++){
-				if(collided(this.active,this.walls[i])){
-					this.active.revert_step();
-				}
+		}
+ 		this.active.update();
+ 		//update civilians
+ 		for (var i = 0; i < this.civilians.length; i++) {
+ 			this.civilians[i].update(this.grid, this.soldiers, this.walls, this.alarms);
+ 		}
+		//If the newest soldier has entered the town, start the countdown.
+ 		//if (this.latestSoldier.position.y < 700) {
+		this.countdown();
+		//
+		//check if the active soldier is colliding
+		for(var i=0;i<this.walls.length;i++){
+			if(collided(this.active,this.walls[i])){
+				this.active.revert_step();
 			}
+		}
 
-			if(this.triggeredTime!=undefined){
-				//if it's been longer than the given milliseconds, signal game over
-				if((new Date().getTime() - this.triggeredTime)>1500){
-					this.signal_triggered_alarm();
-					this.triggeredTime=undefined;
-
-				}
+		if(this.triggeredTime!=undefined){
+			//if it's been longer than the given milliseconds, signal game over
+			if((new Date().getTime() - this.triggeredTime)>1500){
+				owner.signal_pop();
+				this.triggeredTime=undefined;
 			}
-			this.scroll_camera();
+		}
+		this.scroll_camera();
  	};
 
 
@@ -246,7 +244,7 @@ function Game(owner){
 
 	this.signal_triggered_alarm=function() {
 		alert("Game Over"+'\n'+"Your score was "+this.score);
-    owner.create_game_over(owner);
+		owner.signal_pop();
 		//Do something better to signal game over
 	}
 
@@ -274,7 +272,15 @@ function Game(owner){
 		if(key=='Q')this.knock_out();
 		if(event.keyCode==27){
 			//press esc to pause game
-			owner.create_pause_menu();
+			//owner.create_pause_menu();
+			if(this.pauseMenu==0){
+				this.pauseMenu = new Pause(owner);
+				this.pauseMenu.init_();
+				this.container.addChild(this.pauseMenu);
+			}else{
+				this.container.removeChild(this.pauseMenu);
+				this.pauseMenu=0;
+			}
 		}
 	}
 

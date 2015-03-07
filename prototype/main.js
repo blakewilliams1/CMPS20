@@ -63,13 +63,8 @@ screenManager.create_level_screen=function(){
 	levelScreen.init_();
 	this.push(levelScreen);
 }
-screenManager.create_game_over = function(){
- var gameOver = new Game_over(screenManager);
- gameOver.init_();
- this.push(gameOver);
-}
-screenManager.signal_pop=function(pops){
-	while(screenManager.length>1&&screenManager.length>pops){
+screenManager.signal_pop=function(){
+	while(screenManager.length>1){
     screenManager.pop();
   }
 }
