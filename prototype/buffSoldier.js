@@ -1,15 +1,15 @@
 	var rightBuffTextures = [
-		PIXI.Texture.fromImage("../Art Assets/png/soldierRight1.png"),
-		PIXI.Texture.fromImage("../Art Assets/png/soldierRight2.png"),
-		PIXI.Texture.fromImage("../Art Assets/png/soldierRight3.png"),
-		PIXI.Texture.fromImage("../Art Assets/png/soldierRight4.png")
+		PIXI.Texture.fromImage("../Art Assets/png/buffRight1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/buffRight2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/buffRight3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/buffRight4.png")
 	]
 
 	var leftBuffTextures = [
-		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft1.png"),
-		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft2.png"),
-		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft3.png"),
-		PIXI.Texture.fromImage("../Art Assets/png/soldierLeft4.png")
+		PIXI.Texture.fromImage("../Art Assets/png/buffLeft1.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/buffLeft2.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/buffLeft3.png"),
+		PIXI.Texture.fromImage("../Art Assets/png/buffLeft4.png")
 	]
 
 	var upBuffTextures = [
