@@ -36,7 +36,7 @@ function Title(owner){
  		this.new_game_button.position.y=window_height/2;
  		this.new_game_button.click=function(event){
 			if(owner.length==1)
- 			owner.create_game_screen();
+ 			owner.create_game_screen(1);
  		}
 		this.stage.addChild(this.new_game_button);
 		
