@@ -43,7 +43,7 @@ function Title(owner){
 		this.level_button.setInteractive(true);
 		this.level_button.anchor.x=0.5;
  		this.level_button.position.x=window_width/2;
- 		this.level_button.position.y=window_height/2+100;
+ 		this.level_button.position.y=window_height/2+50;
  		this.level_button.click=function(event){
 			if(owner.length==1)
  			owner.create_level_screen();
@@ -53,7 +53,7 @@ function Title(owner){
 		this.credits_button.setInteractive(true);
 		this.credits_button.anchor.x=0.5;
  		this.credits_button.position.x=window_width/2;
- 		this.credits_button.position.y=window_height/2+50;
+ 		this.credits_button.position.y=window_height/2+100;
  		this.credits_button.click=function(event){
 			if(owner.length==1)
  			owner.create_credits_screen();

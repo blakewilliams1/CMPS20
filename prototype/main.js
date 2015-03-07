@@ -64,9 +64,13 @@ screenManager.create_level_screen=function(){
 	this.push(levelScreen);
 }
 screenManager.signal_pop=function(){
-	while(screenManager.length>1){
-    screenManager.pop();
-  }
+	if(screenManager.length>1){
+		var oldStage = screenManager[screenManager.length-1].stage
+		while(oldStage.children>1){
+			oldStage.removeChildAt(0);
+		}
+		screenManager.pop();
+	}
 }
 window.onkeydown = function(event) {
 	screenManager[screenManager.length-1].keydown(event);

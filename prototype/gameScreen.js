@@ -48,6 +48,7 @@ function Game(owner,level_number){
 		}
  		this.active.update();
  		//update civilians
+		
  		for (var i = 0; i < this.civilians.length; i++) {
  			this.civilians[i].update(this.grid, this.soldiers, this.walls, this.alarms);
  		}
@@ -69,31 +70,7 @@ function Game(owner,level_number){
 				owner.signal_pop();
 			}
 		}
-		this.scroll_camera();
  	};
-
- 	this.scroll_camera=function(){
-		if(mouse_location.x+this.container.position.x>window_width*4/5){
-			this.container.position.x=window_width*4/5-mouse_location.x;
-		}
-		if(mouse_location.x+this.container.position.x<window_width/5){
-			this.container.position.x=window_width/5- mouse_location.x;
-		}
-		if( mouse_location.y+this.container.position.y>window_height*4/5){
-			this.container.position.y=window_height*4/5- mouse_location.y;
-		}
-		if(mouse_location.y+this.container.position.y<window_height/5){
-			this.container.position.y=window_height/5-mouse_location.y;
-		}
-		if(this.container.position.x>0)this.container.position.x=0;
-		if(this.container.position.y>0)this.container.position.y=0;
-		if(this.container.position.x+map_width<window_width){
-			this.container.position.x=window_width-map_width;
-		}
-		if(this.container.position.y+map_height<window_height){
-			this.container.position.y=window_height-map_height;
-		}
- 	}
 
 //-------------------------------------------------
 
@@ -115,7 +92,7 @@ function Game(owner,level_number){
  		this.active = player;
 		this.latestSoldier = player;
  		this.soldiers.push(player);
- 		this.container.addChild(player);
+ 		this.stage.addChild(player);
  	}
 //--------------------------------------------------
 
@@ -124,7 +101,7 @@ function Game(owner,level_number){
  		this.active = player;
 		this.latestSoldier = player;
  		this.soldiers.push(player);
- 		this.container.addChild(player);
+ 		this.stage.addChild(player);
  	}
 //----------------------------------------------------
 
@@ -175,8 +152,8 @@ function Game(owner,level_number){
 		}
 		//var location = [sprite.position.x,sprite.position.y];
 		//var position = location_in_grid(location,this.grid);
-		this.container.addChild(civilian.graphic);
-		this.container.addChild(sprite);
+		this.stage.addChild(civilian.graphic);
+		this.stage.addChild(sprite);
 		//civilian.moves = civilian.A_star(this.grid)
 	}
 
@@ -184,7 +161,7 @@ function Game(owner,level_number){
 
  	this.create_hiding_spot = function(x,y,empty_tex,filled_tex) {
  		var trashCan = new HidingSpot(x,y,empty_tex,filled_tex);
- 		this.container.addChild(trashCan);
+ 		this.stage.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
 		this.walls.push(trashCan);
  	}
@@ -193,21 +170,21 @@ function Game(owner,level_number){
 
 	this.create_wall=function(x,y) {
 		var wall = new Wall(x, y);
-		this.container.addChild(wall);
+		this.stage.addChild(wall);
 		this.walls.push(wall);
 	}
 
 //----------------------------------------------------
 	this.create_building=function(x,y) {
 		var building= new Building(x, y);
-		this.container.addChild(building);
+		this.stage.addChild(building);
 		this.walls.push(building);
 	}
 
 	this.create_alarm=function(x,y) {
 		var alarm = new Alarm(x,y,this);
 		this.alarms.push(alarm);
- 		this.container.addChild(alarm);
+ 		this.stage.addChild(alarm);
 	}
 
 	this.create_background=function() {
@@ -217,7 +194,7 @@ function Game(owner,level_number){
 		while (x < map_width) {
 			while(y < map_height) {
 				var tile = new Tile(x,y);
-				this.container.addChild(tile);
+				this.stage.addChild(tile);
 				y += 256;
 			}
 			y = 0;
@@ -263,13 +240,12 @@ function Game(owner,level_number){
 		if(key=='Q')this.knock_out();
 		if(event.keyCode==27){
 			//press esc to pause game
-			//owner.create_pause_menu();
 			if(this.pauseMenu==0){
 				this.pauseMenu = new Pause(owner);
 				this.pauseMenu.init_();
-				this.container.addChild(this.pauseMenu);
+				this.stage.addChild(this.pauseMenu);
 			}else{
-				this.container.removeChild(this.pauseMenu);
+				this.stage.removeChild(this.pauseMenu);
 				this.pauseMenu=0;
 			}
 		}
@@ -278,7 +254,6 @@ function Game(owner,level_number){
 //--------------------------------------------------
 
  	this.init_ = function() {
- 		this.stage.addChild(this.container);
  		//initiate the gui
 
 		this.init_gui();
@@ -292,7 +267,6 @@ function Game(owner,level_number){
 
 		this.levelManager = new LevelBuilder(this);
 		this.levelManager.buildLevel(level_number);
-
  	};
  }
 
