@@ -43,8 +43,8 @@ screenManager.create_title_screen=function(){
 	titleScreen.init_();
 	this.push(titleScreen);
 }
-screenManager.create_game_screen=function(){
-	var gameScreen = new Game(screenManager);
+screenManager.create_game_screen=function(level_number){
+	var gameScreen = new Game(screenManager,level_number);
 	gameScreen.init_();
 	this.push(gameScreen);
 }
@@ -59,7 +59,7 @@ screenManager.create_credits_screen=function(){
 	this.push(creditScreen);
 }
 screenManager.create_level_screen=function(){
-	var levelScreen = new Credits(screenManager);
+	var levelScreen = new Levels(screenManager);
 	levelScreen.init_();
 	this.push(levelScreen);
 }

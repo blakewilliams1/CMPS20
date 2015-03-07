@@ -9,7 +9,7 @@
  	      x: 0,
  	      y: 0
  }
-function Game(owner){
+function Game(owner,level_number){
 	this.end_game = false;
 	this.timer = 0
 	this.container=new PIXI.DisplayObjectContainer();
@@ -65,13 +65,12 @@ function Game(owner){
 		if(this.triggeredTime!=undefined){
 			//if it's been longer than the given milliseconds, signal game over
 			if((new Date().getTime() - this.triggeredTime)>1500){
+				alert("Game Over"+'\n'+"Your score was "+this.score);
 				owner.signal_pop();
-				this.triggeredTime=undefined;
 			}
 		}
 		this.scroll_camera();
  	};
-
 
  	this.scroll_camera=function(){
 		if(mouse_location.x+this.container.position.x>window_width*4/5){
@@ -241,14 +240,6 @@ function Game(owner){
 	}
 
 //----------------------------------------------------
-
-	this.signal_triggered_alarm=function() {
-		alert("Game Over"+'\n'+"Your score was "+this.score);
-		owner.signal_pop();
-		//Do something better to signal game over
-	}
-
-//----------------------------------------------------
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
 		if(key=='W')this.active.direction = "up";
@@ -300,7 +291,7 @@ function Game(owner){
 		//Top row of hiding spots.
 
 		this.levelManager = new LevelBuilder(this);
-		this.levelManager.buildLevel(1);
+		this.levelManager.buildLevel(level_number);
 
  	};
  }

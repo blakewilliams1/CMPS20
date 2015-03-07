@@ -3,7 +3,7 @@ function LevelBuilder(game){
 		switch(num){
 			case 1:this.buildLevelOne();break;
 			case 2:this.buildLevelTwo();break;
-			default: alert("Error with the levelBuilder. "+num+" is invalid.");
+			default: alert("Error with the levelBuilder! "+num+" is invalid.");
 		}
 	}
 	
