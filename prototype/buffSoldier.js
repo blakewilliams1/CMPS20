@@ -33,7 +33,10 @@
 
 function BuffSoldier(owner){
 	var soldier = new Soldier(owner);
-	soldier.soldierType=2;
+	
+	// Temporarily changed buff soldier type to 1 
+	
+	soldier.soldierType=1;
 	soldier.knock_out=function(civilian){
 		if(civilian.found){
 			//play punching sound
