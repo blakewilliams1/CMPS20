@@ -11,14 +11,12 @@
  }
 function Game(owner,level_number){
 	this.end_game = false;
-	this.timer = 0
-	this.container=new PIXI.DisplayObjectContainer();
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	//initialize game attributes
 	this.pauseMenu=0;
 	this.alarms=[];
  	this.soldiers = [];
- 	this.soldier_count = 0;
+	this.soldier_queue = [1,2,1,1,2];
  	this.hiding_spots = [];
  	this.walls = [];
  	this.civilians = [];
@@ -26,9 +24,10 @@ function Game(owner,level_number){
  	this.active
 	this.latestSoldier
  	this.fps = 60;
-	this.triggeredTime;
  	this.score=0;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
+	this.timer = 0
+	this.triggeredTime;
  	this.time=new Date().getTime();
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
@@ -38,6 +37,7 @@ function Game(owner,level_number){
 // this is the main update function for the game
 
  	this.update = function() {
+		//if(this.pauseMenu!=0)return;//this will pause everything but the timer
 		if(this.end_game){
 			if(this.timer > 1){
 				//this.end_game_menu();
@@ -79,7 +79,11 @@ function Game(owner,level_number){
  		this.score_text.setText("Score: "+this.score.toString());
  		if(this.elapsed_t<1){
  			this.time=new Date().getTime();
- 			this.create_soldier();
+			if(this.soldier_queue.length>0){
+				this.create_soldier(this.soldier_queue.shift());
+			}else{
+				//we need to discuss if there will be a set # of soldiers or not
+			}
  			this.elapsed_t=15;
  		}
  		this.time_text.setText("New Soldier in: "+(this.elapsed_t));
@@ -87,22 +91,17 @@ function Game(owner,level_number){
 
 //--------------------------------------------------
 
- 	this.create_soldier = function() {
- 		var player = new Soldier(this);
+ 	this.create_soldier = function(type) {
+		var player;
+		if(type==1){
+			player = new Soldier(this);
+		}else player=new BuffSoldier(this);
  		this.active = player;
 		this.latestSoldier = player;
  		this.soldiers.push(player);
  		this.stage.addChild(player);
  	}
-//--------------------------------------------------
 
- 	this.create_buff_soldier = function() {
- 		var player = new BuffSoldier(this);
- 		this.active = player;
-		this.latestSoldier = player;
- 		this.soldiers.push(player);
- 		this.stage.addChild(player);
- 	}
 //----------------------------------------------------
 
 	this.hide_active_soldier = function() {
@@ -243,6 +242,18 @@ function Game(owner,level_number){
  		this.stage.addChild(gui);
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);
+		//show upcoming soldiers
+		for(var i=0;i<3;i++){
+			var t = this.soldier_queue[i]==1?"soldier":"buff";
+			var icon=  new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/"+t+"Forward1.png"));
+			icon.position.x=770+40*i;
+			icon.position.y=window_height-35;
+			this.stage.addChild(icon);
+		}
+		var upcoming_text = new PIXI.Text("Upcoming Soldiers: ", {font:"30px Arial", fill:"black"});
+		upcoming_text.position.x=500;
+		upcoming_text.position.y=window_height-35;
+		this.stage.addChild(upcoming_text);
 	}
 
 //----------------------------------------------------
@@ -283,19 +294,13 @@ function Game(owner,level_number){
 //--------------------------------------------------
 
  	this.init_ = function() {
- 		//initiate the gui
-
-		this.init_gui();
 		this.create_background();
-
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
-
-		//Build the map:
-		//Top row of hiding spots.
-
 		this.levelManager = new LevelBuilder(this);
 		this.levelManager.buildLevel(level_number);
+		//initiate the gui
+		this.init_gui();
  	};
  }
 

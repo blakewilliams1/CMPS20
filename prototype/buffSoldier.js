@@ -26,17 +26,17 @@
 		PIXI.Texture.fromImage("../Art Assets/png/buffForward4.png")
 	]
 
-	var otherTex = PIXI.Texture.fromImage("../Art Assets/png/soldierRight1.png");
+	var otherTex = PIXI.Texture.fromImage("../Art Assets/png/buffForward1.png");
 
 
 
 
 function BuffSoldier(owner){
 	var soldier = new Soldier(owner);
-	
+	soldier.setTexture(otherTex);
 	// Temporarily changed buff soldier type to 1 
 	
-	soldier.soldierType=1;
+	soldier.soldierType=2;
 	soldier.knock_out=function(civilian){
 		if(civilian.found){
 			//play punching sound

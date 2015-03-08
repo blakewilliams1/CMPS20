@@ -32,7 +32,7 @@ function Levels(owner){
 				console.log(owner[owner.length-1].stage==this.stage);
 				if(owner[owner.length-1].stage!=this.stage)return;
 				while(owner.length>1)owner.signal_pop();
-				owner.create_game_screen(level_icon.num);
+				owner.create_game_screen(this.num);
 			}
 			this.stage.addChild(level_icon);
 			//Add level name

@@ -16,7 +16,7 @@ window.onload = function init() {
 	screenManager.create_title_screen();
 	document.body.appendChild(screenManager.renderer.view);
 
-	console.log(document.body)
+	console.log(document.body);
 	requestAnimFrame(animate);
 
 	var fpsmeter = new FPSMeter({
