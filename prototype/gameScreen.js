@@ -191,6 +191,7 @@ function Game(owner,level_number){
 		var x = 0;
 		var y = 0;
 		//map_width and map_height are defined at the top of main.js
+        //This first loop will lay down a nice layer of green.
 		while (x < map_width) {
 			while(y < map_height) {
 				var tile = new Tile(x,y);
@@ -199,6 +200,34 @@ function Game(owner,level_number){
 			}
 			y = 0;
 			x += 256;
+		}
+        //This next loop will draw some cute little shapes and stuff.
+        var tileRandomizer;
+        var spacingRandomizer;
+        x = 0;
+        y = 0;
+        while (x < map_width) {
+            tileRandomizer = Math.random()*3 + 1;
+            spacingRandomizerX = Math.random()*100+50;
+            spacingRandomizerY = Math.random()*100+50;
+            console.log("t "+tileRandomizer);
+			while(y < map_height) {
+				var tile2 = new Tile(x,y);
+                //What texture will be used:
+                var num_for_texture = Math.floor(tileRandomizer);
+                console.log("n " + num_for_texture);
+                if (num_for_texture == 1)
+                        tile2.changeTexture1();
+                else if(num_for_texture == 2 )
+                        tile2.changeTexture2();
+                 else if(num_for_texture == 3)
+                        tile2.changeTexture3();
+                tile2.rotation = Math.random(6.28);
+				this.stage.addChild(tile2);
+				y += spacingRandomizerY;
+			}
+			y = 0;
+			x += spacingRandomizerX;
 		}
 	}
 

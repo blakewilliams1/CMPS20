@@ -1,14 +1,28 @@
-function Tile(x, y) {
-	this.texture = PIXI.Texture.fromImage("../Art Assets/png/bg_tile.png");
-	var sprite = new PIXI.Sprite(this.texture);
-	sprite.anchor.x = 0;
-	sprite.anchor.y = 0;
-	sprite.position.x = x;
-	sprite.position.y = y;
-	sprite.width = 256;
-    sprite.height = 256;
-	sprite.update = function() {
+smallTile1 = PIXI.Texture.fromImage("../Art Assets/png/bg_tile1.png");
+smallTile2 = PIXI.Texture.fromImage("../Art Assets/png/bg_tile2.png");
+smallTile3 = PIXI.Texture.fromImage("../Art Assets/png/bg_tile3.png");
 
-	}
-	return sprite;
+function Tile(x, y) {
+	var newTile = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/bg_tile.png"));
+	newTile.position.x = x;
+    newTile.position.y = y;
+    newTile.anchor.x = .5;
+    newTile.anchor.y = .5;
+    
+    newTile.changeTexture1 = function() {
+		var new_tex = smallTile1;
+		this.setTexture(new_tex);
+	};
+    
+    newTile.changeTexture2 = function() {
+		var new_tex = smallTile2;
+		this.setTexture(new_tex);
+	};
+    
+    newTile.changeTexture3 = function() {
+		var new_tex = smallTile3;
+		this.setTexture(new_tex);
+	};
+    
+	return newTile;
 }
