@@ -41,7 +41,7 @@ function LevelBuilder(game){
     	  var pos = position_list[Math.floor(Math.random() * position_list.length)]
           game.create_civilian(pos.x,pos.y);
 		}
-		game.create_soldier(1);
+		game.create_soldier(2);
 	}
 
 	//----------------------------------
