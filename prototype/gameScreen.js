@@ -205,12 +205,13 @@ function Game(owner,level_number){
         var spacingRandomizer;
         x = 0;
         y = 0;
-        while (x < map_width) {
+        /*while (x < map_width) {
             tileRandomizer = Math.random()*3 + 1;
             spacingRandomizerX = Math.random()*100+50;
             spacingRandomizerY = Math.random()*100+50;
             console.log("t "+tileRandomizer);
 			while(y < map_height) {
+				x += Math.random()*200 - 100;
 				var tile2 = new Tile(x,y);
                 //What texture will be used:
                 var num_for_texture = Math.floor(tileRandomizer);
@@ -227,6 +228,22 @@ function Game(owner,level_number){
 			}
 			y = 0;
 			x += spacingRandomizerX;
+		}*/
+		var numSquares = 50;
+		while (numSquares > 0) {
+			var tile2 = new Tile(Math.random()*map_width, Math.random()*map_height);
+			tileRandomizer = Math.random()*3 + 1;
+			var num_for_texture = Math.floor(tileRandomizer);
+            console.log("n " + num_for_texture);
+            if (num_for_texture == 1)
+                        tile2.changeTexture1();
+            else if(num_for_texture == 2 )
+                        tile2.changeTexture2();
+            else if(num_for_texture == 3)
+                        tile2.changeTexture3();
+            tile2.rotation = Math.random(6.28);
+		    this.stage.addChild(tile2);
+			numSquares -= 1;
 		}
 	}
 
