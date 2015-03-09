@@ -109,9 +109,17 @@ function Game(owner,level_number){
 		//since it doesn't, it thinks the soldier isn't close enough with
 		wider objects*/
  		for (var i = 0; i < this.hiding_spots.length; i++) {
+			//xDistance will be the horizontal distance between the center of the two objects,
+			//minus the "radius" of those two objects
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
+			xDistance -= this.active.texture.width/2;
+			xDistance -= this.hiding_spots[i].width/2;
+			//yDistance will be the vertical distance between the center of the two objects,
+			//minus the "radius" of those two objects
  			var yDistance = Math.abs(this.active.position.y - this.hiding_spots[i].position.y);
- 			if (xDistance<45&&yDistance<45&&this.active.objectBehind==null) {
+			yDistance -= this.active.texture.height;
+			yDistance -= this.hiding_spots[i].height;
+ 			if (xDistance<10&&yDistance<10&&this.active.objectBehind==null) {
  				this.active.hide(this.hiding_spots[i]);
  				this.score+=10;
  			}
