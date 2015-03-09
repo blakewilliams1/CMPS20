@@ -91,6 +91,13 @@ function Civilian(){
 
   this.update = function(grid,soldiers,walls,alarms){
        this.graphic.clear();
+
+       if(this.knockedOut){
+
+         //change image
+         return;
+       }
+
        this.center = {
        x:this.sprite.position.x,
        y:this.sprite.position.y

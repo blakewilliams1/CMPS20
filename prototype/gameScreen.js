@@ -37,18 +37,13 @@ function Game(owner,level_number){
 // this is the main update function for the game
 
  	this.update = function() {
-		//if(this.pauseMenu!=0)return;//this will pause everything but the timer
+		if(this.pauseMenu!=0)return;
 		if(this.end_game){
-			if(this.timer > 1){
-				//this.end_game_menu();
- 		  		alert("game over");
- 		  		return;
- 		  	}
- 		  	this.timer++;
+			return;
 		}
  		this.active.update();
  		//update civilians
-		
+
  		for (var i = 0; i < this.civilians.length; i++) {
  			this.civilians[i].update(this.grid, this.soldiers, this.walls, this.alarms);
  		}
@@ -66,8 +61,16 @@ function Game(owner,level_number){
 		if(this.triggeredTime!=undefined){
 			//if it's been longer than the given milliseconds, signal game over
 			if((new Date().getTime() - this.triggeredTime)>1500){
-				alert("Game Over"+'\n'+"Your score was "+this.score);
-				owner.signal_pop();
+				var end_text = new PIXI.Text("Game Over"+'\n'+"Your score was "+this.score, {font:"30px Arial", fill:"black"});
+				//alert("Game Over"+'\n'+"Your score was "+this.score);
+				end_text.position.x = 500;
+				end_text.position.y = 200;
+				var over = new Game_over(owner);
+				over.init_();
+				this.end_game = true;
+				this.stage.addChild(over);
+				this.stage.addChild(end_text);
+				//owner.signal_pop();
 			}
 		}
  	};
@@ -125,6 +128,7 @@ function Game(owner,level_number){
  			var xDistance = Math.abs(this.active.position.x - this.civilians[i].sprite.position.x);
  			var yDistance = Math.abs(this.active.position.y - this.civilians[i].sprite.position.y);
  			if (xDistance < 45 && yDistance < 45) {
+ 				console.log("in sight");
  				if(this.active.soldierType==2)this.active.knock_out(this.civilians[i]);
  				break;
  			}
@@ -294,8 +298,8 @@ function Game(owner,level_number){
 		if(key=='A'&&this.active.direction=="left")this.active.direction = "none";
 		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
 		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
-		if(key=='Q')this.knock_out();
-		if(event.keyCode==27){
+		if(event.keyCode == 32)this.knock_out();
+		if(event.keyCode == 27){
 			//press esc to pause game
 			if(this.pauseMenu==0){
 				this.pauseMenu = new Pause(owner);
