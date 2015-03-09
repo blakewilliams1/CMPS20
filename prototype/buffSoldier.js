@@ -59,39 +59,48 @@ var otherTex = PIXI.Texture.fromImage("../Art Assets/png/buffForward1.png");
 function BuffSoldier(owner){
 	var soldier = new Soldier(owner);
 	soldier.setTexture(otherTex);
-	soldier.isCarrying=false;
-
+	soldier.carrying=0;
 	soldier.soldierType=2;
 	soldier.knock_out=function(civilian){
 		civilian.knockedOut=true;
 		civilian.sprite.visible=false;
-		soldier.isCarrying=true;
+		soldier.carrying=civilian;
 		soldier.setTexture(downCarryBuffTextures[soldier.animCounter]);
 		//play punching sound
 	}
+	soldier.hide_civilian=function(hidingSpot){
+		if(soldier.carrying==0)return;
+		soldier.carrying.sprite.visible = false;
+		hidingSpot.changeTexture(0);
+		soldier.carrying.objectBehind = hidingSpot;
+		hidingSpot.hiding_soldier = soldier.carrying;
+		hidingSpot.occupied = true;
+		soldier.carrying=0;
+		soldier.setTexture(downBuffTextures[soldier.animCounter]);
+	}
 	soldier.moveRight = function() {
-			if(soldier.isCarrying)this.setTexture(rightCarryBuffTextures[soldier.animCounter]);
+			if(soldier.carrying!=0)this.setTexture(rightCarryBuffTextures[soldier.animCounter]);
 			else this.setTexture(rightBuffTextures[soldier.animCounter]);
 			if (soldier.animCounter2++ % 10 == 0) ++soldier.animCounter;
 			if (soldier.animCounter >= 4) soldier.animCounter = 0;
 			soldier.position.x += 4;
 	};
 	soldier.moveLeft = function() {
-			if(soldier.isCarrying)this.setTexture(leftCarryBuffTextures[soldier.animCounter]);
+			if(soldier.carrying!=0)this.setTexture(leftCarryBuffTextures[soldier.animCounter]);
 			else this.setTexture(leftBuffTextures[soldier.animCounter]);
 			if (soldier.animCounter2++ % 10 == 0) ++soldier.animCounter;
 			if (soldier.animCounter >= 4) soldier.animCounter = 0;
 			soldier.position.x -= 4;
 	};
 	soldier.moveUp = function() {
-			if(soldier.isCarrying)this.setTexture(upCarryBuffTextures[soldier.animCounter]);
+			if(soldier.carrying!=0)this.setTexture(upCarryBuffTextures[soldier.animCounter]);
 			else this.setTexture(upBuffTextures[soldier.animCounter]);
 			if (soldier.animCounter2++ % 10 == 0) ++soldier.animCounter;
 			if (soldier.animCounter >= 4) soldier.animCounter = 0;
 			soldier.position.y -= 4;
 	}
 	soldier.moveDown = function() {
-			if(soldier.isCarrying)this.setTexture(downCarryBuffTextures[soldier.animCounter]);
+			if(soldier.carrying!=0)this.setTexture(downCarryBuffTextures[soldier.animCounter]);
 			else this.setTexture(downBuffTextures[soldier.animCounter]);
 			if (soldier.animCounter2++ % 10 == 0) ++soldier.animCounter;
 			if (soldier.animCounter >= 4) soldier.animCounter = 0;

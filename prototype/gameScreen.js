@@ -122,9 +122,10 @@ function Game(owner,level_number){
 			yDistance -= this.active.texture.height;
 			yDistance -= this.hiding_spots[i].height;
  			if (xDistance<10&&yDistance<10&&this.active.objectBehind==null) {
-				if(this.active.soldierType==2&&this.active.isCarrying){
+				if(this.active.soldierType==2&&this.active.carrying!=0){
 					//hide the civilian
 					console.log("hide the civilian");
+					this.active.hide_civilian(this.hiding_spots[i]);
 				}else{
 					this.active.hide(this.hiding_spots[i]);
 					this.score+=10;
@@ -140,8 +141,10 @@ function Game(owner,level_number){
  			var xDistance = Math.abs(this.active.position.x - this.civilians[i].sprite.position.x);
  			var yDistance = Math.abs(this.active.position.y - this.civilians[i].sprite.position.y);
  			if (xDistance < 45 && yDistance < 45) {
- 				if(this.active.soldierType==2)this.active.knock_out(this.civilians[i]);
- 				break;
+ 				if(this.active.soldierType==2){
+					this.active.knock_out(this.civilians[i]);
+					break;
+				}
  			}
  		}
  	};
