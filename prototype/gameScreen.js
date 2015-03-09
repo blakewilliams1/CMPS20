@@ -111,7 +111,7 @@ function Game(owner,level_number){
  		for (var i = 0; i < this.hiding_spots.length; i++) {
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
  			var yDistance = Math.abs(this.active.position.y - this.hiding_spots[i].position.y);
- 			if (xDistance < 45 && yDistance < 45) {
+ 			if (xDistance<45&&yDistance<45&&this.active.objectBehind==null) {
  				this.active.hide(this.hiding_spots[i]);
  				this.score+=10;
  			}
