@@ -33,11 +33,11 @@
 
 function BuffSoldier(owner){
 	var soldier = new Soldier(owner);
+
 	soldier.setTexture(otherTex);
-	// Temporarily changed buff soldier type to 1 
-	
+	// Temporarily changed buff soldier type to 1
+
 	soldier.soldierType=2;
-	
 	soldier.knock_out=function(civilian){
 		civilian.knockedOut=true;
 		//play punching sound
