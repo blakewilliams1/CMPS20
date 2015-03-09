@@ -16,12 +16,14 @@ function LevelBuilder(game){
 		game.create_building(580,90,"small");
 		game.create_building(780,150,"small");
 		game.create_building(900,350,"small");
+		game.create_building(1100,200,"small");
 
 		game.create_hiding_spot(65,125,"bush");
 		game.create_hiding_spot(290,180,"bush");
 		game.create_hiding_spot(430,180,"bush");
 		game.create_hiding_spot(360,470,"bush");
 		game.create_hiding_spot(980,410,"bush");
+		game.create_hiding_spot(980,120,"bush");
 
 		game.create_hiding_spot(140,510,"trashcan");
 		game.create_hiding_spot(225,120,"trashcan");
@@ -30,9 +32,10 @@ function LevelBuilder(game){
 
 		game.create_hiding_spot(600,320,"bench");
 		game.create_hiding_spot(800,215,"bench");
-
+		game.create_hiding_spot(1000,255,"bench");
+		
 		game.create_hiding_spot(640,480,"well");
-		game.create_hiding_spot(800,215,"bench");
+		
 
 		game.create_alarm(399,300);
 
