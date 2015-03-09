@@ -16,7 +16,8 @@ function Game(owner,level_number){
 	this.pauseMenu=0;
 	this.alarms=[];
  	this.soldiers = [];
-	this.soldier_queue = [1,2,1,1,2];
+	this.soldier_queue = [1,2,1];
+	this.icon=[];
  	this.hiding_spots = [];
  	this.walls = [];
  	this.civilians = [];
@@ -84,6 +85,7 @@ function Game(owner,level_number){
  			this.time=new Date().getTime();
 			if(this.soldier_queue.length>0){
 				this.create_soldier(this.soldier_queue.shift());
+				this.soldier_queue.push(Math.floor(Math.random)*3);
 			}else{
 				//we need to discuss if there will be a set # of soldiers or not
 			}
@@ -186,8 +188,8 @@ function Game(owner,level_number){
 	}
 
 //----------------------------------------------------
-	this.create_building=function(x,y) {
-		var building= new Building(x, y);
+	this.create_building=function(x,y,name) {
+		var building= new Building(x, y, name);
 		this.stage.addChild(building);
 		this.walls.push(building);
 	}
@@ -274,10 +276,10 @@ function Game(owner,level_number){
 		//show upcoming soldiers
 		for(var i=0;i<3;i++){
 			var t = this.soldier_queue[i]==1?"soldier":"buff";
-			var icon=  new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/"+t+"Forward1.png"));
-			icon.position.x=770+40*i;
-			icon.position.y=window_height-35;
-			this.stage.addChild(icon);
+			this.icon[i]=  new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/"+t+"Forward1.png"));
+			this.icon[i].position.x=770+40*i;
+			this.icon[i].position.y=window_height-35;
+			this.stage.addChild(this.icon[i]);
 		}
 		var upcoming_text = new PIXI.Text("Upcoming Soldiers: ", {font:"30px Arial", fill:"black"});
 		upcoming_text.position.x=500;
