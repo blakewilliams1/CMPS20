@@ -262,7 +262,7 @@ function Game(owner,level_number){
 	}
 
 	this.init_gui=function(){
-		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
+		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/tempGui.png");
 		var gui = new PIXI.Sprite(gui_base);
 		gui.position.x = 0;
 		gui.position.y = window_height-40;
