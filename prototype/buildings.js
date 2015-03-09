@@ -1,5 +1,5 @@
 function Building(x, y) {
-	var texture = PIXI.Texture.fromImage("../Art Assets/png/smallBuilding.png");
+	var texture = PIXI.Texture.fromImage("../Art Assets/png/"+"Building.png");
 	var sprite = new PIXI.Sprite(texture);
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
