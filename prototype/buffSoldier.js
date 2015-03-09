@@ -37,11 +37,11 @@ function BuffSoldier(owner){
 	// Temporarily changed buff soldier type to 1 
 	
 	soldier.soldierType=2;
+	
 	soldier.knock_out=function(civilian){
-		if(civilian.found){
-			//play punching sound
-			//either remove civilian from stage or make him lie down?
-		}
+		civilian.knockedOut=true;
+		//play punching sound
+		//either remove civilian from stage or make him lie down?
 	}
 	soldier.moveRight = function() {
 			this.setTexture(rightBuffTextures[soldier.animCounter]);

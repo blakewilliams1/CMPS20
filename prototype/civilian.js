@@ -50,6 +50,7 @@ function Civilian(){
   this.soldierType=0;
   this.actions = ["north","south","east","west"];
   this.moves;
+  this.knockedOut=false;
   this.animCounter = 0;
   this.animCounter2 = 0;
 

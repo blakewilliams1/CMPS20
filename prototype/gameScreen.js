@@ -125,7 +125,7 @@ function Game(owner,level_number){
  			var xDistance = Math.abs(this.active.position.x - this.civilians[i].sprite.position.x);
  			var yDistance = Math.abs(this.active.position.y - this.civilians[i].sprite.position.y);
  			if (xDistance < 45 && yDistance < 45) {
- 				this.active.knock_out(this.civilians[i].sprite);
+ 				if(this.active.soldierType==2)this.active.knock_out(this.civilians[i]);
  				break;
  			}
  		}
