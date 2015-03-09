@@ -16,7 +16,7 @@ function Game(owner,level_number){
 	this.pauseMenu=0;
 	this.alarms=[];
  	this.soldiers = [];
-	this.soldier_queue = [1,2,1];
+	this.soldier_queue = [2,1,2,2,1,1,2,1,1,2,2];
 	this.icon=[];
  	this.hiding_spots = [];
  	this.walls = [];
@@ -110,9 +110,6 @@ function Game(owner,level_number){
 //----------------------------------------------------
 
 	this.hide_active_soldier = function() {
-		/*TODO: This should account for the width of the sprites
-		//since it doesn't, it thinks the soldier isn't close enough with
-		wider objects*/
  		for (var i = 0; i < this.hiding_spots.length; i++) {
 			//xDistance will be the horizontal distance between the center of the two objects,
 			//minus the "radius" of those two objects
@@ -125,8 +122,14 @@ function Game(owner,level_number){
 			yDistance -= this.active.texture.height;
 			yDistance -= this.hiding_spots[i].height;
  			if (xDistance<10&&yDistance<10&&this.active.objectBehind==null) {
- 				this.active.hide(this.hiding_spots[i]);
- 				this.score+=10;
+				if(this.active.soldierType==2&&this.active.carrying!=0){
+					//hide the civilian
+					console.log("hide the civilian");
+					this.active.hide_civilian(this.hiding_spots[i]);
+				}else{
+					this.active.hide(this.hiding_spots[i]);
+					this.score+=10;
+				}
  			}
  		}
  	};
@@ -138,9 +141,10 @@ function Game(owner,level_number){
  			var xDistance = Math.abs(this.active.position.x - this.civilians[i].sprite.position.x);
  			var yDistance = Math.abs(this.active.position.y - this.civilians[i].sprite.position.y);
  			if (xDistance < 45 && yDistance < 45) {
- 				console.log("in sight");
- 				if(this.active.soldierType==2)this.active.knock_out(this.civilians[i]);
- 				break;
+ 				if(this.active.soldierType==2){
+					this.active.knock_out(this.civilians[i]);
+					break;
+				}
  			}
  		}
  	};
@@ -172,8 +176,8 @@ function Game(owner,level_number){
 
 //----------------------------------------------------
 
- 	this.create_hiding_spot = function(x,y,empty_tex,filled_tex) {
- 		var trashCan = new HidingSpot(x,y,empty_tex,filled_tex);
+ 	this.create_hiding_spot = function(x,y,empty_tex) {
+ 		var trashCan = new HidingSpot(x,y,empty_tex);
  		this.stage.addChild(trashCan);
  		this.hiding_spots.push(trashCan);
 		this.walls.push(trashCan);
@@ -248,7 +252,7 @@ function Game(owner,level_number){
 			var tile2 = new Tile(Math.random()*map_width, Math.random()*map_height);
 			tileRandomizer = Math.random()*3 + 1;
 			var num_for_texture = Math.floor(tileRandomizer);
-            console.log("n " + num_for_texture);
+            //console.log("n " + num_for_texture);
             if (num_for_texture == 1)
                         tile2.changeTexture1();
             else if(num_for_texture == 2 )
@@ -308,7 +312,7 @@ function Game(owner,level_number){
 		if(key=='A'&&this.active.direction=="left")this.active.direction = "none";
 		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
 		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
-		if(event.keyCode == 32)this.knock_out();
+		if(key=='Q')this.knock_out();
 		if(event.keyCode == 27){
 			//press esc to pause game
 			if(this.pauseMenu==0){

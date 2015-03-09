@@ -11,8 +11,9 @@ function HidingSpot(x,y,tex) {
 	new_hiding_spot.occupied = false;
 	new_hiding_spot.points = 10;
 	new_hiding_spot.changeTexture = function(type) {
-		//hardcoded to show hiding spot for only the original soldier  until all art is done
-		var tex_name = new_hiding_spot.base_tex+"Occupied"+"1";//type.toString();
+		var tex_name;
+		if(type==2)tex_name= new_hiding_spot.base_tex+"Occupied1";
+		else tex_name = new_hiding_spot.base_tex+"Occupied"+type.toString();
 		var new_tex = PIXI.Texture.fromImage("../Art Assets/png/"+tex_name+".png");
 		this.setTexture(new_tex);
 	};
