@@ -294,13 +294,13 @@ function Game(owner,level_number){
 //----------------------------------------------------
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
-		if(key=='W')this.active.direction = "up";
-		if(key=='A')this.active.direction = "left";
-		if(key=='S')this.active.direction = "down";
-		if(key=='D')this.active.direction = "right";
+		if(key=='W'||event.keyCode==38)this.active.direction = "up";
+		if(key=='A'||event.keyCode==37)this.active.direction = "left";
+		if(key=='S'||event.keyCode==40)this.active.direction = "down";
+		if(key=='D'||event.keyCode==39)this.active.direction = "right";
 		if(key=='E')this.hide_active_soldier();
 		if(key=='F')this.time=0;
-
+		
 	};
 
 //----------------------------------------------------
@@ -308,10 +308,10 @@ function Game(owner,level_number){
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
 		//the second condition fixes stuttering on direction change
-		if(key=='W'&&this.active.direction=="up")this.active.direction = "none";
-		if(key=='A'&&this.active.direction=="left")this.active.direction = "none";
-		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
-		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
+		if((key=='W'||event.keyCode==38)&&this.active.direction=="up")this.active.direction = "none";
+		if((key=='A'||event.keyCode==37)&&this.active.direction=="left")this.active.direction = "none";
+		if((key=='S'||event.keyCode==40)&&this.active.direction=="down")this.active.direction = "none";
+		if((key=='D'||event.keyCode==39)&&this.active.direction=="right")this.active.direction = "none";
 		if(key=='Q')this.knock_out();
 		if(event.keyCode == 27){
 			//press esc to pause game

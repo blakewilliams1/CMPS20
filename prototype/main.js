@@ -65,7 +65,8 @@ screenManager.create_level_screen=function(){
 }
 screenManager.create_tutorial_screen=function(){
 	var tutScreen = new Tutorial(screenManager);
-	tutScreen.init_();
+	tutScreen.level.init_();
+	tutScreen.init_tutorial_specific();
 	this.push(tutScreen);
 }
 screenManager.signal_pop=function(){

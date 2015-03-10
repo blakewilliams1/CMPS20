@@ -11,7 +11,25 @@
  }
 function Tutorial(owner){
 	this.level=new Game(owner,0);
-	//this.stage=this.level.stage;
+	this.stage=this.level.stage;
+	this.skip_text;
+	this.update=function(){
+		this.level.update();
+	}
+	this.keydown=function(event){
+		this.level.keydown(event);
+	};
+	this.keyup=function(event){
+		this.level.keyup(event);
+	}
+	this.init_tutorial_specific=function(){
+		this.skip_text= new PIXI.Text("Press Enter to skip ", {font:"20px Arial", fill:"black"});
+		this.skip_text.position.x=window_width;
+		this.skip_text.anchor.x=1;
+		this.skip_text.anchor.y=0;
+		this.level.stage.addChild(this.skip_text);
+		console.log("asfasdf");
+	}
  }
 
 //-------------------------------------------------
