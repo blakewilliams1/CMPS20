@@ -63,6 +63,11 @@ screenManager.create_level_screen=function(){
 	levelScreen.init_();
 	this.push(levelScreen);
 }
+screenManager.create_tutorial_screen=function(){
+	var tutScreen = new Tutorial(screenManager);
+	tutScreen.init_();
+	this.push(tutScreen);
+}
 screenManager.signal_pop=function(){
 	if(screenManager.length>1){
 		var oldStage = screenManager[screenManager.length-1].stage

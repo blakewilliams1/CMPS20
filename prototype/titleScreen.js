@@ -6,8 +6,6 @@
  //create an instance of the game
 function Title(owner){
 	this.owner=owner;
-	this.view=owner.view;
-	this.renderer=owner.renderer;
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	this.new_game_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/newGameButton.png"));
 	this.credits_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/creditsButton.png"));
@@ -36,7 +34,7 @@ function Title(owner){
  		this.new_game_button.position.y=window_height/2;
  		this.new_game_button.click=function(event){
 			if(owner.length==1)
- 			owner.create_game_screen(1);
+ 			owner.create_game_screen(0);
  		}
 		this.stage.addChild(this.new_game_button);
 		

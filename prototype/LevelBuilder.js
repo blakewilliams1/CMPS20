@@ -1,12 +1,22 @@
 function LevelBuilder(game){
 	this.buildLevel=function(num){
 		switch(num){
+			case 0:this.buildLevelZero();break;
 			case 1:this.buildLevelOne();break;
 			case 2:this.buildLevelTwo();break;
 			default: alert("Error with the levelBuilder! "+num+" is invalid.");
 		}
 	}
 
+	this.buildLevelZero=function(){
+		//game.create_hiding_spot(map_width*9/10,map_height*8,"trashcan");
+		game.create_building(map_width*6/10, map_height*4/7,"small");
+		game.create_alarm(map_width/3,map_height/2);
+		game.create_grid();
+		game.create_civilian(100,100);
+		game.create_soldier();
+	}
+	
 	this.buildLevelOne=function(){
 		game.create_building(90,300,"small");
 		game.create_building(150,75,"small");
