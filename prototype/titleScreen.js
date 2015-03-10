@@ -27,7 +27,7 @@ function Title(owner){
 		this.title_text.position.x=window_width/2;
 		this.title_text.position.y=window_height/2-100;
 		this.stage.addChild(this.title_text);
- 		
+
 		this.new_game_button.setInteractive(true);
 		this.new_game_button.anchor.x=0.5;
  		this.new_game_button.position.x=window_width/2;
@@ -35,9 +35,11 @@ function Title(owner){
  		this.new_game_button.click=function(event){
 			if(owner.length==1)
  			owner.create_tutorial_screen();
+
+ 			//owner.create_game_screen(1);
  		}
 		this.stage.addChild(this.new_game_button);
-		
+
 		this.level_button.setInteractive(true);
 		this.level_button.anchor.x=0.5;
  		this.level_button.position.x=window_width/2;
@@ -47,7 +49,7 @@ function Title(owner){
  			owner.create_level_screen();
 	    }
 		this.stage.addChild(this.level_button);
-		
+
 		this.credits_button.setInteractive(true);
 		this.credits_button.anchor.x=0.5;
  		this.credits_button.position.x=window_width/2;

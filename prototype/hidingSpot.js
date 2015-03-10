@@ -24,5 +24,12 @@ function HidingSpot(x,y,tex) {
 			this.setTexture(new_hiding_spot.emptyTexture);
 		}
 	};
+
+	new_hiding_spot.graphic = new PIXI.Graphics();
+	new_hiding_spot.graphic.moveTo(x,y);
+	new_hiding_spot.graphic.lineStyle(3, 0x0000FF, .3);
+	console.log(new_hiding_spot.texture.width);
+	new_hiding_spot.graphic.drawCircle(x ,y, 60);
+
 	return new_hiding_spot;
 }

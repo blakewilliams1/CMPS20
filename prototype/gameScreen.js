@@ -44,7 +44,7 @@ function Game(owner,level_number){
 		}
  		this.active.update();
  		//update civilians
-
+    close_to_hiding(this.hiding_spots,this.active);
  		for (var i = 0; i < this.civilians.length; i++) {
  			this.civilians[i].update(this.grid, this.soldiers, this.walls, this.alarms);
  		}
@@ -179,6 +179,7 @@ function Game(owner,level_number){
  	this.create_hiding_spot = function(x,y,empty_tex) {
  		var trashCan = new HidingSpot(x,y,empty_tex);
  		this.stage.addChild(trashCan);
+ 		this.stage.addChild(trashCan.graphic);
  		this.hiding_spots.push(trashCan);
 		this.walls.push(trashCan);
  	}
@@ -300,7 +301,7 @@ function Game(owner,level_number){
 		if(key=='D'||event.keyCode==39)this.active.direction = "right";
 		if(key=='E')this.hide_active_soldier();
 		if(key=='F')this.time=0;
-		
+
 	};
 
 //----------------------------------------------------
@@ -312,7 +313,9 @@ function Game(owner,level_number){
 		if((key=='A'||event.keyCode==37)&&this.active.direction=="left")this.active.direction = "none";
 		if((key=='S'||event.keyCode==40)&&this.active.direction=="down")this.active.direction = "none";
 		if((key=='D'||event.keyCode==39)&&this.active.direction=="right")this.active.direction = "none";
-		if(key=='Q')this.knock_out();
+
+
+		if(event.keyCode==32)this.knock_out();
 		if(event.keyCode == 27){
 			//press esc to pause game
 			if(this.pauseMenu==0){
