@@ -29,7 +29,6 @@ function Levels(owner){
 			level_icon.position.y=Math.floor(1+(i-1)/3)*window_height/3;
 			level_icon.num=i;
 			level_icon.click=function(event){
-				console.log(owner[owner.length-1].stage==this.stage);
 				if(owner[owner.length-1].stage!=this.stage)return;
 				while(owner.length>1)owner.signal_pop();
 				owner.create_game_screen(this.num);

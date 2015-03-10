@@ -9,7 +9,7 @@ function LevelBuilder(game){
 	}
 
 	this.buildLevelZero=function(){
-		//game.create_hiding_spot(map_width*9/10,map_height*8,"trashcan");
+		game.create_hiding_spot(map_width*9/10,map_height*8,"trashcan");
 		game.create_building(map_width*6/10, map_height*4/7,"small");
 		game.create_alarm(map_width/3,map_height/2);
 		game.create_grid();

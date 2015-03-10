@@ -11,7 +11,7 @@
  }
 function Tutorial(owner){
 	this.level=new Game(owner,0);
-	this.stage=this.level.stage;
+	//this.stage=this.level.stage;
  }
 
 //-------------------------------------------------
