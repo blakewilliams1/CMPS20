@@ -172,7 +172,7 @@ function Game(owner,level_number){
  * Function that creates a civilian
  */
 
-	this.create_civilian=function(x,y,goal){
+	this.create_civilian=function(x,y,goals){
 		var civilian = new Civilian();
 		var texture = PIXI.Texture.fromImage("../Art Assets/png/UkraineForward1.png");
 		var sprite = new PIXI.Sprite(texture);
@@ -181,8 +181,8 @@ function Game(owner,level_number){
 		sprite.position.y = y;
 		civilian.sprite = sprite;
 		this.civilians.push(civilian);
-    civilian.goal = goal[Math.floor(Math.random(goal.length))];
-		civilian.goal_list = goal;
+    civilian.goal = goals[Math.floor(Math.random(goals.length))];
+		civilian.goal_list = goals;
 		//var location = [sprite.position.x,sprite.position.y];
 		//var position = location_in_grid(location,this.grid);
 		this.stage.addChild(civilian.graphic);
