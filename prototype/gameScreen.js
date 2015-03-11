@@ -26,6 +26,7 @@ function Game(owner,level_number){
 	this.latestSoldier
  	this.fps = 60;
  	this.score=0;
+ 	this.set = false;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
 	this.timer = 0
 	this.triggeredTime;
@@ -40,7 +41,7 @@ function Game(owner,level_number){
 //squares in the background.
 
 	this.sortStage = function(stage) {
-		this.stage.children.sort(this.childCompare);
+		stage.children.sort(this.childCompare);
 	}
 
 	this.childCompare = function(a, b) {
@@ -114,10 +115,13 @@ function Game(owner,level_number){
 		if(type==1){
 			player = new Soldier(this);
 		}else player=new BuffSoldier(this);
+		if((this.active == undefined) || (this.set)){
  		this.active = player;
+ 	}
 		this.latestSoldier = player;
  		this.soldiers.push(player);
  		this.stage.addChild(player);
+ 		this.set = false;
  	}
 
 //----------------------------------------------------
@@ -168,7 +172,7 @@ function Game(owner,level_number){
  * Function that creates a civilian
  */
 
-	this.create_civilian=function(x,y){
+	this.create_civilian=function(x,y,goal){
 		var civilian = new Civilian();
 		var texture = PIXI.Texture.fromImage("../Art Assets/png/UkraineForward1.png");
 		var sprite = new PIXI.Sprite(texture);
@@ -177,9 +181,8 @@ function Game(owner,level_number){
 		sprite.position.y = y;
 		civilian.sprite = sprite;
 		this.civilians.push(civilian);
-		for(var i = 0; i < 3; i++){
-			civilian.goal_list.push(position_list[Math.floor(Math.random() * position_list.length)]);
-		}
+    civilian.goal = goal[Math.floor(Math.random(goal.length))];
+		civilian.goal_list = goal;
 		//var location = [sprite.position.x,sprite.position.y];
 		//var position = location_in_grid(location,this.grid);
 		this.stage.addChild(civilian.graphic);
@@ -280,7 +283,7 @@ function Game(owner,level_number){
 			this.num_background_tiles += 1;
 			numSquares -= 1;
 		}
-		console.log("NUM TILES: "+this.num_background_tiles);
+		//console.log("NUM TILES: "+this.num_background_tiles);
 	}
 
 	this.init_gui=function(){
@@ -317,7 +320,7 @@ function Game(owner,level_number){
 		if(key=='S'||event.keyCode==40)this.active.direction = "down";
 		if(key=='D'||event.keyCode==39)this.active.direction = "right";
 		if(key=='E')this.hide_active_soldier();
-		if(key=='F')this.time=0;
+		if(key=='F'){this.time=0; this.set = true};
 
 	};
 

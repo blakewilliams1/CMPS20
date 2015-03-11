@@ -36,8 +36,8 @@ function Soldier(owner) {
 	sprite.soldierType=1;
 	sprite.anchor.x = .5;
 	sprite.anchor.y = .5;
-	sprite.position.x = Math.floor(7*map_width/9);
-	sprite.position.y = Math.floor(7*map_height/9);
+	sprite.position.x = Math.floor(1222);
+	sprite.position.y = Math.floor(606);
 	sprite.prevX=sprite.position.x;
 	sprite.prevY=sprite.position.y;
 	sprite.gridSize = 4;
@@ -134,6 +134,6 @@ function Soldier(owner) {
 			if (sprite.animCounter >= 4) sprite.animCounter = 0;
 			sprite.position.y += 4;
 	}
-	
+
 	return sprite;
 };

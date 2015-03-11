@@ -54,7 +54,7 @@ function Civilian(){
   this.animCounter = 0;
   this.animCounter2 = 0;
 
-  this.goal = {x:Math.floor(Math.random() * (map_width - 64)), y:Math.floor(Math.random() * (map_height - 64))};
+  this.goal; //{x:Math.floor(Math.random() * (map_width - 64)), y:Math.floor(Math.random() * (map_height - 64))};
   this.alarm;
 
   this.goal_list = [];
@@ -134,7 +134,7 @@ Civilian.prototype  = {
              y: this.sprite.position.y
          }
         for(var i = 0; i < this.actions.length; i++){
-          var pos = generate_move(current_pos,this.actions[i],grid,goal,wall);
+          var pos = generate_move(current_pos ,this.actions[i],grid,goal,wall);
              list.push([pos[0],this.actions[i],pos[1]]);
         }
 

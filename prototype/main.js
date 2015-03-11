@@ -1,8 +1,8 @@
 
-var window_width = 1184;
-var window_height = 600;
-var map_width = 1184;
-var map_height = 600;
+var window_width = 1280;
+var window_height = 680;
+var map_width = 1280;
+var map_height = 680;
 
 var half_x = Math.floor(map_width/64);
 var half_y = Math.floor(map_height/64);
@@ -91,4 +91,5 @@ window.onmousemove = function(evt){
 	 	        x:evt.clientX - rect.left,
 	 	        y:evt.clientY - rect.top
 	 	      }
+	console.log("mouse location", mouse_location);
 }

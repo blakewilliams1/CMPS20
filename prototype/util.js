@@ -368,12 +368,10 @@ function on_edge(pos,subgrid){
 function close_to_hiding(spot,soldier){
   for(var i = 0; i < spot.length; i++){
     spot[i].graphic.clear()
-    //console.log("in loop")
-     var dist = (Math.abs(soldier.position.x - spot[i].position.x) + Math.abs(soldier.position.y - spot[i].position.y));
-     //console.log("dist: ", dist);
 
-     if (dist < 120){
-       //console.log("yessss");
+     var dist = (Math.abs(soldier.position.x - spot[i].position.x) + Math.abs(soldier.position.y - spot[i].position.y));
+
+     if (dist < 100){
         if(spot[i].occupied){
           spot[i].graphic.lineStyle(3, 0xFF0000, 0.3);
           spot[i].graphic.drawCircle(spot[i].position.x ,spot[i].position.y, 60);
