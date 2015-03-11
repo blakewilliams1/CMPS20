@@ -16,7 +16,7 @@ window.onload = function init() {
 	screenManager.create_title_screen();
 	document.body.appendChild(screenManager.renderer.view);
 
-	console.log(document.body)
+	console.log(document.body);
 	requestAnimFrame(animate);
 
 	var fpsmeter = new FPSMeter({
@@ -62,6 +62,12 @@ screenManager.create_level_screen=function(){
 	var levelScreen = new Levels(screenManager);
 	levelScreen.init_();
 	this.push(levelScreen);
+}
+screenManager.create_tutorial_screen=function(){
+	var tutScreen = new Tutorial(screenManager);
+	tutScreen.level.init_();
+	tutScreen.init_tutorial_specific();
+	this.push(tutScreen);
 }
 screenManager.signal_pop=function(){
 	if(screenManager.length>1){

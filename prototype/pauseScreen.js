@@ -12,6 +12,7 @@ function Pause(owner){
 		resume_button.position.y = window_height/2-50
 		console.log(resume_button.position.x, resume_button.position.y);
 		resume_button.click=function(event){
+			if(owner[owner.length-1].stage!=this.stage)return;
 			event.keyCode=27;
 			owner[owner.length-1].keyup(event);
  		}
@@ -23,6 +24,7 @@ function Pause(owner){
 		level_button.position.x = window_width/2;
 		level_button.position.y = window_height/2
 		level_button.click=function(event){
+			if(owner[owner.length-1].stage!=this.stage)return;
  			owner.create_level_screen();
  		}
 		menu.addChild(level_button);
@@ -33,6 +35,7 @@ function Pause(owner){
 		quit_button.position.x = window_width/2;
 		quit_button.position.y = window_height/2+50
 		quit_button.click=function(event){
+			if(owner[owner.length-1].stage!=this.stage)return;
  			owner.signal_pop();
 			owner.signal_pop();
  		}

@@ -5,7 +5,7 @@ function Alarm(x,y,owner){
   sprite.off_tex = PIXI.Texture.fromImage("../Art Assets/png/alarm.png");
   sprite.owner=owner;
   sprite.anchor.x = .5;
-  sprite.anchor.y = .5;
+  sprite.anchor.y = .8;
   sprite.position.x = x;
   sprite.position.y = y;
   sprite.triggered=false;

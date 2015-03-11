@@ -50,6 +50,7 @@ function Civilian(){
   this.soldierType=0;
   this.actions = ["north","south","east","west"];
   this.moves;
+  this.knockedOut=false;
   this.animCounter = 0;
   this.animCounter2 = 0;
 
@@ -90,6 +91,13 @@ function Civilian(){
 
   this.update = function(grid,soldiers,walls,alarms){
        this.graphic.clear();
+
+       if(this.knockedOut){
+
+         //change image
+         return;
+       }
+
        this.center = {
        x:this.sprite.position.x,
        y:this.sprite.position.y

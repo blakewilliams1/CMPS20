@@ -11,7 +11,9 @@ function HidingSpot(x,y,tex) {
 	new_hiding_spot.occupied = false;
 	new_hiding_spot.points = 10;
 	new_hiding_spot.changeTexture = function(type) {
-		var tex_name = new_hiding_spot.base_tex+"Occupied"+type.toString();
+		var tex_name;
+		if(type==2)tex_name= new_hiding_spot.base_tex+"Occupied1";
+		else tex_name = new_hiding_spot.base_tex+"Occupied"+type.toString();
 		var new_tex = PIXI.Texture.fromImage("../Art Assets/png/"+tex_name+".png");
 		this.setTexture(new_tex);
 	};
@@ -22,5 +24,12 @@ function HidingSpot(x,y,tex) {
 			this.setTexture(new_hiding_spot.emptyTexture);
 		}
 	};
+
+	new_hiding_spot.graphic = new PIXI.Graphics();
+	new_hiding_spot.graphic.moveTo(x,y);
+	new_hiding_spot.graphic.lineStyle(3, 0x0000FF, .3);
+	//console.log(new_hiding_spot.texture.width);
+	new_hiding_spot.graphic.drawCircle(x ,y, 60);
+
 	return new_hiding_spot;
 }

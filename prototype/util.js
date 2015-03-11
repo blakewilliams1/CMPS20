@@ -310,10 +310,12 @@ function collided(first,second){
 	var x2=second.position.x-second.anchor.x*second.width;
 	var y2=second.position.y-second.anchor.y*second.height;
 	var h2=second.height, w2=second.width;
-	if(first.soldierType!=undefined){
+	//if(first.soldierType!=undefined){
 		y1+=h1/2;
 		h1/=2;
-	}
+	//}
+		y2+=h2/2;
+		h2/=2;
 	if(x1<x2+w2&&
 		x1+w1>x2&&
 		y1<y2+h2&&
@@ -360,3 +362,29 @@ function on_edge(pos,subgrid){
 
     return true;
 }
+
+
+
+function close_to_hiding(spot,soldier){
+  for(var i = 0; i < spot.length; i++){
+    spot[i].graphic.clear()
+    //console.log("in loop")
+     var dist = (Math.abs(soldier.position.x - spot[i].position.x) + Math.abs(soldier.position.y - spot[i].position.y));
+     //console.log("dist: ", dist);
+
+     if (dist < 120){
+       //console.log("yessss");
+        if(spot[i].occupied){
+          spot[i].graphic.lineStyle(3, 0xFF0000, 0.3);
+          spot[i].graphic.drawCircle(spot[i].position.x ,spot[i].position.y, 60);
+        }else{
+           spot[i].graphic.lineStyle(3, 0x0000FF, 0.3);
+           spot[i].graphic.drawCircle(spot[i].position.x ,spot[i].position.y, 60);
+        }
+     }else{
+      spot[i].graphic.lineStyle(3, 0x0000FF, 0);
+       spot[i].graphic.drawCircle(spot[i].position.x ,spot[i].position.y, 60);
+     }
+  }
+}
+

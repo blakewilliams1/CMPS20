@@ -11,14 +11,13 @@
  }
 function Game(owner,level_number){
 	this.end_game = false;
-	this.timer = 0
-	this.container=new PIXI.DisplayObjectContainer();
-	this.stage = new PIXI.Stage(0xCCCCCC,true);
+	this.stage = new PIXI.Stage(0x008F61,true);
 	//initialize game attributes
 	this.pauseMenu=0;
 	this.alarms=[];
  	this.soldiers = [];
- 	this.soldier_count = 0;
+	this.soldier_queue = [2,1,2,2,1,1,2,1,1,2,2];
+	this.icon=[];
  	this.hiding_spots = [];
  	this.walls = [];
  	this.civilians = [];
@@ -26,29 +25,39 @@ function Game(owner,level_number){
  	this.active
 	this.latestSoldier
  	this.fps = 60;
-	this.triggeredTime;
  	this.score=0;
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
+	this.timer = 0
+	this.triggeredTime;
  	this.time=new Date().getTime();
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
+	this.num_background_tiles = 0;
 
 //-------------------------------------------------
+
+//this will sort the stage based on y values of all objects except for the little
+//squares in the background.
+
+	this.sortStage = function(stage) {
+		this.stage.children.sort(this.childCompare);
+	}
+
+	this.childCompare = function(a, b) {
+		return a.position.y - b.position.y;
+	}
 
 // this is the main update function for the game
 
  	this.update = function() {
+		if(this.pauseMenu!=0)return;
 		if(this.end_game){
-			if(this.timer > 1){
-				//this.end_game_menu();
- 		  		alert("game over");
- 		  		return;
- 		  	}
- 		  	this.timer++;
+			return;
 		}
+		this.sortStage(this.stage);
  		this.active.update();
  		//update civilians
-		
+    close_to_hiding(this.hiding_spots,this.active);
  		for (var i = 0; i < this.civilians.length; i++) {
  			this.civilians[i].update(this.grid, this.soldiers, this.walls, this.alarms);
  		}
@@ -66,8 +75,16 @@ function Game(owner,level_number){
 		if(this.triggeredTime!=undefined){
 			//if it's been longer than the given milliseconds, signal game over
 			if((new Date().getTime() - this.triggeredTime)>1500){
-				alert("Game Over"+'\n'+"Your score was "+this.score);
-				owner.signal_pop();
+				var end_text = new PIXI.Text("Game Over"+'\n'+"Your score was "+this.score, {font:"30px Arial", fill:"black"});
+				//alert("Game Over"+'\n'+"Your score was "+this.score);
+				end_text.position.x = 500;
+				end_text.position.y = 200;
+				var over = new Game_over(owner);
+				over.init_();
+				this.end_game = true;
+				this.stage.addChild(over);
+				this.stage.addChild(end_text);
+				//owner.signal_pop();
 			}
 		}
  	};
@@ -79,7 +96,12 @@ function Game(owner,level_number){
  		this.score_text.setText("Score: "+this.score.toString());
  		if(this.elapsed_t<1){
  			this.time=new Date().getTime();
- 			this.create_soldier();
+			if(this.soldier_queue.length>0){
+				this.create_soldier(this.soldier_queue.shift());
+				this.soldier_queue.push(Math.floor(Math.random)*3);
+			}else{
+				//we need to discuss if there will be a set # of soldiers or not
+			}
  			this.elapsed_t=15;
  		}
  		this.time_text.setText("New Soldier in: "+(this.elapsed_t));
@@ -87,34 +109,40 @@ function Game(owner,level_number){
 
 //--------------------------------------------------
 
- 	this.create_soldier = function() {
- 		var player = new Soldier(this);
+ 	this.create_soldier = function(type) {
+		var player;
+		if(type==1){
+			player = new Soldier(this);
+		}else player=new BuffSoldier(this);
  		this.active = player;
 		this.latestSoldier = player;
  		this.soldiers.push(player);
  		this.stage.addChild(player);
  	}
-//--------------------------------------------------
 
- 	this.create_buff_soldier = function() {
- 		var player = new BuffSoldier(this);
- 		this.active = player;
-		this.latestSoldier = player;
- 		this.soldiers.push(player);
- 		this.stage.addChild(player);
- 	}
 //----------------------------------------------------
 
 	this.hide_active_soldier = function() {
-		/*TODO: This should account for the width of the sprites
-		//since it doesn't, it thinks the soldier isn't close enough with
-		wider objects*/
  		for (var i = 0; i < this.hiding_spots.length; i++) {
+			//xDistance will be the horizontal distance between the center of the two objects,
+			//minus the "radius" of those two objects
  			var xDistance = Math.abs(this.active.position.x - this.hiding_spots[i].position.x);
+			xDistance -= this.active.texture.width/2;
+			xDistance -= this.hiding_spots[i].width/2;
+			//yDistance will be the vertical distance between the center of the two objects,
+			//minus the "radius" of those two objects
  			var yDistance = Math.abs(this.active.position.y - this.hiding_spots[i].position.y);
- 			if (xDistance < 45 && yDistance < 45) {
- 				this.active.hide(this.hiding_spots[i]);
- 				this.score+=10;
+			yDistance -= this.active.texture.height;
+			yDistance -= this.hiding_spots[i].height;
+ 			if (xDistance<10&&yDistance<10&&this.active.objectBehind==null) {
+				if(this.active.soldierType==2&&this.active.carrying!=0){
+					//hide the civilian
+					console.log("hide the civilian");
+					this.active.hide_civilian(this.hiding_spots[i]);
+				}else{
+					this.active.hide(this.hiding_spots[i]);
+					this.score+=10;
+				}
  			}
  		}
  	};
@@ -126,8 +154,10 @@ function Game(owner,level_number){
  			var xDistance = Math.abs(this.active.position.x - this.civilians[i].sprite.position.x);
  			var yDistance = Math.abs(this.active.position.y - this.civilians[i].sprite.position.y);
  			if (xDistance < 45 && yDistance < 45) {
- 				this.active.knock_out(this.civilians[i].sprite);
- 				break;
+ 				if(this.active.soldierType==2){
+					this.active.knock_out(this.civilians[i]);
+					break;
+				}
  			}
  		}
  	};
@@ -159,9 +189,10 @@ function Game(owner,level_number){
 
 //----------------------------------------------------
 
- 	this.create_hiding_spot = function(x,y,empty_tex,filled_tex) {
- 		var trashCan = new HidingSpot(x,y,empty_tex,filled_tex);
+ 	this.create_hiding_spot = function(x,y,empty_tex) {
+ 		var trashCan = new HidingSpot(x,y,empty_tex);
  		this.stage.addChild(trashCan);
+ 		this.stage.addChild(trashCan.graphic);
  		this.hiding_spots.push(trashCan);
 		this.walls.push(trashCan);
  	}
@@ -175,8 +206,8 @@ function Game(owner,level_number){
 	}
 
 //----------------------------------------------------
-	this.create_building=function(x,y) {
-		var building= new Building(x, y);
+	this.create_building=function(x,y,name) {
+		var building= new Building(x, y, name);
 		this.stage.addChild(building);
 		this.walls.push(building);
 	}
@@ -192,26 +223,29 @@ function Game(owner,level_number){
 		var y = 0;
 		//map_width and map_height are defined at the top of main.js
         //This first loop will lay down a nice layer of green.
-		while (x < map_width) {
+		//This is commented out so we can use the pixi.js background.
+		/*while (x < map_width) {
 			while(y < map_height) {
 				var tile = new Tile(x,y);
 				this.stage.addChild(tile);
+				this.num_background_tiles += 1;
 				y += 256;
 			}
 			y = 0;
 			x += 256;
-		}
+		}*/
         //This next loop will draw some cute little shapes and stuff.
         var tileRandomizer;
         var spacingRandomizer;
         x = 0;
         y = 0;
-        while (x < map_width) {
+        /*while (x < map_width) {
             tileRandomizer = Math.random()*3 + 1;
             spacingRandomizerX = Math.random()*100+50;
             spacingRandomizerY = Math.random()*100+50;
             console.log("t "+tileRandomizer);
 			while(y < map_height) {
+				x += Math.random()*200 - 100;
 				var tile2 = new Tile(x,y);
                 //What texture will be used:
                 var num_for_texture = Math.floor(tileRandomizer);
@@ -228,11 +262,29 @@ function Game(owner,level_number){
 			}
 			y = 0;
 			x += spacingRandomizerX;
+		}*/
+		var numSquares = 50;
+		while (numSquares > 0) {
+			var tile2 = new Tile(Math.random()*map_width, Math.random()*map_height);
+			tileRandomizer = Math.random()*3 + 1;
+			var num_for_texture = Math.floor(tileRandomizer);
+            //console.log("n " + num_for_texture);
+            if (num_for_texture == 1)
+                        tile2.changeTexture1();
+            else if(num_for_texture == 2 )
+                        tile2.changeTexture2();
+            else if(num_for_texture == 3)
+                        tile2.changeTexture3();
+            tile2.rotation = Math.random(6.28);
+		    this.stage.addChild(tile2);
+			this.num_background_tiles += 1;
+			numSquares -= 1;
 		}
+		console.log("NUM TILES: "+this.num_background_tiles);
 	}
 
 	this.init_gui=function(){
-		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/guiBase.png");
+		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/tempGui.png");
 		var gui = new PIXI.Sprite(gui_base);
 		gui.position.x = 0;
 		gui.position.y = window_height-40;
@@ -243,15 +295,27 @@ function Game(owner,level_number){
  		this.stage.addChild(gui);
  		this.stage.addChild(this.score_text);
  		this.stage.addChild(this.time_text);
+		//show upcoming soldiers
+		for(var i=0;i<3;i++){
+			var t = this.soldier_queue[i]==1?"soldier":"buff";
+			this.icon[i]=  new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/"+t+"Forward1.png"));
+			this.icon[i].position.x=770+40*i;
+			this.icon[i].position.y=window_height-35;
+			this.stage.addChild(this.icon[i]);
+		}
+		var upcoming_text = new PIXI.Text("Upcoming Soldiers: ", {font:"30px Arial", fill:"black"});
+		upcoming_text.position.x=500;
+		upcoming_text.position.y=window_height-35;
+		this.stage.addChild(upcoming_text);
 	}
 
 //----------------------------------------------------
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
-		if(key=='W')this.active.direction = "up";
-		if(key=='A')this.active.direction = "left";
-		if(key=='S')this.active.direction = "down";
-		if(key=='D')this.active.direction = "right";
+		if(key=='W'||event.keyCode==38)this.active.direction = "up";
+		if(key=='A'||event.keyCode==37)this.active.direction = "left";
+		if(key=='S'||event.keyCode==40)this.active.direction = "down";
+		if(key=='D'||event.keyCode==39)this.active.direction = "right";
 		if(key=='E')this.hide_active_soldier();
 		if(key=='F')this.time=0;
 
@@ -262,12 +326,14 @@ function Game(owner,level_number){
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
 		//the second condition fixes stuttering on direction change
-		if(key=='W'&&this.active.direction=="up")this.active.direction = "none";
-		if(key=='A'&&this.active.direction=="left")this.active.direction = "none";
-		if(key=='S'&&this.active.direction=="down")this.active.direction = "none";
-		if(key=='D'&&this.active.direction=="right")this.active.direction = "none";
-		if(key=='Q')this.knock_out();
-		if(event.keyCode==27){
+		if((key=='W'||event.keyCode==38)&&this.active.direction=="up")this.active.direction = "none";
+		if((key=='A'||event.keyCode==37)&&this.active.direction=="left")this.active.direction = "none";
+		if((key=='S'||event.keyCode==40)&&this.active.direction=="down")this.active.direction = "none";
+		if((key=='D'||event.keyCode==39)&&this.active.direction=="right")this.active.direction = "none";
+
+
+		if(event.keyCode==32)this.knock_out();
+		if(event.keyCode == 27){
 			//press esc to pause game
 			if(this.pauseMenu==0){
 				this.pauseMenu = new Pause(owner);
@@ -283,19 +349,13 @@ function Game(owner,level_number){
 //--------------------------------------------------
 
  	this.init_ = function() {
- 		//initiate the gui
-
-		this.init_gui();
 		this.create_background();
-
  		//The active soldier is the one soldier we just created
  		this.active = this.soldiers[0];
-
-		//Build the map:
-		//Top row of hiding spots.
-
 		this.levelManager = new LevelBuilder(this);
 		this.levelManager.buildLevel(level_number);
+		//initiate the gui
+		this.init_gui();
  	};
  }
 
