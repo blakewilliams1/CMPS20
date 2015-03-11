@@ -1,8 +1,20 @@
-function Game_over(owner){
+function Game_over(owner,level_num){
  var menu = new PIXI.DisplayObjectContainer();
   menu.owner=owner;
 
   menu.init_ = function() {
+	  console.log("asdfasf");
+	var restart_button= new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/restartButton.png"));
+    restart_button.setInteractive(true);
+    restart_button.anchor.x = 0.5;
+    restart_button.anchor.y = 0.5;
+    restart_button.position.x = window_width/2;
+    restart_button.position.y = window_height/2-50;
+    restart_button.click=function(event){
+      owner.signal_pop();
+	  owner.create_game_screen(level_num);
+    }
+    menu.addChild(restart_button);
     var level_button= new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/levelSelectButton.png"));
     level_button.setInteractive(true);
     level_button.anchor.x = 0.5;

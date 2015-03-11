@@ -80,7 +80,7 @@ function Game(owner,level_number){
 				//alert("Game Over"+'\n'+"Your score was "+this.score);
 				end_text.position.x = 500;
 				end_text.position.y = 200;
-				var over = new Game_over(owner);
+				var over = new Game_over(owner,level_number);
 				over.init_();
 				this.end_game = true;
 				this.stage.addChild(over);
@@ -225,18 +225,6 @@ function Game(owner,level_number){
 		var x = 0;
 		var y = 0;
 		//map_width and map_height are defined at the top of main.js
-        //This first loop will lay down a nice layer of green.
-		//This is commented out so we can use the pixi.js background.
-		/*while (x < map_width) {
-			while(y < map_height) {
-				var tile = new Tile(x,y);
-				this.stage.addChild(tile);
-				this.num_background_tiles += 1;
-				y += 256;
-			}
-			y = 0;
-			x += 256;
-		}*/
         //This next loop will draw some cute little shapes and stuff.
         var tileRandomizer;
         var spacingRandomizer;
