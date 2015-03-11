@@ -11,7 +11,7 @@
  }
 function Game(owner,level_number){
 	this.end_game = false;
-	this.stage = new PIXI.Stage(0xCCCCCC,true);
+	this.stage = new PIXI.Stage(0x008F61,true);
 	//initialize game attributes
 	this.pauseMenu=0;
 	this.alarms=[];
@@ -32,8 +32,20 @@ function Game(owner,level_number){
  	this.time=new Date().getTime();
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
+	this.num_background_tiles = 0;
 
 //-------------------------------------------------
+
+//this will sort the stage based on y values of all objects except for the little
+//squares in the background.
+
+	this.sortStage = function(stage) {
+		this.stage.children.sort(this.childCompare);
+	}
+
+	this.childCompare = function(a, b) {
+		return a.position.y - b.position.y;
+	}
 
 // this is the main update function for the game
 
@@ -42,6 +54,7 @@ function Game(owner,level_number){
 		if(this.end_game){
 			return;
 		}
+		this.sortStage(this.stage);
  		this.active.update();
  		//update civilians
     close_to_hiding(this.hiding_spots,this.active);
@@ -210,15 +223,17 @@ function Game(owner,level_number){
 		var y = 0;
 		//map_width and map_height are defined at the top of main.js
         //This first loop will lay down a nice layer of green.
-		while (x < map_width) {
+		//This is commented out so we can use the pixi.js background.
+		/*while (x < map_width) {
 			while(y < map_height) {
 				var tile = new Tile(x,y);
 				this.stage.addChild(tile);
+				this.num_background_tiles += 1;
 				y += 256;
 			}
 			y = 0;
 			x += 256;
-		}
+		}*/
         //This next loop will draw some cute little shapes and stuff.
         var tileRandomizer;
         var spacingRandomizer;
@@ -262,8 +277,10 @@ function Game(owner,level_number){
                         tile2.changeTexture3();
             tile2.rotation = Math.random(6.28);
 		    this.stage.addChild(tile2);
+			this.num_background_tiles += 1;
 			numSquares -= 1;
 		}
+		console.log("NUM TILES: "+this.num_background_tiles);
 	}
 
 	this.init_gui=function(){
