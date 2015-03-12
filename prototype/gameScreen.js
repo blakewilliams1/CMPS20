@@ -149,6 +149,8 @@ function Game(owner,level_number){
 					//hide the civilian
 					console.log("hide the civilian");
 					this.active.hide_civilian(this.hiding_spots[i]);
+					this.create_civilian(100,100,level_one[0]);
+					//this.create_civilian();
 				}else{
 					this.active.hide(this.hiding_spots[i]);
 					this.score+=10;
