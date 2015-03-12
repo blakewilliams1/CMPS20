@@ -13,7 +13,7 @@ screenManager.renderer= new PIXI.CanvasRenderer(window_width, window_height, scr
 window.onload = function init() {
 	// Add the renderer view element to the
 	// DOM
-	screenManager.create_title_screen();
+	screenManager.create_cutScreen();
 	document.body.appendChild(screenManager.renderer.view);
 
 	console.log(document.body);
@@ -58,6 +58,13 @@ screenManager.create_credits_screen=function(){
 	creditScreen.init_();
 	this.push(creditScreen);
 }
+
+screenManager.create_cutScreen = function() {
+	var scene = new cutScreen(screenManager);
+	scene.init_();
+	this.push(scene);
+}
+
 screenManager.create_level_screen=function(){
 	var levelScreen = new Levels(screenManager);
 	levelScreen.init_();

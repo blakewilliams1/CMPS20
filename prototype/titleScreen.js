@@ -6,13 +6,14 @@
  //create an instance of the game
 function Title(owner){
 	this.owner=owner;
-	this.stage = new PIXI.Stage(0xCCCCCC,true);
+	this.stage = new PIXI.Stage(0x000000,true);
 	this.easter_buttons=[38,38,40,40,37,39,37,39,66,65,13];
 	this.easter_index=0;
+	this.newspaper = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/newspaper.png"))
 	this.new_game_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/newGameButton.png"));
 	this.credits_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/creditsButton.png"));
 	this.level_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/levelSelectButton.png"));
-	this.title_text = new PIXI.Text("Stealth Invasion", {font:"40px Arial", fill:"black"});
+	//this.title_text = new PIXI.Text("Stealth Invasion", {font:"40px Arial", fill:"black"});
  	this.update = function() {
 
  	};
@@ -34,10 +35,15 @@ function Title(owner){
 		}
 	}
  	this.init_ = function() {
-		this.title_text.anchor.x=0.5;
-		this.title_text.position.x=window_width/2;
-		this.title_text.position.y=window_height/2-100;
-		this.stage.addChild(this.title_text);
+		this.newspaper.anchor.x=0.5;
+		this.newspaper.position.x=window_width/2;
+		this.newspaper.position.y=window_height/16;
+		this.stage.addChild(this.newspaper);
+	
+		//this.title_text.anchor.x=0.5;
+		//this.title_text.position.x=window_width/2;
+		//this.title_text.position.y=window_height/2-100;
+		//this.stage.addChild(this.title_text);
 
 		this.new_game_button.setInteractive(true);
 		this.new_game_button.anchor.x=0.5;

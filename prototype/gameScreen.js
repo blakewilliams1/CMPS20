@@ -60,7 +60,7 @@ function Game(owner,level_number){
 		this.sortStage(this.stage);
 		this.score_time++;
     var n = this.score_time / 60;
-    console.log(n)
+    //console.log(n)
 		if(n % 2 == 0) this.score += 2;
  		this.active.update();
  		//update civilians

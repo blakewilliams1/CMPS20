@@ -1,7 +1,7 @@
 function Easter(owner){
 	this.owner=owner;
-	this.stage = new PIXI.Stage(0xCCCCCC,true);
-	this.credits_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/creditsButton.png"));
+	this.stage = new PIXI.Stage(0x000000,true);
+	this.credits_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/Team Io.jpeg"));
  	this.update = function() {
 		
  	};
@@ -17,10 +17,6 @@ function Easter(owner){
 		}
 	}
  	this.init_ = function() {
-		this.title_text.anchor.x=0.5;
-		this.title_text.position.x=window_width/2;
-		this.title_text.position.y=window_height/2-100;
-		this.stage.addChild(this.title_text);
 
 		this.credits_button.setInteractive(true);
 		this.credits_button.anchor.x=0.5;
