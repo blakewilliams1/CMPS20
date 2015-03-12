@@ -104,6 +104,7 @@ function Civilian(){
   }
 
         if((isGoal(this.center,this.goal)) && (this.found)){
+            document.getElementById('alarm').play();
 			closest_alarm(this.center,alarms).trigger();
 			return;
 		}
@@ -371,6 +372,7 @@ function check_line(line,walls){
 
 
 function closest_alarm(position,alarms){
+  document.getElementById('hey').play();
   var closest = 100000000;
   var closest_alarm;
   var alarm;

@@ -275,7 +275,9 @@ function Game(owner,level_number){
 	}
 
 	this.init_gui=function(){
-        document.getElementById('music').play();
+        var music = document.getElementById('music');
+        music.loop = true;
+        music.play();
 		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/tempGui.png");
 		var gui = new PIXI.Sprite(gui_base);
 		gui.position.x = 0;
