@@ -7,6 +7,8 @@
 function Title(owner){
 	this.owner=owner;
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
+	this.easter_buttons=[38,38,40,40,37,39,37,39,66,65,13];
+	this.easter_index=0;
 	this.new_game_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/newGameButton.png"));
 	this.credits_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/creditsButton.png"));
 	this.level_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/levelSelectButton.png"));
@@ -20,7 +22,16 @@ function Title(owner){
 	};
 	this.keyup=function(event){
 		var key = String.fromCharCode(event.keyCode);
-
+		if(event.keyCode==this.easter_buttons[this.easter_index]){
+			if(this.easter_index==-1)return;
+			this.easter_index++;
+		}
+		if(this.easter_index==this.easter_buttons.length){
+			//konami code
+			this.easter_index=-1;
+			console.log("konami!!!");
+			//owner.create_easter_screen();
+		}
 	}
  	this.init_ = function() {
 		this.title_text.anchor.x=0.5;
