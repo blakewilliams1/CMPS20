@@ -47,7 +47,7 @@ function LevelBuilder(game){
 		game.create_hiding_spot(140,510,"trashcan");
 		game.create_hiding_spot(225,120,"trashcan");
 		game.create_hiding_spot(270,320,"trashcan");
-		//game.create_hiding_spot(980,225,"trashcan");
+		game.create_hiding_spot(677,391,"trashcan");
 
 		game.create_hiding_spot(780,250,"bench");
 		game.create_hiding_spot(600,122,"bench");
@@ -62,6 +62,9 @@ function LevelBuilder(game){
 		game.create_civilian(955,27,level_one.zero);
 		game.create_civilian(976,211,level_one.one);
 		game.create_civilian(486,411,level_one.two);
+		game.create_civilian(43,373,level_one.three);
+		game.create_civilian(478,68,level_one.four);
+		game.create_civilian(500,239,level_one.five);
 
 		game.create_grid();
 

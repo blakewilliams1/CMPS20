@@ -21,9 +21,11 @@ function Game(owner,level_number){
  	this.hiding_spots = [];
  	this.walls = [];
  	this.civilians = [];
+ 	this.level_spots;
  	this.grid = [];
  	this.active
 	this.latestSoldier
+	this.score_time = 0;
  	this.fps = 60;
  	this.score=0;
  	this.set = false;
@@ -56,6 +58,10 @@ function Game(owner,level_number){
 			return;
 		}
 		this.sortStage(this.stage);
+		this.score_time++;
+    var n = this.score_time / 60;
+    console.log(n)
+		if(n % 2 == 0) this.score += 2;
  		this.active.update();
  		//update civilians
     close_to_hiding(this.hiding_spots,this.active);
@@ -159,8 +165,11 @@ function Game(owner,level_number){
  			var yDistance = Math.abs(this.active.position.y - this.civilians[i].sprite.position.y);
  			if (xDistance < 45 && yDistance < 45) {
  				if(this.active.soldierType==2){
-					this.active.knock_out(this.civilians[i]);
-					break;
+ 					if(this.active.knock_outs > 0){
+ 					 this.active.knock_outs--;
+					 this.active.knock_out(this.civilians[i]);
+					 break;
+				  }
 				}
  			}
  		}

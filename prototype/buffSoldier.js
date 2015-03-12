@@ -60,7 +60,9 @@ function BuffSoldier(owner){
 	var soldier = new Soldier(owner);
 	soldier.setTexture(otherTex);
 	soldier.carrying=0;
+	soldier.knock_outs = 2;
 	soldier.soldierType=2;
+
 	soldier.knock_out=function(civilian){
 		civilian.knockedOut=true;
 		civilian.sprite.visible=false;
@@ -68,6 +70,7 @@ function BuffSoldier(owner){
 		soldier.setTexture(downCarryBuffTextures[soldier.animCounter]);
 		//play punching sound
 	}
+
 	soldier.hide_civilian=function(hidingSpot){
 		if(soldier.carrying==0)return;
 		soldier.carrying.sprite.visible = false;
@@ -78,6 +81,7 @@ function BuffSoldier(owner){
 		soldier.carrying=0;
 		soldier.setTexture(downBuffTextures[soldier.animCounter]);
 	}
+
 	soldier.moveRight = function() {
 			if(soldier.carrying!=0)this.setTexture(rightCarryBuffTextures[soldier.animCounter]);
 			else this.setTexture(rightBuffTextures[soldier.animCounter]);
@@ -85,6 +89,7 @@ function BuffSoldier(owner){
 			if (soldier.animCounter >= 4) soldier.animCounter = 0;
 			soldier.position.x += 4;
 	};
+
 	soldier.moveLeft = function() {
 			if(soldier.carrying!=0)this.setTexture(leftCarryBuffTextures[soldier.animCounter]);
 			else this.setTexture(leftBuffTextures[soldier.animCounter]);
@@ -92,6 +97,7 @@ function BuffSoldier(owner){
 			if (soldier.animCounter >= 4) soldier.animCounter = 0;
 			soldier.position.x -= 4;
 	};
+
 	soldier.moveUp = function() {
 			if(soldier.carrying!=0)this.setTexture(upCarryBuffTextures[soldier.animCounter]);
 			else this.setTexture(upBuffTextures[soldier.animCounter]);
