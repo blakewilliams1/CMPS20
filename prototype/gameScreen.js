@@ -42,6 +42,8 @@ function Game(owner,level_number){
 	this.graphic.alpha = 0.2;
 	this.graphic.endFill();
 
+		this.spawn_free = false;
+
 //-------------------------------------------------
 
 //this will sort the stage based on y values of all objects except for the little
@@ -63,10 +65,17 @@ function Game(owner,level_number){
 			return;
 		}
 		this.sortStage(this.stage);
+		for (var i = 0; i < this.soldiers.length; i++){
+			if(check_player_in_spawn(this.soldiers[i])){
+				this.spawn_free = false;
+			}else{
+				this.spawn_free = true;
+			}
+		}
 		this.score_time++;
     var n = this.score_time / 60;
     //console.log(n)
-		if(n % 2 == 0) this.score += 2;
+		if( (n % 2 == 0) && (this.spawn_free)) this.score += 2;
  		this.active.update();
  		//update civilians
     close_to_hiding(this.hiding_spots,this.active);
@@ -174,9 +183,6 @@ function Game(owner,level_number){
 					//hide the civilian
 					console.log("hide the civilian");
 					this.active.hide_civilian(this.hiding_spots[i]);
-					this.spawn_new_civilian();
-					this.spawn_new_civilian();
-					//this.create_civilian();
 				}else{
 					this.active.hide(this.hiding_spots[i]);
 					this.score+=10;
@@ -193,9 +199,10 @@ function Game(owner,level_number){
  			var yDistance = Math.abs(this.active.position.y - this.civilians[i].sprite.position.y);
  			if (xDistance < 45 && yDistance < 45) {
  				if(this.active.soldierType==2){
- 					if(this.active.knock_outs > 0){
- 					 this.active.knock_outs--;
+ 					if(this.active.carrying == 0){
 					 this.active.knock_out(this.civilians[i]);
+					 this.spawn_new_civilian();
+					 this.spawn_new_civilian();
 					 break;
 				  }
 				}
