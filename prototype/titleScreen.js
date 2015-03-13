@@ -31,7 +31,7 @@ function Title(owner){
 			//konami code
 			this.easter_index=-1;
 			console.log("konami!!!");
-			//owner.create_easter_screen();
+			owner.create_easter_screen();
 		}
 	}
  	this.init_ = function() {
