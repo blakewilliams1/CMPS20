@@ -89,12 +89,12 @@ function Tutorial(owner){
 	}
 
 	this.init_tutorial_specific=function(){
-		this.skip_text= new PIXI.Text("Press Enter to skip tutorial.", {font:"20px Arial", fill:"black"});
+		this.skip_text= new PIXI.Text("Press Enter to skip ", {font:"20px Arial", fill:"black"});
 		this.skip_text.position.x=200;
 		this.skip_text.position.y = 200;
 		this.skip_text.anchor.x=1;
 		this.skip_text.anchor.y=0;
-		this.instruction = new PIXI.Text("Use (W S A D) or the arrow keys to move. Go to the yellow arrow." +'\n' + this.txt, {font:"20px Arial", fill:"black"});
+		this.instruction = new PIXI.Text("use (W S A D) or the arrow keys to move to the arrow on the map" +'\n' + this.txt, {font:"20px Arial", fill:"black"});
 		this.instruction.position.x = window_width/2;
 		this.instruction.position.y = 100;
 		this.instruction.anchor.x = 0.5;
@@ -114,7 +114,7 @@ function Tutorial(owner){
 		 	 this.graphic.visible = false;
 		 	 this.tut_step++;
 
-		 	 this.instruction.setText("Once you are near a hiding spot press 'E' to hide." +'\n' + "A blue circle means the spot is available.\nPress n to continue.");
+		 	 this.instruction.setText("Once you are near a hiding spot press 'E' to hide" +'\n' + " Blue circle indicates it's unoccupied and red indicates it's occupied  press n to continue");
 		 	 this.instruction.visible = true;
        this.pause = true;
 		 }
@@ -123,7 +123,7 @@ function Tutorial(owner){
 	this.check_second = function(){
 		  if(!this.level.active.visible){
 		  	this.tut_step++;
-		  	this.instruction.setText("Click any soldier to control that soldier. Click a hidden soldier to un-hide him." + '\n' + "Press n to continue.");
+		  	this.instruction.setText("Click the hiding spot to remove the soldier from the hiding spot or click on another soldier to control that soldier" + '\n' + " press n to continue");
 		  	this.instruction.visible = true;
         this.pause = true;
 
@@ -134,7 +134,7 @@ function Tutorial(owner){
 	 	 if(this.level.active.visible){
 	 	 	 this.spawn_civilian();
 	 	 	 this.tut_step++;
-	 	 	 this.instruction.setText("This is a civilian. If he sees you he will head for the closest alarm" + '\n' + "Get spotted by a civilian.\nPress n to continue.");
+	 	 	 this.instruction.setText("These are the civilian and if you are see they will run to the closest alarm" + '\n' + "  Get spotted by a civilian    press n to continue");
 		   this.instruction.visible = true;
        this.pause = true;
 
@@ -144,14 +144,14 @@ function Tutorial(owner){
 	 	this.check_fourth = function(){
 	 	    if(this.level.civilians[0].found){
 	 	    	this.tut_step++;
-	 	    	this.instruction.setText("Gray (buff) soldiers have the ability to knock out a civilian by pressing 'space'" + '\n' + "and hide them in a hiding spot by pressing 'E'.\nPress n to continue.");
+	 	    	this.instruction.setText("If you are spotted you have the ability to knock the civilian by pressing 'space'" + '\n' + " and hide them in any hiding spot by pressing E   press n to continue");
 		   		this.instruction.visible = true;
        		this.pause = true;
 	 	    }
 	 	   }
 
 	 	  this.check_fifth = function(){
-	 	  	this.instruction.setText("Congratulations, you have completed the tutorial! Press 'enter' to proceed.");
+	 	  	this.instruction.setText("congratulations you have completed the tutorial! Pres enter to proceed");
 		   		this.instruction.visible = true;
        		this.pause = true;
 
@@ -159,7 +159,7 @@ function Tutorial(owner){
 
 	 	  this.check_sixth = function(){
 	 	  	this.tut_step++;
-	 	  	this.instruction.setText("If you knock out a civilian, two more will take his place. Each gray soldier can knock out a maximum of two civilians!\nPress 'N' to proceed");
+	 	  	this.instruction.setText("Each civilian that you take out two more will take its place and each buff soldier can only take out a max of two civilians! Press N to proceed");
 		   	this.instruction.visible = true;
        	this.pause = true;
 
