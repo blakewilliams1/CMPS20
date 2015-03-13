@@ -98,7 +98,7 @@ function Tutorial(owner){
 		this.instruction.position.x = window_width/2;
 		this.instruction.position.y = 100;
 		this.instruction.anchor.x = 0.5;
-		this.instruction.anchor.y = 0.5;
+		this.instruction.anchor.y = 1;
 
 		this.level.stage.addChild(this.graphic);
 		this.level.stage.addChild(this.instruction);
@@ -134,7 +134,7 @@ function Tutorial(owner){
 	 	 if(this.level.active.visible){
 	 	 	 this.spawn_civilian();
 	 	 	 this.tut_step++;
-	 	 	 this.instruction.setText("These are the civilian and if you are see they will run to the closest alarm" + '\n' + "  Get spotted by a civilian    press n to continue");
+	 	 	 this.instruction.setText("These are the civilians, and if you are seen they will run to the closest alarm" + '\n' + "  Get spotted by a civilian to see for yourself  press n to continue");
 		   this.instruction.visible = true;
        this.pause = true;
 
