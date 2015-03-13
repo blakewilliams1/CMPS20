@@ -142,7 +142,7 @@ function LevelBuilder(game){
 		
 		game.create_hiding_spot(600,122,"bench");
 		
-		game.create_hiding_spot(400,300,"well");
+		game.create_hiding_spot(800,300,"well");
 
 		game.create_alarm(800,400);
 

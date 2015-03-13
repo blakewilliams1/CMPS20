@@ -367,8 +367,11 @@ function Game(owner,level_number){
 		if(key=='S'||event.keyCode==40)this.active.direction = "down";
 		if(key=='D'||event.keyCode==39)this.active.direction = "right";
 		if(key=='E')this.hide_active_soldier();
-		if(key=='F'){this.elapsed_t=0; this.set = true};
-
+		if(key=='F'){
+			this.elapsed_t=0; 
+			this.set = true;
+			this.create_soldier();
+		}
 	};
 
 //----------------------------------------------------
