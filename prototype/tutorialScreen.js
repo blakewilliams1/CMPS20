@@ -4,6 +4,8 @@
   */
 
  //create an instance of the game
+ 
+ var font = "Prestige Elite Std"
 
  var mouse_location = {
  	      x: 0,
@@ -32,7 +34,7 @@ function Tutorial(owner){
 	this.graphic.lineTo(400,300)
 	this.graphic.endFill()
 
-	this.txt = "press n to continue";
+	this.txt = "Press 'N' to continue.";
 	this.update=function(){
 		if(this.pause) return;
 		this.level.update();
@@ -89,12 +91,12 @@ function Tutorial(owner){
 	}
 
 	this.init_tutorial_specific=function(){
-		this.skip_text= new PIXI.Text("Press Enter to skip tutorial.", {font:"20px Arial", fill:"black"});
-		this.skip_text.position.x=200;
-		this.skip_text.position.y = 200;
-		this.skip_text.anchor.x=1;
+		this.skip_text= new PIXI.Text("Press Enter to skip tutorial.", {font:"20px "+font, fill:"black"});
+		this.skip_text.position.x=8;
+		this.skip_text.position.y =8;
+		this.skip_text.anchor.x=0;
 		this.skip_text.anchor.y=0;
-		this.instruction = new PIXI.Text("Use (W S A D) or the arrow keys to move. Go to the yellow arrow." +'\n' + this.txt, {font:"20px Arial", fill:"black"});
+		this.instruction = new PIXI.Text("Use (W S A D) or the arrow keys to move. Go to the yellow arrow." +'\n' + this.txt, {font:"20px "+font, fill:"black", align:'center'});
 		this.instruction.position.x = window_width/2;
 		this.instruction.position.y = 100;
 		this.instruction.anchor.x = 0.5;
@@ -159,7 +161,7 @@ function Tutorial(owner){
 
 	 	  this.check_sixth = function(){
 	 	  	this.tut_step++;
-	 	  	this.instruction.setText("For each civilian that you knock out, two more will take his place. Each gray soldier can take out a maximum of two civilians! Press 'N' to continue.");
+	 	  	this.instruction.setText("For each civilian that you knock out, two more will take his place.\nEach gray soldier can take out a maximum of two civilians! Press 'N' to continue.");
 		   	this.instruction.visible = true;
        	this.pause = true;
 
