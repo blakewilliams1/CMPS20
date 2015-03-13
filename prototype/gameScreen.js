@@ -33,17 +33,13 @@ function Game(owner,level_number){
  	this.score_text = new PIXI.Text(this.score.toString(), {font:"30px Arial", fill:"black"});
 	this.timer = 0
 	this.triggeredTime;
- 	this.time=new Date().getTime();
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
 	this.num_background_tiles = 0;
 
-
-
 	this.graphic.beginFill(0x0066FF);
-	//this.graphic.moveTo(1160,580)
-  this.graphic.drawRect (1053, 545,224, 95);
-  this.graphic.alpha = 0.2;
+	this.graphic.drawRect (1053, 545,224, 95);
+	this.graphic.alpha = 0.2;
 	this.graphic.endFill();
 
 //-------------------------------------------------
@@ -125,19 +121,17 @@ function Game(owner,level_number){
 //-------------------------------------------------
 
  	this.countdown = function(){
- 		this.elapsed_t = 15-parseInt(((new Date().getTime() - this.time)/1000).toString());
+		if(this.pauseMenu!=0)return;
+ 		this.elapsed_t++;
  		this.score_text.setText("Score: "+this.score.toString());
- 		if(this.elapsed_t<1){
- 			this.time=new Date().getTime();
+ 		if(this.elapsed_t>15*60){
+ 			this.elapsed_t=0;
 			if(this.soldier_queue.length>0){
 				this.create_soldier(this.soldier_queue.shift());
 				this.soldier_queue.push(Math.floor(Math.random)*3);
-			}else{
-				//we need to discuss if there will be a set # of soldiers or not
 			}
- 			this.elapsed_t=15;
  		}
- 		this.time_text.setText("New Soldier in: "+(this.elapsed_t));
+ 		this.time_text.setText("New Soldier in: "+(15-Math.floor(this.elapsed_t/60)));
  	}
 
 //--------------------------------------------------
@@ -366,7 +360,7 @@ function Game(owner,level_number){
 		if(key=='S'||event.keyCode==40)this.active.direction = "down";
 		if(key=='D'||event.keyCode==39)this.active.direction = "right";
 		if(key=='E')this.hide_active_soldier();
-		if(key=='F'){this.time=0; this.set = true};
+		if(key=='F'){this.elapsed_t=0; this.set = true};
 
 	};
 
