@@ -118,6 +118,9 @@ function LevelBuilder(game){
 		game.create_civilian(329,222,level_two[3]);
 		game.create_civilian(88,471,level_two[4]);
 		game.create_civilian(38,41,level_two[5]);
+		game.create_civilian(426,55,level_two[6]);
+		game.create_civilian(752,31,level_two[7]);
+		game.create_civilian(435,437,level_two[8]);
 
 		game.create_grid();
 
