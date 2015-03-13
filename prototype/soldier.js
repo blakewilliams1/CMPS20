@@ -48,6 +48,8 @@ function Soldier(owner) {
 	sprite.setInteractive(true);
 	sprite.direction = "none";
 	sprite.objectBehind;
+	sprite.out_of_spawn = false;
+	sprite.spawn_count = 0;
 	sprite.mousedown = function(event) {
 			sprite.owner.active = sprite;
 			sprite.direction="none";

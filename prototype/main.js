@@ -102,5 +102,5 @@ window.onmousemove = function(evt){
 	 	        x:evt.clientX - rect.left,
 	 	        y:evt.clientY - rect.top
 	 	      }
-	//console.log("mouse location", mouse_location);
+	console.log("mouse location", mouse_location);
 }

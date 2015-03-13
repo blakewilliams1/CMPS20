@@ -26,6 +26,7 @@ function Game(owner,level_number){
  	this.active
 	this.latestSoldier
 	this.score_time = 0;
+	this.graphic = new PIXI.Graphics();
  	this.fps = 60;
  	this.score=0;
  	this.set = false;
@@ -36,6 +37,14 @@ function Game(owner,level_number){
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
 	this.num_background_tiles = 0;
+
+
+
+	this.graphic.beginFill(0x0066FF);
+	//this.graphic.moveTo(1160,580)
+  this.graphic.drawRect (1053, 545,224, 95);
+  this.graphic.alpha = 0.2;
+	this.graphic.endFill();
 
 //-------------------------------------------------
 
@@ -77,6 +86,23 @@ function Game(owner,level_number){
 			if(collided(this.active,this.walls[i])){
 				this.active.revert_step();
 			}
+		}
+
+    if(this.active.spawn_count != 1){
+			var bool = !check_player_in_spawn(this.active);
+			if(bool){
+					this.active.out_of_spawn = bool;
+					this.active.spawn_count = 1;
+					console.log(this.active.out_of_spawn);
+				}
+	}
+
+
+			 if(check_spawn_area(this.active)){
+			 	if(this.active.out_of_spawn){
+			 	console.log("back in spawn")
+			 	 this.active.revert_step();
+			 	}
 		}
 
 		if(this.triggeredTime!=undefined){
@@ -130,6 +156,11 @@ function Game(owner,level_number){
  		this.set = false;
  	}
 
+
+ 	this.create_spawn = function(){
+
+ 	}
+
 //----------------------------------------------------
 
 	this.hide_active_soldier = function() {
@@ -149,7 +180,8 @@ function Game(owner,level_number){
 					//hide the civilian
 					console.log("hide the civilian");
 					this.active.hide_civilian(this.hiding_spots[i]);
-					this.create_civilian(100,100,level_one[0]);
+					this.spawn_new_civilian();
+					this.spawn_new_civilian();
 					//this.create_civilian();
 				}else{
 					this.active.hide(this.hiding_spots[i]);
@@ -211,6 +243,16 @@ function Game(owner,level_number){
 		this.walls.push(trashCan);
  	}
 
+
+  this.spawn_new_civilian = function(){
+  	 console.log("this is the level spots", this.level_spots);
+     var index = Math.floor(Math.random() * this.level_spots.length);
+     var random_pos = Math.floor(Math.random() * this.level_spots[index].length);
+     var new_pos = this.level_spots[index][random_pos]
+     var new_positions = this.level_spots[index];
+
+     this.create_civilian(100,100, new_positions)
+  }
 //----------------------------------------------------
 
 	this.create_wall=function(x,y) {
@@ -293,6 +335,7 @@ function Game(owner,level_number){
 		var gui = new PIXI.Sprite(gui_base);
 		gui.position.x = 0;
 		gui.position.y = window_height-40;
+    gui.width = map_width;
  		this.score_text.position.x=30;
  		this.score_text.position.y=window_height-35;
  		this.time_text.position.x=200;
@@ -312,6 +355,7 @@ function Game(owner,level_number){
 		upcoming_text.position.x=500;
 		upcoming_text.position.y=window_height-35;
 		this.stage.addChild(upcoming_text);
+		this.stage.addChild(this.graphic);
 	}
 
 //----------------------------------------------------

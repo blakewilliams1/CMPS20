@@ -386,3 +386,13 @@ function close_to_hiding(spot,soldier){
   }
 }
 
+
+function check_spawn_area(soldier){
+  return ((soldier.position.x >= 1053) && (soldier.position.y >= 545));
+}
+
+function check_player_in_spawn(soldier){
+    return ((soldier.position.x >= 1048) && (soldier.position.y >= 530));
+
+}
+

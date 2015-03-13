@@ -19,6 +19,7 @@ function Tutorial(owner){
 	this.stage=this.level.stage;
 	this.skip_text;
 	this.instruction;
+	this.put = true;
 	this.graphic = this.graphic = new PIXI.Graphics();
 	this.graphic.beginFill(0xFFFF00);
   this.graphic.moveTo(400,300);
@@ -35,6 +36,18 @@ function Tutorial(owner){
 	this.update=function(){
 		if(this.pause) return;
 		this.level.update();
+		if(this.level.civilians.length > 0){
+		   if(!this.level.civilians[0].sprite.visible){
+		   	if(this.level.active.soldierType == 2){
+		   		if(this.level.active.carrying == 0)
+             if(this.put){
+		     	  this.tut_step++;
+		   			this.put = false;
+		   		}
+
+      }
+		}
+	}
 		this.instruction.visible = false;
 
 		switch(this.tut_step){
@@ -46,7 +59,20 @@ function Tutorial(owner){
 			     break;
 
 			case 3:
+			     this.check_third();
 			 break
+
+			case 4:
+			   this.check_fourth();
+			   break;
+
+			case 7:
+			   this.check_fifth();
+			   break;
+
+			case 6:
+			   this.check_sixth();
+			   break;
 		}
 
 	}
@@ -64,7 +90,8 @@ function Tutorial(owner){
 
 	this.init_tutorial_specific=function(){
 		this.skip_text= new PIXI.Text("Press Enter to skip ", {font:"20px Arial", fill:"black"});
-		this.skip_text.position.x=window_width;
+		this.skip_text.position.x=200;
+		this.skip_text.position.y = 200;
 		this.skip_text.anchor.x=1;
 		this.skip_text.anchor.y=0;
 		this.instruction = new PIXI.Text("use (W S A D) or the arrow keys to move to the arrow on the map" +'\n' + this.txt, {font:"20px Arial", fill:"black"});
@@ -77,7 +104,6 @@ function Tutorial(owner){
 		this.level.stage.addChild(this.instruction);
 		this.level.stage.addChild(this.skip_text);
 		this.pause = true;
-		console.log("asfasdf");
 	}
 
 	this.check_first = function(){
@@ -104,7 +130,51 @@ function Tutorial(owner){
 		  }
 	 }
 
+	 this.check_third = function(){
+	 	 if(this.level.active.visible){
+	 	 	 this.spawn_civilian();
+	 	 	 this.tut_step++;
+	 	 	 this.instruction.setText("These are the civilian and if you are see they will run to the closest alarm" + '\n' + "  Get spotted by a civilian    press n to continue");
+		   this.instruction.visible = true;
+       this.pause = true;
+
+	 	 }
+
+
+	 	this.check_fourth = function(){
+	 	    if(this.level.civilians[0].found){
+	 	    	this.tut_step++;
+	 	    	this.instruction.setText("If you are spotted you have the ability to knock the civilian by pressing 'space'" + '\n' + " and hide them in any hiding spot by pressing E   press n to continue");
+		   		this.instruction.visible = true;
+       		this.pause = true;
+	 	    }
+	 	   }
+
+	 	  this.check_fifth = function(){
+	 	  	this.instruction.setText("congratulations you have completed the tutorial! Pres enter to proceed");
+		   		this.instruction.visible = true;
+       		this.pause = true;
+
+	 	  }
+
+	 	  this.check_sixth = function(){
+	 	  	this.tut_step++;
+	 	  	this.instruction.setText("Each civilian that you take out two more will take its place and each buff soldier can only take out a max of two civilians! Press N to proceed");
+		   	this.instruction.visible = true;
+       	this.pause = true;
+
+	 	  }
+	 }
+
+
+	this.spawn_civilian = function(){
+ 	  this.level.create_civilian(100,100,tutorial_locations[1]);
+	  //this.level.create_civilian(300,300,tutorial_locations.two);
+	  //this.level.create_civilian(300,300,tutorial_locations.zero);
  }
+
+ }
+
 
 //-------------------------------------------------
 

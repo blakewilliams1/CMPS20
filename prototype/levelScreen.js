@@ -2,7 +2,7 @@ function Levels(owner){
 	this.owner=owner;
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	this.font = {font:"30px Arial", fill:"black"};
-	
+
 	this.names_text = new PIXI.Text("Level 1", this.font);
  	this.update = function() {
 

@@ -172,7 +172,7 @@ Civilian.prototype  = {
        this.graphic.lineTo(b.x, b.y);
        this.graphic.lineTo(c.x, c.y);
        this.graphic.endFill();
-       if(!soldiers[i].visible) continue;
+       if((!soldiers[i].visible) || (!soldiers[i].out_of_spawn)) continue;
        if(in_triangle(target,origin,b,c)){
          var cent = origin;
          var line = getRay(cent,target);
@@ -382,7 +382,7 @@ function closest_alarm(position,alarms){
            y: alarms[i].position.y
      };
      //console.log(pos);
-     var value = (Math.abs(position.x - pos.x) + Math.abs(position.y - pos.x));
+     var value = (Math.abs(position.x - pos.x) + Math.abs(position.y - pos.y));
      if (value < closest){
         closest = value;
         closest_alarm = alarms[i];

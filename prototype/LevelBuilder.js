@@ -18,9 +18,10 @@ function LevelBuilder(game){
 
 		game.create_alarm(map_width/2,map_height/2);
 		game.create_grid();
-		game.create_civilian(100,100,tutorial_locations.one);
-		game.create_civilian(300,300,tutorial_locations.two);
-		game.create_civilian(300,300,tutorial_locations.zero);
+		game.level_spots = tutorial_locations;
+		//game.create_civilian(100,100,tutorial_locations.one);
+		//game.create_civilian(300,300,tutorial_locations.two);
+		//game.create_civilian(300,300,tutorial_locations.zero);
 		game.create_soldier();
 	}
 
@@ -59,12 +60,14 @@ function LevelBuilder(game){
 		game.create_alarm(50,520);
 		game.create_alarm(500,100);
 
-		game.create_civilian(955,27,level_one.zero);
-		game.create_civilian(976,211,level_one.one);
-		game.create_civilian(486,411,level_one.two);
-		game.create_civilian(43,373,level_one.three);
-		game.create_civilian(478,68,level_one.four);
-		game.create_civilian(500,239,level_one.five);
+		game.create_civilian(955,27,level_one[0]);
+		game.create_civilian(976,211,level_one[1]);
+		game.create_civilian(486,411,level_one[2]);
+		game.create_civilian(43,373,level_one[3]);
+		game.create_civilian(478,68,level_one[4]);
+		game.create_civilian(500,239,level_one[5]);
+
+		game.level_spots = level_one;
 
 		game.create_grid();
 
@@ -74,12 +77,52 @@ function LevelBuilder(game){
 	//----------------------------------
 
 	this.buildLevelTwo=function(){
-		game.create_hiding_spot(map_width*9/10,map_height*8,"trashcan");
-		game.create_building(map_width*6/10, map_height*4/7,"small");
-		game.create_alarm(map_width/3,map_height/2);
+		game.level_spots = level_two;
+		game.create_building(1135,307,"small");
+		game.create_building(955,463,"small");
+		game.create_building(603,326,"small");
+		game.create_building(746,584,"small");
+		game.create_building(391,529,"small");
+		game.create_building(140,120,"small");
+		game.create_building(865,120,"small");
+		game.create_building(1154,114,"small");
+		game.create_building(186,354,"small");
+		//game.create_building(591,259,"small");
+		//game.create_building(780,135,"small");
+
+		game.create_hiding_spot(730,455,"bush");
+		game.create_hiding_spot(184,512,"bush");
+		game.create_hiding_spot(148,246,"bush");
+		//game.create_hiding_spot(360,470,"bush");
+		///game.create_hiding_spot(980,450,"bush");
+		//game.create_hiding_spot(980,120,"bush");
+
+	   game.create_hiding_spot(561,543,"trashcan");
+		 game.create_hiding_spot(1005,125,"trashcan");
+		//game.create_hiding_spot(270,320,"trashcan");
+		//game.create_hiding_spot(677,391,"trashcan");
+
+		game.create_hiding_spot(720,320,"bench");
+		game.create_hiding_spot(341,166,"bench");
+		game.create_hiding_spot(652,100,"bench");
+
+		game.create_hiding_spot(400,300,"well");
+
+		game.create_alarm(800,400);
+		game.create_alarm(50,520);
+		game.create_alarm(500,100);
+
+		game.create_civilian(1054,531,level_two[0]);
+		game.create_civilian(916,547,level_two[1]);
+		game.create_civilian(875,280,level_two[2]);
+		game.create_civilian(329,222,level_two[3]);
+		game.create_civilian(88,471,level_two[4]);
+		game.create_civilian(38,41,level_two[5]);
+
 		game.create_grid();
-		game.create_civilian(100,100);
-		game.create_soldier();
+
+		game.create_soldier(2);
+
 	}
 
 	//----------------------------------
