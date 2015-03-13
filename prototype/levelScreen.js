@@ -18,7 +18,7 @@ function Levels(owner){
 		}
 	}
  	this.init_ = function() {
-		var numLevels=2;
+		var numLevels=3;
 		for(var i=1;i<=numLevels;i++){
 			var level_texture=PIXI.Texture.fromImage("../Art Assets/png/level"+i.toString()+".png");
 			var level_icon=new PIXI.Sprite(level_texture);
