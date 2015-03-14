@@ -1,9 +1,12 @@
 function Credits(owner){
+	this.elapsedTime = 0;
 	this.owner=owner;
 	this.view=owner.view;
 	this.renderer=owner.renderer;
 	this.stage = new PIXI.Stage(0xCCCCCC,true);
 	this.main_menu_button = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/quitGameButton.png"));
+	this.dancer = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/creditArt1.png"));
+	this.dancer.isOn=true;
 	this.font = {font:"40px Arial", fill:"black"};
 	this.title_text = new PIXI.Text("Credits", this.font);
 	this.names_text = new PIXI.Text(
@@ -12,8 +15,21 @@ function Credits(owner){
 		"Dante Ruiz"+'\n'+
 		"Sam Fields", this.font);
  	this.update = function() {
-
+		this.elapsedTime++;
+ 		if(this.elapsedTime%30==0){
+			console.log("change");
+ 			if(this.dancer.isOn){
+				this.dancer.setTexture(PIXI.Texture.fromImage("../Art Assets/png/creditArt1.png"));
+				//this.dancer.isOn = true;
+			}else{
+				this.dancer.setTexture(PIXI.Texture.fromImage("../Art Assets/png/creditArt2.png"));
+			    //this.dancer.isOn= false;
+			}
+			this.dancer.isOn=!this.dancer.isOn;
+			
+		}
  	};
+
 	this.keydown=function(event){
 		var key = String.fromCharCode(event.keyCode);
 
@@ -25,7 +41,11 @@ function Credits(owner){
 		}
 	}
  	this.init_ = function() {
- 		this.main_menu_button.setInteractive(true);
+ 	    this.dancer.anchor.x=0.5;
+		this.dancer.position.x=window_width/2;
+		this.dancer.position.y=window_height/16;
+		this.stage.addChild(this.dancer);
+		this.main_menu_button.setInteractive(true);
 		this.main_menu_button.anchor.x=0.5;
  		this.main_menu_button.position.x=window_width/2;
  		this.main_menu_button.position.y=window_height*3/4;
