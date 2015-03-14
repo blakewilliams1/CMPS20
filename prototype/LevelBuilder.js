@@ -132,19 +132,42 @@ function LevelBuilder(game){
 	//----------------------------------
 	
 	this.buildLevelThree=function(){
-		game.create_building(300,90,"small");
+		game.create_building(50,30,"small");
+		game.create_building(180,200,"small");
+		game.create_building(200,500,"small");
+		game.create_building(400,100,"small");
+		game.create_building(480,320,"small");
+		game.create_building(540,580,"small");
+		game.create_building(600,321,"small");
+		game.create_building(800,180,"small");
+		game.create_building(800,460,"small");
+		game.create_building(1000,320,"small");
+		game.create_building(1070,120,"small");
+		game.create_building(1230,300,"small");
 		
+		game.create_hiding_spot(100,240,"bush");
+		game.create_hiding_spot(150,70,"bush");
+		game.create_hiding_spot(350,400,"bush");
+		game.create_hiding_spot(680,370,"bush");
+		game.create_hiding_spot(830,570,"bush");
+		game.create_hiding_spot(990,160,"bush");
+		
+		game.create_hiding_spot(125,540,"trashcan");
+		game.create_hiding_spot(250,240,"trashcan");
+		game.create_hiding_spot(455,590,"trashcan");
+		game.create_hiding_spot(620,430,"trashcan");
+		game.create_hiding_spot(860,220,"trashcan");
+		
+		game.create_hiding_spot(210,330,"bench");
+		game.create_hiding_spot(510,380,"bench");
+		game.create_hiding_spot(630,122,"bench");
+		game.create_hiding_spot(830,50,"bench");
+		game.create_hiding_spot(1000,500,"bench");
+		
+		game.create_hiding_spot(550,200,"well");
+		game.create_hiding_spot(1100,400,"well");
 
-		game.create_hiding_spot(65,125,"bush");
-		
-
-		game.create_hiding_spot(140,510,"trashcan");
-		
-		game.create_hiding_spot(600,122,"bench");
-		
-		game.create_hiding_spot(800,300,"well");
-
-		game.create_alarm(800,400);
+		game.create_alarm(800,350);
 
 		game.create_civilian(955,27,level_one[0]);
 		game.create_civilian(976,211,level_one[1]);
