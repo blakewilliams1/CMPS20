@@ -116,7 +116,7 @@ function Tutorial(owner){
 		 	 this.graphic.visible = false;
 		 	 this.tut_step++;
 
-		 	 this.instruction.setText("Once you are near a hiding spot press 'E' to hide." +'\n' + "A blue circle indicates this hiding spot is available.\nPress 'N' to continue.");
+		 	 this.instruction.setText("Once you are near a hiding spot, press 'E' to hide." +'\n' + "A blue circle indicates this hiding spot is available.\nPress 'N' to continue.");
 		 	 this.instruction.visible = true;
        this.pause = true;
 		 }

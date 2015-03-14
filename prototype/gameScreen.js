@@ -64,6 +64,7 @@ function Game(owner,level_number){
 		if(this.end_game){
 			return;
 		}
+		//The following code sorts children by y-value for drawing
 		this.sortStage(this.stage);
 		for (var i = 0; i < this.soldiers.length; i++){
 			if(check_player_in_spawn(this.soldiers[i])){
