@@ -6,8 +6,8 @@ function Tile(x, y) {
 	var newTile = new PIXI.Sprite(PIXI.Texture.fromImage("../Art Assets/png/bg_tile.png"));
 	newTile.position.x = x;
     newTile.position.y = y;
-    newTile.anchor.x = 0;
-    newTile.anchor.y = 0;
+    newTile.anchor.x = .5;
+    newTile.anchor.y = .5;
     
     newTile.changeTexture1 = function() {
 		var new_tex = smallTile1;

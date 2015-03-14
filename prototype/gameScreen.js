@@ -279,11 +279,9 @@ function Game(owner,level_number){
  		this.stage.addChild(alarm);
 	}
 
+	//This function will randomly generate the little squares
+	//in the background
 	this.create_background=function() {
-		var x = 0;
-		var y = 0;
-		//map_width and map_height are defined at the top of main.js
-        //This next loop will draw some cute little shapes and stuff.
         var tileRandomizer;
         var spacingRandomizer;
         x = 0;

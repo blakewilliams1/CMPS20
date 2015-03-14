@@ -310,12 +310,13 @@ function collided(first,second){
 	var x2=second.position.x-second.anchor.x*second.width;
 	var y2=second.position.y-second.anchor.y*second.height;
 	var h2=second.height, w2=second.width;
-	//if(first.soldierType!=undefined){
+	//The following lines make the hitboxes more forgiving.
+	//For both objects, move the hitboxes down and cut them in half.
 		y1+=h1/2;
 		h1/=2;
-	//}
 		y2+=h2/2;
 		h2/=2;
+		
 	if(x1<x2+w2&&
 		x1+w1>x2&&
 		y1<y2+h2&&
