@@ -16,7 +16,10 @@ function Game(owner,level_number){
 	this.pauseMenu=0;
 	this.alarms=[];
  	this.soldiers = [];
-	this.soldier_queue = [1,1,2];
+	this.soldier_queue;
+	if (inTut == false)
+		this.soldier_queue = [1,1,2];
+	if (inTut == true) this.soldier_queue = [2, 1, 2];
 	this.icon=[];
  	this.hiding_spots = [];
  	this.walls = [];

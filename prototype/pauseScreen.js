@@ -25,6 +25,7 @@ function Pause(owner){
 		level_button.position.y = window_height/2
 		level_button.click=function(event){
 			music.pause();
+			inTut = false;
 			if(owner[owner.length-1].stage!=this.stage)return;
  			owner.create_level_screen();
  		}
@@ -37,6 +38,7 @@ function Pause(owner){
 		quit_button.position.y = window_height/2+50
 		quit_button.click=function(event){
 			music.pause();
+			inTut = false;
 			if(owner[owner.length-1].stage!=this.stage)return;
  			owner.signal_pop();
 			owner.signal_pop();

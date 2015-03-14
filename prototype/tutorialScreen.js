@@ -6,12 +6,14 @@
  //create an instance of the game
  
  var font = "Prestige Elite Std"
-
+ var inTut = false;
+ 
  var mouse_location = {
  	      x: 0,
  	      y: 0
  }
 function Tutorial(owner){
+    inTut = true;
 	this.pause = false;
 	this.goal = false;
 	this.hiddden = false;
@@ -153,6 +155,7 @@ function Tutorial(owner){
 	 	   }
 
 	 	  this.check_fifth = function(){
+		    inTut = false;
 	 	  	this.instruction.setText("Congratulations, you have completed the tutorial! Press 'ENTER' to proceed.");
 		   		this.instruction.visible = true;
        		this.pause = true;
