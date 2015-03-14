@@ -39,7 +39,7 @@ function Game(owner,level_number){
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
 	this.num_background_tiles = 0;
-	
+
 	this.graphic.beginFill(0x0066FF);
 	this.graphic.drawRect (1053, 545,224, 95);
 	this.graphic.alpha = 0.2;
@@ -152,7 +152,7 @@ function Game(owner,level_number){
 		var type = this.soldier_queue.shift();
 		var n = Math.floor(Math.random()*5)<1?1:0;
 		this.soldier_queue.push(1+n);
-		
+
 		if(type==1){
 			player = new Soldier(this);
 		}else player=new BuffSoldier(this);
@@ -194,6 +194,7 @@ function Game(owner,level_number){
 					this.active.hide(this.hiding_spots[i]);
 					this.score+=10;
 				}
+				break;
  			}
  		}
  	};
@@ -313,6 +314,7 @@ function Game(owner,level_number){
         music = document.getElementById('music');
         music.loop = true;
         music.play();
+
 		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/tempGui.png");
 		var gui = new PIXI.Sprite(gui_base);
 		gui.position.x = 0;
