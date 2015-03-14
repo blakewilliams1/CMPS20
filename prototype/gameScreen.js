@@ -16,7 +16,7 @@ function Game(owner,level_number){
 	this.pauseMenu=0;
 	this.alarms=[];
  	this.soldiers = [];
-	this.soldier_queue = [2,1,2,2,1,1,2,1,1,2,2];
+	this.soldier_queue = [1,1,2];
 	this.icon=[];
  	this.hiding_spots = [];
  	this.walls = [];
@@ -36,7 +36,7 @@ function Game(owner,level_number){
  	this.elapsed_t=0;
  	this.time_text = new PIXI.Text("New Soldier in: ", {font:"30px Arial", fill:"black"});
 	this.num_background_tiles = 0;
-
+	
 	this.graphic.beginFill(0x0066FF);
 	this.graphic.drawRect (1053, 545,224, 95);
 	this.graphic.alpha = 0.2;
@@ -64,7 +64,7 @@ function Game(owner,level_number){
 		if(this.end_game){
 			return;
 		}
-		//The following code sorts children by y-value for drawing
+		//The following func sorts children by y-value for drawing
 		this.sortStage(this.stage);
 		for (var i = 0; i < this.soldiers.length; i++){
 			if(check_player_in_spawn(this.soldiers[i])){
@@ -75,7 +75,6 @@ function Game(owner,level_number){
 		}
 		this.score_time++;
     var n = this.score_time / 60;
-    //console.log(n)
 		if( (n % 2 == 0) && (this.spawn_free)) this.score += 2;
  		this.active.update();
  		//update civilians
@@ -137,8 +136,7 @@ function Game(owner,level_number){
  		if(this.elapsed_t>15*60){
  			this.elapsed_t=0;
 			if(this.soldier_queue.length>0){
-				this.create_soldier(this.soldier_queue.shift());
-				this.soldier_queue.push(Math.floor(Math.random)*3);
+				this.create_soldier();
 			}
  		}
  		this.time_text.setText("New Soldier in: "+(15-Math.floor(this.elapsed_t/60)));
@@ -146,14 +144,18 @@ function Game(owner,level_number){
 
 //--------------------------------------------------
 
- 	this.create_soldier = function(type) {
+ 	this.create_soldier = function() {
 		var player;
+		var type = this.soldier_queue.shift();
+		var n = Math.floor(Math.random()*5)<1?1:0;
+		this.soldier_queue.push(1+n);
+		
 		if(type==1){
 			player = new Soldier(this);
 		}else player=new BuffSoldier(this);
 		if((this.active == undefined) || (this.set)){
- 		this.active = player;
- 	}
+			this.active = player;
+		}
 		this.latestSoldier = player;
  		this.soldiers.push(player);
  		this.stage.addChild(player);
@@ -305,7 +307,7 @@ function Game(owner,level_number){
 	}
 
 	this.init_gui=function(){
-        var music = document.getElementById('music');
+        music = document.getElementById('music');
         music.loop = true;
         music.play();
 		var gui_base = PIXI.Texture.fromImage("../Art Assets/png/tempGui.png");
