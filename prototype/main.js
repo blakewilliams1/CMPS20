@@ -15,24 +15,13 @@ window.onload = function init() {
 	// DOM
 	screenManager.create_cut_screen();
 	document.body.appendChild(screenManager.renderer.view);
-
-	console.log(document.body);
 	requestAnimFrame(animate);
 
-	var fpsmeter = new FPSMeter({
-		decimals : 0,
-		graph : true,
-		theme : 'dark',
-		heat : 10,
-		left : '1000px'
-	});
 
 	function animate() {
-		fpsmeter.tickStart();
 		screenManager[screenManager.length-1].update();
 		screenManager.renderer.render(screenManager[screenManager.length-1].stage);
 		requestAnimFrame(animate);
-		fpsmeter.tick();
 	}
 
 };
