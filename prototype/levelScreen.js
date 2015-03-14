@@ -38,7 +38,7 @@ function Levels(owner){
 			var level_name = new PIXI.Text("Level "+i.toString(), this.font);
 			level_name.anchor.x=0.5;
 			level_name.position.x=level_icon.position.x;
-			level_name.position.y=level_icon.position.y+60;
+			level_name.position.y=level_icon.position.y+70;
 			this.stage.addChild(level_name);
 		}
  	};
