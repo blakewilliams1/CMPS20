@@ -7,7 +7,7 @@ function Tile(x, y) {
 	newTile.position.x = x;
     newTile.position.y = y;
     newTile.anchor.x = .5;
-    newTile.anchor.y = .5;
+    newTile.anchor.y = -2;
     
     newTile.changeTexture1 = function() {
 		var new_tex = smallTile1;
